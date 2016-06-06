@@ -19,12 +19,12 @@ public class CLI implements View {
 
 	private BufferedReader in;
 	private PrintWriter out;
-	private HashMap<String, Command> commands;
+
 	
-	public CLI(BufferedReader in,PrintWriter out,HashMap<String, Command> commands) {
+	public CLI(BufferedReader in,PrintWriter out) {
 		this.in = in;
 		this.out = out;
-		this.commands = commands;
+		
 	}
 	
 	@Override
