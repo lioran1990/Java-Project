@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.Observable;
 
 import MazeAdapters.Maze3dAdapter;
 import algorithms.io.MyCompressorInputStream;
@@ -18,7 +19,6 @@ import algorithms.search.BestFS;
 import algorithms.search.BreadthFS;
 import algorithms.search.DFS;
 import algorithms.search.Solution;
-import controller.Controller;
 /**<h1>MyModel</h1>
 * The MyModel class.
 * MyModel is responsable to all of the data calculating such as Solving a maze, save\load etc.
@@ -26,17 +26,16 @@ import controller.Controller;
 * @version 1.0
 * @since May 21,2016
 */
-public class MyModel implements Model {
+public class MyModel extends Observable implements Model {
 	
-	Controller c;
 	private HashMap<String, Maze3d> mazes = new HashMap<String,Maze3d>();
 	private HashMap<String , Solution> solutions = new HashMap<String , Solution>();
 	Maze3d maze;
 	Thread genThread;
 	Thread solvThread;
 	
-	public MyModel(Controller c) {
-		this.c = c;
+	public MyModel() {
+		
 	}
 	
 	public String generateMaze(String name , int flos, int rows , int cols){

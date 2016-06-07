@@ -1,14 +1,9 @@
 package View;
 
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
-
-import Commands.Command;
-import controller.*;
 
 
 /**<h1>MyView</h1>
@@ -22,13 +17,13 @@ public class MyView extends Observable implements View, Observer{
 
 
 	CLI cli;
-	
 	private BufferedReader reader;
 	private PrintWriter writer;
 	
 	public MyView(BufferedReader reader ,PrintWriter writer) throws Exception {
 		this.reader = reader;
 		this.writer = writer;
+		cli.addObserver(this);
 	}
 	
 	@Override
@@ -58,8 +53,10 @@ public class MyView extends Observable implements View, Observer{
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		
+		if (arg0 == cli){
+			this.setChanged();
+			this.notifyObservers(arg1);	
+		}
 	}
 
 }
