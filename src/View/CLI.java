@@ -33,10 +33,10 @@ public class CLI extends Observable {
 
 			@Override
 			public void run() {
-				out.write("Type ? For HELP \n");
+				out.write("Type ? For HELP");
 				
 				do {
-					out.write("Type a Command :\n");
+					out.write("\nType a Command :\n");
 					out.flush();
 					try {
 						cmd = in.readLine();

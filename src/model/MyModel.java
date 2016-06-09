@@ -46,13 +46,11 @@ public class MyModel extends Observable implements Model {
 			setChanged();
 			message = "Maze: " + name +" Generated succesfully!";
 			notifyObservers("display_msg");
-			//return "Maze: " + name +" Generated succesfully!";
 		}
 		else{
 			message = "This name already exists";
 			setChanged();
 			notifyObservers("display_msg");
-			//return "This name already exists";
 		}
 	}
 	
@@ -60,12 +58,16 @@ public class MyModel extends Observable implements Model {
 		return message;
 	}
 	
-	public String getMaze3d(String name){
+	public void getMaze3d(String name){
 		if (mazes.get(name) != null){
-			return mazes.get(name).toString() + "\nStart Position: " + mazes.get(name).getStartPosition() + "\nGoal Position: "+ mazes.get(name).getGoalPosition();
+			message = mazes.get(name).toString() + "\nStart Position: " + mazes.get(name).getStartPosition() + "\nGoal Position: "+ mazes.get(name).getGoalPosition();
+			setChanged();
+			notifyObservers("display_msg");
 		}
 		else{
-			return "Couldn't find maze by name!";
+			message = "Couldn't find maze by name!"; 
+			setChanged();
+			notifyObservers("display_msg");
 		}		
 	}
 	
