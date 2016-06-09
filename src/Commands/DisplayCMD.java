@@ -41,7 +41,7 @@ public class DisplayCMD implements Command {
 			m.getMaze3d(args[1]);
 		}
 		else{
-			v.PrintOut("display [(String)name]");
+			v.PrintOut("display [(String)name]\n");
 		}		
 	}
 

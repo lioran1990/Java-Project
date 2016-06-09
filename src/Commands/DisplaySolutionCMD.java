@@ -36,11 +36,10 @@ public class DisplaySolutionCMD implements Command {
 	@Override
 	public void doCommand(String [] args) {
 		if (args.length == 2){
-			String s = m.Display_Sol(args[1]);
-			v.PrintOut(s);
+			m.Display_Sol(args[1]);
 		}
 		else{
-			v.PrintOut("display_solution [(String)name]");
+			v.PrintOut("display_solution [(String)name]\n");
 		}		
 	}
 }

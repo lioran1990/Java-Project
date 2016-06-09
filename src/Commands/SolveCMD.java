@@ -36,10 +36,10 @@ public class SolveCMD implements Command {
 	@Override
 	public void doCommand(String [] args) {
 		if (args.length == 3){
-			v.PrintOut(m.Solve(args[1] , args[2]));
+			m.Solve(args[1] , args[2]);
 		}
 		else{
-			v.PrintOut("Solve [(String) name] [(dfs/bfs/breadthfs) algorithm]");
+			v.PrintOut("Solve [(String) name] [(dfs/bfs/breadthfs) algorithm]\n");
 		}
 
 	}

@@ -33,10 +33,10 @@ public class MazeSizeCMD implements Command {
 	@Override
 	public void doCommand(String [] args) {
 		if (args.length == 2){
-			v.PrintOut(m.Maze_Mem_Size(args[1]));
+			m.Maze_Mem_Size(args[1]);
 		}
 		else{
-			v.PrintOut("maze_size [(String) name]");
+			v.PrintOut("maze_size [(String) name]\n");
 		}
 
 	}

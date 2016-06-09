@@ -37,10 +37,10 @@ public class FileSizeCMD implements Command {
 	@Override
 	public void doCommand(String [] args) {
 		if (args.length == 2){
-			v.PrintOut(m.Maze_File_Size(args[1]));
+			m.Maze_File_Size(args[1]);
 		}
 		else{
-			v.PrintOut("file_size [(String) filename]");
+			v.PrintOut("file_size [(String) filename]\n");
 		}
 
 	}

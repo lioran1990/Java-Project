@@ -37,7 +37,7 @@ public class LoadMazeCMD implements Command {
 	@Override
 	public void doCommand(String [] args) {
 		if (args.length == 3){
-			v.PrintOut(m.loadFromFile(args[1], args[2]));
+			m.loadFromFile(args[1], args[2]);
 		}
 		else{
 			v.PrintOut("Load_maze [(String)fileName] [(String) name] \n");

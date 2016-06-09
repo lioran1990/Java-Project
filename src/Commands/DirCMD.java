@@ -33,7 +33,7 @@ public class DirCMD implements Command {
 	@Override
 	public void doCommand(String [] args) {
 		ClassLoader loader = DirCMD.class.getClassLoader();
-		v.PrintOut(loader.getResource("").toString());
+		v.PrintOut(loader.getResource("").toString()+" \n");
 
 	}
 

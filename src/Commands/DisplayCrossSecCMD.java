@@ -36,19 +36,7 @@ public class DisplayCrossSecCMD implements Command {
 	@Override
 	public void doCommand(String [] args) {
 		if (args.length == 4){
-				int [][] maze2d = m.getCrossSection(args[1],Integer.parseInt(args[2]),args[3]);
-				if (maze2d != null){
-					v.PrintOut(args[3] + "'s Maze - Cross By " + args[1] + "\n");
-					for (int i = 0; i < maze2d.length; i++) {
-						for (int j = 0; j < maze2d[0].length; j++) {
-							v.PrintOut(((Integer)maze2d[i][j]).toString() + " ");
-						}
-						v.PrintOut("\n");
-					}
-				}
-				else{
-					v.PrintOut("Couldnt find maze! Please try another name \n");
-				}
+				m.getCrossSection(args[1],Integer.parseInt(args[2]),args[3]);
 		}
 		else{
 			v.PrintOut("Syntax should be: display_cross_section [(String) X/Y/Z] [(int) Index] [(String)name]\n");
