@@ -31,25 +31,33 @@ public class MyModel extends Observable implements Model {
 	private HashMap<String, Maze3d> mazes = new HashMap<String,Maze3d>();
 	private HashMap<String , Solution> solutions = new HashMap<String , Solution>();
 	Maze3d maze;
-	Thread genThread;
-	Thread solvThread;
+	String message;
 	
 	public MyModel() {
 		
 	}
 	
-	public String generateMaze(String name , int flos, int rows , int cols){
+	public void generateMaze(String name , int flos, int rows , int cols){
 		MyMaze3dGenerator mg = new MyMaze3dGenerator();
 		maze = mazes.get(name);
 		if (maze == null){
 			maze = mg.generate(flos, rows, cols);		
-			mazes.put(name, maze);	
-			return "Maze: " + name +" Generated succesfully!";
+			mazes.put(name, maze);
+			setChanged();
+			message = "Maze: " + name +" Generated succesfully!";
+			notifyObservers("display_msg");
+			//return "Maze: " + name +" Generated succesfully!";
 		}
-		else
-		{
-			return "This name already exists";
+		else{
+			message = "This name already exists";
+			setChanged();
+			notifyObservers("display_msg");
+			//return "This name already exists";
 		}
+	}
+	
+	public String getPendingMessage (){
+		return message;
 	}
 	
 	public String getMaze3d(String name){

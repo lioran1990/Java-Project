@@ -19,8 +19,8 @@ public class Run {
 		
 		try {
 			view = new MyView(reader, writer);
+			view.start();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

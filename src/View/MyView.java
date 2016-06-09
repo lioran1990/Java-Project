@@ -23,12 +23,12 @@ public class MyView extends Observable implements View, Observer{
 	public MyView(BufferedReader reader ,PrintWriter writer) throws Exception {
 		this.reader = reader;
 		this.writer = writer;
+		cli = new CLI(reader, writer);
 		cli.addObserver(this);
 	}
 	
 	@Override
 	public void start() throws Exception {
-		CLI cli = new CLI(reader, writer);
 		Thread run = new Thread (new Runnable() {
 			
 			@Override

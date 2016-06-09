@@ -48,7 +48,8 @@ public class Generate3DMazeCMD implements Command{
 				if(isInteger(args[4])) {
 					
 					int cols = Integer.parseInt(args[4]);
-					v.PrintOut(m.generateMaze(name, flos, rows, cols) + "\n");
+					m.generateMaze(name, flos, rows, cols);
+					//v.PrintOut(m.generateMaze(name, flos, rows, cols));
 					
 					}
 				}	

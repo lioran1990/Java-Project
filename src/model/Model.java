@@ -7,7 +7,7 @@ package model;
  * @since May 21,2016
  */
 public interface Model {
-	public String generateMaze(String name, int flos, int rows, int cols);
+	public void generateMaze(String name, int flos, int rows, int cols);
 	public 	String Solve(String string, String string2);
 	public String saveToFile(String string, String string2);
 	public String Maze_Mem_Size(String string);
@@ -16,5 +16,6 @@ public interface Model {
 	public String Display_Sol(String string);
 	public int[][] getCrossSection(String string, int parseInt, String string2);
 	public String getMaze3d(String string);
+	public String getPendingMessage ();
 
 }
