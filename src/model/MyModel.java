@@ -83,14 +83,18 @@ public class MyModel extends Observable implements Model {
 				case "x" :
 				case "X" : 	
 					maze2d = maze.getCrossSectionByX(index);
+					break;
 				case "y":
 				case "Y":
 					maze2d = maze.getCrossSectionByY(index);
+					break;
 				case "z":
 				case "Z":
 					maze2d = maze.getCrossSectionByZ(index);
+					break;
 				default :
 					message="Wrong Coordinate, only X/Y/Z accepted\n";
+					break;
 			}	
 			
 		}
@@ -217,21 +221,27 @@ public class MyModel extends Observable implements Model {
 	
 	public void Solve (String name , String algo){
 		if (mazes.get(name) != null){
-			Maze3dAdapter mazeAdapter = new Maze3dAdapter(mazes.get(name));		
-			switch (algo){
+			Maze3dAdapter mazeAdapter = new Maze3dAdapter(mazes.get(name));	
+			if (!(solutions.containsKey(name+"_"+algo))){
+				switch (algo){
 				case "dfs":
 				case "DFS":
-					solutions.put(name, new DFS().search(mazeAdapter));
-				
+					solutions.put(name+"_dfs", new DFS().search(mazeAdapter));
+					break;
 				case "bfs":
 				case "BFS":
-					solutions.put(name, new BestFS().search(mazeAdapter));
-										
+					solutions.put(name+"_bfs", new BestFS().search(mazeAdapter));
+					break;			
 				case "breadthfs":
 				case "BREADTHFS":
-					solutions.put(name, new BreadthFS().search(mazeAdapter));
+					solutions.put(name+"_breadthfs", new BreadthFS().search(mazeAdapter));
+					break;
+				}
+				message="Solution created!\n";
 			}
-			message="Solution created!\n";
+			else{
+				message = algo + " solution for " + name + " maze is already exist!\n";
+			}
 		}
 		else{
 			message= "Couldn't find maze!\n";

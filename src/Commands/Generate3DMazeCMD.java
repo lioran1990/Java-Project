@@ -36,21 +36,14 @@ public class Generate3DMazeCMD implements Command{
 	@Override
 	public void doCommand(String [] args) {
 		if (args.length == 5){
-			
 			String name = args[1];
- 
 				if(isInteger(args[2])){
 					int flos = Integer.parseInt(args[2]);
-			
 				if(isInteger((args[3]))) {
 					int rows = Integer.parseInt(args[3]);
-				
 				if(isInteger(args[4])) {
-					
 					int cols = Integer.parseInt(args[4]);
-					m.generateMaze(name, flos, rows, cols);
-					//v.PrintOut(m.generateMaze(name, flos, rows, cols));
-					
+					m.generateMaze(name, flos, rows, cols);					
 					}
 				}	
 			}	

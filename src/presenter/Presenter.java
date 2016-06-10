@@ -3,6 +3,9 @@ package presenter;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import Commands.Command;
 import Commands.DirCMD;
@@ -18,7 +21,6 @@ import Commands.LoadMazeCMD;
 import Commands.MazeSizeCMD;
 import Commands.SaveMazeCMD;
 import Commands.SolveCMD;
-import View.CLI;
 import View.View;
 import model.Model;
 
@@ -28,11 +30,13 @@ public class Presenter extends Observable implements Observer{
 	private View view;
 	private HashMap<String, Command> ViewCmd;
 	private HashMap<String, Command> ModelCmd;
+	private ExecutorService exs;
 	
-	public Presenter(Model m, View v) {
+	public Presenter(Model m, View v, int threads) {
 		this.model = m;
 		this.view = v;
 		this.setCommands();
+		exs = Executors.newFixedThreadPool(threads);
 	}
 	
 	public void setCommands (){
@@ -70,7 +74,17 @@ public class Presenter extends Observable implements Observer{
 			else{
 				Thread cmd = null;
 				if (spliter[0].equalsIgnoreCase("generate_3d_maze") || spliter[0].equalsIgnoreCase("solve")){
-					cmd = new Thread(new Runnable() {
+					exs.submit(new Callable<Void>() {
+
+						@Override
+						public Void call() throws Exception {
+							tempCmd.doCommand(spliter);
+							return null;
+						}
+					
+					});
+					
+					/*cmd = new Thread(new Runnable() {
 						public void run() {
 							tempCmd.doCommand(spliter);
 						}
@@ -81,7 +95,8 @@ public class Presenter extends Observable implements Observer{
 					catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					cmd.start();	
+					cmd.start();
+					*/	
 				}
 				else{
 					tempCmd.doCommand(spliter);	

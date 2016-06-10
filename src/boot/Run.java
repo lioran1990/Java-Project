@@ -24,7 +24,7 @@ public class Run {
 			e.printStackTrace();
 		}
 		
-		Presenter presenter = new Presenter(model, view);
+		Presenter presenter = new Presenter(model, view,2);
 		view.addObserver(presenter);
 		model.addObserver(presenter);  
 	}
