@@ -1,4 +1,8 @@
 package model;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 /**<h1>Model</h1>
  * The Model Interface.
  * Model is responsable to all of the data calculating.
@@ -16,6 +20,8 @@ public interface Model {
 	public void Display_Sol(String string);
 	public void getCrossSection(String string, int parseInt, String string2);
 	public void getMaze3d(String string);
+	public void SaveSolutionsToFile () throws IOException;
+	public void LoadSolutionsFromFile () throws FileNotFoundException, IOException;
 	public String getPendingMessage ();
 
 }

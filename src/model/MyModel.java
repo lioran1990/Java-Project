@@ -8,7 +8,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Observable;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import MazeAdapters.Maze3dAdapter;
 import algorithms.io.MyCompressorInputStream;
@@ -109,6 +112,88 @@ public class MyModel extends Observable implements Model {
 			sb.append("\n");
 		}
 		message = sb.toString();
+		setChanged();
+		notifyObservers("display_msg");
+	}
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	public void SaveSolutionsToFile () throws IOException{	
+		OutputStream out = new GZIPOutputStream (new FileOutputStream("Solutions.gzip"));
+		ArrayList<State> arr;
+		
+		for (Entry<String, Solution> e : solutions.entrySet()){
+			arr = solutions.get(e.getKey()).getStates();
+			out.write(e.getKey().length());
+			out.write(e.getKey().getBytes());
+			out.write(arr.size() * 3);
+			for (State state : arr) {
+				System.out.println(state);
+				out.write(state.getCurrentState().charAt(1));
+				out.flush();
+				out.write(state.getCurrentState().charAt(3));
+				out.flush();
+				out.write(state.getCurrentState().charAt(5));
+				out.flush();
+			}
+			out.write((byte)'|');
+			out.flush();
+		}
+		out.close();
+		message = "solutions saved to file\n";
+		setChanged();
+		notifyObservers("display_msg");
+	}
+	
+	public void LoadSolutionsFromFile () throws FileNotFoundException, IOException{
+		InputStream in = new GZIPInputStream(new FileInputStream("Solutions.gzip"));
+		byte [] b = new byte [1];
+		byte [] name;
+		byte [] bytestate;
+		
+		in.read(b, 0, 1);
+		name = new byte [b[0]];
+		in.read(name, 0, b[0]);
+		String str = new String(name);
+		System.out.println(str);
+		
+		in.read(b,0,1);
+		bytestate = new byte [b[0]];
+		in.read(bytestate, 0, b[0]);
+		str = new String (bytestate);
+		System.out.println(str);
+		
+		message = "solutions loaded \n";
+		setChanged();
+		notifyObservers("display_msg");
+	}
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	public void Solve (String name , String algo){
+		if (mazes.get(name) != null){
+			Maze3dAdapter mazeAdapter = new Maze3dAdapter(mazes.get(name));	
+			if (!(solutions.containsKey((name+"_"+algo).toLowerCase()))){
+				switch (algo){
+				case "dfs":
+				case "DFS":
+					solutions.put(name+"_dfs", new DFS().search(mazeAdapter));
+					break;
+				case "bfs":
+				case "BFS":
+					solutions.put(name+"_bfs", new BestFS().search(mazeAdapter));
+					break;			
+				case "breadthfs":
+				case "BREADTHFS":
+					solutions.put(name+"_breadthfs", new BreadthFS().search(mazeAdapter));
+					break;
+				}
+				message="Solution created!\n";
+			}
+			else{
+				message = algo + " solution for " + name + " maze is already exist!\n";
+			}
+		}
+		else{
+			message= "Couldn't find maze!\n";
+		}
 		setChanged();
 		notifyObservers("display_msg");
 	}
@@ -219,36 +304,7 @@ public class MyModel extends Observable implements Model {
 		notifyObservers("display_msg");
 	}
 	
-	public void Solve (String name , String algo){
-		if (mazes.get(name) != null){
-			Maze3dAdapter mazeAdapter = new Maze3dAdapter(mazes.get(name));	
-			if (!(solutions.containsKey(name+"_"+algo))){
-				switch (algo){
-				case "dfs":
-				case "DFS":
-					solutions.put(name+"_dfs", new DFS().search(mazeAdapter));
-					break;
-				case "bfs":
-				case "BFS":
-					solutions.put(name+"_bfs", new BestFS().search(mazeAdapter));
-					break;			
-				case "breadthfs":
-				case "BREADTHFS":
-					solutions.put(name+"_breadthfs", new BreadthFS().search(mazeAdapter));
-					break;
-				}
-				message="Solution created!\n";
-			}
-			else{
-				message = algo + " solution for " + name + " maze is already exist!\n";
-			}
-		}
-		else{
-			message= "Couldn't find maze!\n";
-		}
-		setChanged();
-		notifyObservers("display_msg");
-	}
+	
 	
 	public void Display_Sol (String name){
 		if (mazes.get(name) != null){
