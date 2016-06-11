@@ -35,7 +35,7 @@ public class SaveMazeCMD implements Command {
 	@Override
 	public void doCommand(String [] args) {
 		if (args.length == 3){
-			m.saveToFile(args[1], args[2]);
+		//	m.saveToFile(args[1], args[2]);
 		}
 		else{
 			v.PrintOut("save_maze [(String) name] [(String)fileName.maz]\n");

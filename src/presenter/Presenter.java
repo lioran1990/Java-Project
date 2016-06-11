@@ -51,18 +51,21 @@ public class Presenter extends Observable implements Observer{
 		ViewCmd.put("display", new DisplayCMD(view,model));
 		ViewCmd.put("generate_3d_maze", new Generate3DMazeCMD(view,model));
 		ViewCmd.put("display_cross_section", new DisplayCrossSecCMD(view,model));
-		ViewCmd.put("save_maze", new SaveMazeCMD(view,model));
-		ViewCmd.put("save_all", new SaveMazeAndSol(view,model));
-		ViewCmd.put("load_all", new LoadMazeAndSol(view,model));
-		ViewCmd.put("save_solutions", new SaveSolutions(view,model));
-		ViewCmd.put("load_solutions", new LoadSolutions(view,model));
-		ViewCmd.put("load_maze", new LoadMazeCMD(view,model));
 		ViewCmd.put("maze_size", new MazeSizeCMD(view,model));
 		ViewCmd.put("file_size", new FileSizeCMD(view,model));
 		ViewCmd.put("solve", new SolveCMD(view,model));
 		ViewCmd.put("display_solution", new DisplaySolutionCMD(view,model));
 		ViewCmd.put("exit", new ExitCMD(view));
 		ViewCmd.put("?", new GetCommandsCMD(ViewCmd , view));
+		
+		/*
+		ViewCmd.put("save_maze", new SaveMazeCMD(view,model));
+		ViewCmd.put("save_solutions", new SaveSolutions(view,model));
+		ViewCmd.put("load_solutions", new LoadSolutions(view,model));
+		ViewCmd.put("load_maze", new LoadMazeCMD(view,model));
+		*/
+		ViewCmd.put("save", new SaveMazeAndSol(view,model));
+		ViewCmd.put("load", new LoadMazeAndSol(view,model));
 		
 		ModelCmd.put("display_msg", new DisplayMessage(view,model));
 	}

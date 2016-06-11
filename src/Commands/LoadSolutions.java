@@ -28,12 +28,8 @@ public class LoadSolutions implements Command{
 	@Override
 	public void doCommand(String [] args) {
 		if (args.length == 1){
-			try {
-				m.LoadSolutionsFromFile();
-			} catch (IOException e) {
-				System.out.println(e.getMessage());
+//			m.LoadSolutionsFromFile();
 			}
-		}
 		else{
 			v.PrintOut("load_solutions\n");
 		}

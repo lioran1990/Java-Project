@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -115,84 +117,25 @@ public class MyModel extends Observable implements Model {
 		setChanged();
 		notifyObservers("display_msg");
 	}
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-	public void SaveSolutionsToFile (String fileName) throws IOException{	
-		OutputStream out = new GZIPOutputStream (new FileOutputStream("./saves/"+fileName+"_sol.gzip"));
-		ArrayList<State> arr;
-		
-		for (Entry<String, Solution> e : solutions.entrySet()){
-			out.write(solutions.size());
-			arr = solutions.get(e.getKey()).getStates();
-			out.write(e.getKey().length());
-			out.write(e.getKey().getBytes());
-			out.write(arr.size() * 3);
-			for (State state : arr) {
-				out.write(state.getCurrentState().charAt(1));
-				out.flush();
-				out.write(state.getCurrentState().charAt(3));
-				out.flush();
-				out.write(state.getCurrentState().charAt(5));
-				out.flush();
-			}
-			out.flush();
-		}
-		out.close();
-		message = "solution for "+fileName+ "saved to file\n";
-		setChanged();
-		notifyObservers("display_msg");
-	}
-	
-	
-	public void LoadSolutionsFromFile () throws FileNotFoundException, IOException{
-		InputStream in = new GZIPInputStream(new FileInputStream("Solutions.gzip"));
-		int sizeOfSolutions = 0;
-		byte [] b = new byte [4];
-		byte [] name;
-		byte [] bytestate;
-		
-		sizeOfSolutions = in.read();
-		for (int i = 0; i < sizeOfSolutions; i++) {
-			// read solution name like omri_dfs
-			name = new byte [b[0]];
-			in.read(name, 0, b[0]);
-			String str = new String(name);
-			// read the whole solution
-			in.read(b,0,1);
-			bytestate = new byte [b[0]];
-			in.read(bytestate, 0, b[0]);
-			str = new String (bytestate);
-		}
-
-		
-		message = "solutions loaded \n";
-		setChanged();
-		notifyObservers("display_msg");
-	}
-	//////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	public void Solve (String name , String algo){
 		if (mazes.get(name) != null){
 			Maze3dAdapter mazeAdapter = new Maze3dAdapter(mazes.get(name));	
-			if (!(solutions.containsKey((name+"_"+algo).toLowerCase()))){
 				switch (algo){
 				case "dfs":
 				case "DFS":
-					solutions.put(name+"_dfs", new DFS().search(mazeAdapter));
+					solutions.put(name, new DFS().search(mazeAdapter));
 					break;
 				case "bfs":
 				case "BFS":
-					solutions.put(name+"_bfs", new BestFS().search(mazeAdapter));
+					solutions.put(name, new BestFS().search(mazeAdapter));
 					break;			
 				case "breadthfs":
 				case "BREADTHFS":
-					solutions.put(name+"_breadthfs", new BreadthFS().search(mazeAdapter));
+					solutions.put(name, new BreadthFS().search(mazeAdapter));
 					break;
 				}
 				message="Solution created!\n";
-			}
-			else{
-				message = algo + " solution for " + name + " maze is already exist!\n";
-			}
 		}
 		else{
 			message= "Couldn't find maze!\n";
@@ -201,73 +144,7 @@ public class MyModel extends Observable implements Model {
 		notifyObservers("display_msg");
 	}
 	
-	
-	public void saveToFile (String name, String fileName){
-		if (mazes.get(name) != null){
-			try{
-				OutputStream out = new MyCompressorOutputStream(new FileOutputStream("./saves/"+fileName+"_maze.maz"));
-				try{
-					out.write(mazes.get(name).toByteArray());
-					this.SaveSolutionsToFile(fileName);
-					out.flush();
-					out.close();
-					message= "Maze compressed and saved to " + fileName + "\n";
-				}
-				catch(IOException e){
-					message= "Loading Failed : Couldn't read the file 0x01\n"+e.getMessage()+"\n";
-				}
-			}
-			catch(FileNotFoundException e){
-				message= "Loading Failed : File Not Found 0x01\n"+e.getMessage()+"\n";
-			}
-		}
-		else{
-			message= "Couldn't find maze by name!\n";
-		}
-		setChanged();
-		notifyObservers("display_msg");
-	}
-	
-	public void loadFromFile (String fileName, String name){
-			byte [] b = new byte [3];
-			InputStream in = null;
-			Maze3d maze = null;
-			
-			try {
-				in = new FileInputStream(fileName);
-			} 
-			catch (FileNotFoundException e2) {
-				message= "Loading Failed : File Not Found 0x01\n";
-			}
-			try {
-				in.read(b, 0, 3);
-				int size = (b[0] * b[1] * b[2]) + 9;
-				b = null;
-				b = new byte [size];
-				in.close();
-			} 
-			catch (IOException e2) {
-				message=  "Loading Failed : Couldn't read the file 0x01\n";
-			}
-			try {
-				in = new MyCompressorInputStream(new FileInputStream(fileName));
-			} catch (FileNotFoundException e1) {
-				message= "Loading Failed : File Not Found 0x02\n";
-			}
-			try {
-				in.read(b);
-				maze = new Maze3d(b);
-				mazes.put(name, maze);
-				in.close();
-				message=  "Maze Loaded Succefully!\n";
-			} 
-			catch (IOException e) {
-				message=  "Loading Failed : Couldn't read the file 0x02\n";
-			}
-			setChanged();
-			notifyObservers("display_msg");
-	}
-	
+
 	public void Maze_Mem_Size (String name){
 		if (mazes.get(name) != null){
 			Maze3d maze = mazes.get(name);
@@ -336,6 +213,156 @@ public class MyModel extends Observable implements Model {
 ///////////*****************************************************************************/////////////////////
 	
 	public void saveToFile_ser (String name, String fileName){
+		ObjectOutputStream oos = null;
+		if (mazes.get(name) != null){
+			
+			try {
+				oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream("./saves/"+fileName+".maz")));
+				try {
+					oos.writeObject(name);
+					oos.writeObject(mazes.get(name));
+					message = "Maze saved!";
+					if (solutions.get(name) != null){
+						try {
+							oos.writeObject(solutions.get(name));
+						} catch (IOException e) {
+							message = "Couldn't save solution to file\n" + e.getMessage() + "\n";
+						}
+						message = "Maze and Solution saved!";
+					}
+				} catch (IOException e1) {
+					message = "Couldn't save maze to file\n" + e1.getMessage() + "\n";
+				}
+			} catch (FileNotFoundException e2) {
+				message = "Couldn't create save file\n" + e2.getMessage() + "\n";
+			} catch (IOException e2) {
+				message = "Couldn't save to file\n" + e2.getMessage() + "\n";
+			}
+			
+			try {
+				oos.close();
+			} catch (IOException e1) {
+				message = "Couldn't close the file\n" + e1.getMessage() + "\n";
+			}		
+			setChanged();
+			notifyObservers("display_msg");
+		}
+	}
+	
+	public void loadFromFile_ser (String fileName){
+		ObjectInputStream ois = null;
+		String tmpName = null;
+		Maze3d tmpMaze3d = null;
+		Solution tmpSolution = null;
+		
+		
+		try {
+			ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream("./saves/"+fileName+".maz")));
+			try {
+				tmpName = (String) ois.readObject();
+				try {
+					tmpMaze3d = (Maze3d) ois.readObject();
+					mazes.put(tmpName, new Maze3d(tmpMaze3d));
+					message = "Maze " + tmpName + " Loaded successfuly\n";
+					try {
+						tmpSolution = (Solution) ois.readObject();
+						solutions.put(tmpName, new Solution(tmpSolution));
+						message = "Maze and Solution" + tmpName + " Loaded successfuly\n";
+						try {
+							ois.close();
+						} catch (IOException e) {
+							message = "Couldn't close the file " + e.getMessage() + "\n";
+						}
+					} catch (ClassNotFoundException e) {
+						message = e.getMessage() + "\n";
+					} catch (IOException e) {
+						message = "Maze "+tmpName+" loaded \nbut Couldn't read Solution "+e.getMessage() + "\n";
+					}
+				} catch (ClassNotFoundException e) {
+					message = e.getMessage() + "\n";
+				} catch (IOException e) {
+					message = "Couldn't read Maze from file " +e.getMessage() + "\n";
+				}
+			} catch (ClassNotFoundException e) {
+				message = e.getMessage() + "\n";
+			}		
+		} catch (FileNotFoundException e3) {
+			message = "Couldn't find file specified \n" +e3.getMessage() + "\n";
+		} catch (IOException e3) {
+			message = "Couldn't read from file "+e3.getMessage() + "\n";
+		}	
+		setChanged();
+		notifyObservers("display_msg");
+	}
+	
+/////////*****************************************************************************/////////////////////
+
+	
+	
+	
+	
+	
+	
+	/*	RELEVANT FO ASSIGNMENT 3 ONLY!
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	public void SaveSolutionsToFile (String fileName) throws IOException{	
+		OutputStream out = new GZIPOutputStream (new FileOutputStream("./saves/"+fileName+"_sol.gzip"));
+		ArrayList<State> arr;
+		
+		for (Entry<String, Solution> e : solutions.entrySet()){
+			out.write(solutions.size());
+			arr = solutions.get(e.getKey()).getStates();
+			out.write(e.getKey().length());
+			out.write(e.getKey().getBytes());
+			out.write(arr.size() * 3);
+			for (State state : arr) {
+				out.write(state.getCurrentState().charAt(1));
+				out.flush();
+				out.write(state.getCurrentState().charAt(3));
+				out.flush();
+				out.write(state.getCurrentState().charAt(5));
+				out.flush();
+			}
+			out.flush();
+		}
+		out.close();
+		message = "solution for "+fileName+ "saved to file\n";
+		setChanged();
+		notifyObservers("display_msg");
+	}
+	
+	
+	public void LoadSolutionsFromFile () throws FileNotFoundException, IOException{
+		InputStream in = new GZIPInputStream(new FileInputStream("Solutions.gzip"));
+		int sizeOfSolutions = 0;
+		byte [] b = new byte [4];
+		byte [] name;
+		byte [] bytestate;
+		
+		sizeOfSolutions = in.read();
+		for (int i = 0; i < sizeOfSolutions; i++) {
+			// read solution name like omri_dfs
+			name = new byte [b[0]];
+			in.read(name, 0, b[0]);
+			String str = new String(name);
+			// read the whole solution
+			in.read(b,0,1);
+			bytestate = new byte [b[0]];
+			in.read(bytestate, 0, b[0]);
+			str = new String (bytestate);
+		}
+
+		
+		message = "solutions loaded \n";
+		setChanged();
+		notifyObservers("display_msg");
+	}
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	
+
+	
+	
+	public void saveToFile (String name, String fileName){
 		if (mazes.get(name) != null){
 			try{
 				OutputStream out = new MyCompressorOutputStream(new FileOutputStream("./saves/"+fileName+"_maze.maz"));
@@ -361,7 +388,7 @@ public class MyModel extends Observable implements Model {
 		notifyObservers("display_msg");
 	}
 	
-	public void loadFromFile_ser (String fileName, String name){
+	public void loadFromFile (String fileName, String name){
 			byte [] b = new byte [3];
 			InputStream in = null;
 			Maze3d maze = null;
@@ -400,8 +427,7 @@ public class MyModel extends Observable implements Model {
 			setChanged();
 			notifyObservers("display_msg");
 	}
-	
-/////////*****************************************************************************/////////////////////
-	
+	//////////////////////////////////////////////////////////////////////////////
+	 */
 	
 }

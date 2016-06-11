@@ -1,8 +1,5 @@
 package Commands;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import View.View;
 import model.Model;
 
@@ -28,18 +25,11 @@ public class LoadMazeAndSol implements Command {
 	/**This command saves the MAZE3D object to local hard drive.*/
 	@Override
 	public void doCommand(String [] args) {
-		if (args.length == 3){
-			m.loadFromFile(args[1], args[2]);
-			try {
-				m.LoadSolutionsFromFile();
-			} catch (FileNotFoundException e) {
-				System.out.println(e.getLocalizedMessage());
-			} catch (IOException e) {
-				System.out.println(e.getMessage());
-			}
+		if (args.length == 2){
+			m.loadFromFile_ser(args[1]);
 		}
 		else{
-			v.PrintOut("save_maze [(String) name] [(String)fileName.maz]\n");
+			v.PrintOut("load [(String) name] [(String)fileName]\n");
 		}
 
 	}

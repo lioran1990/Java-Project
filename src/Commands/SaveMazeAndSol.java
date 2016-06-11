@@ -1,7 +1,5 @@
 package Commands;
 
-import java.io.IOException;
-
 import View.View;
 import model.Model;
 
@@ -27,15 +25,10 @@ public class SaveMazeAndSol implements Command{
 	@Override
 	public void doCommand(String [] args) {
 		if (args.length == 3){
-			m.saveToFile(args[1], args[2]);
-			try {
-				m.SaveSolutionsToFile(args[2]);
-			} catch (IOException e) {
-				System.out.println(e.getMessage());
-			}
+			m.saveToFile_ser(args[1], args[2]);
 		}
 		else{
-			v.PrintOut("save_maze [(String) name] [(String)fileName.maz]\n");
+			v.PrintOut("save [(String) name] [(String)fileName]\n");
 		}
 
 	}
