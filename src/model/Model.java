@@ -20,7 +20,7 @@ public interface Model {
 	public void Display_Sol(String string);
 	public void getCrossSection(String string, int parseInt, String string2);
 	public void getMaze3d(String string);
-	public void SaveSolutionsToFile () throws IOException;
+	public void SaveSolutionsToFile (String fileName) throws IOException;
 	public void LoadSolutionsFromFile () throws FileNotFoundException, IOException;
 	public String getPendingMessage ();
 

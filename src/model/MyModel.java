@@ -116,17 +116,17 @@ public class MyModel extends Observable implements Model {
 		notifyObservers("display_msg");
 	}
 	//////////////////////////////////////////////////////////////////////////////////////////////////
-	public void SaveSolutionsToFile () throws IOException{	
-		OutputStream out = new GZIPOutputStream (new FileOutputStream("Solutions.gzip"));
+	public void SaveSolutionsToFile (String fileName) throws IOException{	
+		OutputStream out = new GZIPOutputStream (new FileOutputStream("./saves/"+fileName+"_sol.gzip"));
 		ArrayList<State> arr;
 		
 		for (Entry<String, Solution> e : solutions.entrySet()){
+			out.write(solutions.size());
 			arr = solutions.get(e.getKey()).getStates();
 			out.write(e.getKey().length());
 			out.write(e.getKey().getBytes());
 			out.write(arr.size() * 3);
 			for (State state : arr) {
-				System.out.println(state);
 				out.write(state.getCurrentState().charAt(1));
 				out.flush();
 				out.write(state.getCurrentState().charAt(3));
@@ -134,32 +134,35 @@ public class MyModel extends Observable implements Model {
 				out.write(state.getCurrentState().charAt(5));
 				out.flush();
 			}
-			out.write((byte)'|');
 			out.flush();
 		}
 		out.close();
-		message = "solutions saved to file\n";
+		message = "solution for "+fileName+ "saved to file\n";
 		setChanged();
 		notifyObservers("display_msg");
 	}
 	
+	
 	public void LoadSolutionsFromFile () throws FileNotFoundException, IOException{
 		InputStream in = new GZIPInputStream(new FileInputStream("Solutions.gzip"));
-		byte [] b = new byte [1];
+		int sizeOfSolutions = 0;
+		byte [] b = new byte [4];
 		byte [] name;
 		byte [] bytestate;
 		
-		in.read(b, 0, 1);
-		name = new byte [b[0]];
-		in.read(name, 0, b[0]);
-		String str = new String(name);
-		System.out.println(str);
-		
-		in.read(b,0,1);
-		bytestate = new byte [b[0]];
-		in.read(bytestate, 0, b[0]);
-		str = new String (bytestate);
-		System.out.println(str);
+		sizeOfSolutions = in.read();
+		for (int i = 0; i < sizeOfSolutions; i++) {
+			// read solution name like omri_dfs
+			name = new byte [b[0]];
+			in.read(name, 0, b[0]);
+			String str = new String(name);
+			// read the whole solution
+			in.read(b,0,1);
+			bytestate = new byte [b[0]];
+			in.read(bytestate, 0, b[0]);
+			str = new String (bytestate);
+		}
+
 		
 		message = "solutions loaded \n";
 		setChanged();
@@ -202,19 +205,20 @@ public class MyModel extends Observable implements Model {
 	public void saveToFile (String name, String fileName){
 		if (mazes.get(name) != null){
 			try{
-				OutputStream out = new MyCompressorOutputStream(new FileOutputStream(fileName));
+				OutputStream out = new MyCompressorOutputStream(new FileOutputStream("./saves/"+fileName+"_maze.maz"));
 				try{
 					out.write(mazes.get(name).toByteArray());
+					this.SaveSolutionsToFile(fileName);
 					out.flush();
 					out.close();
 					message= "Maze compressed and saved to " + fileName + "\n";
 				}
 				catch(IOException e){
-					message= "Loading Failed : Couldn't read the file 0x01\n";
+					message= "Loading Failed : Couldn't read the file 0x01\n"+e.getMessage()+"\n";
 				}
 			}
 			catch(FileNotFoundException e){
-				message= "Loading Failed : File Not Found 0x01\n";
+				message= "Loading Failed : File Not Found 0x01\n"+e.getMessage()+"\n";
 			}
 		}
 		else{
@@ -328,6 +332,76 @@ public class MyModel extends Observable implements Model {
 		
 	}
 	
+	
+///////////*****************************************************************************/////////////////////
+	
+	public void saveToFile_ser (String name, String fileName){
+		if (mazes.get(name) != null){
+			try{
+				OutputStream out = new MyCompressorOutputStream(new FileOutputStream("./saves/"+fileName+"_maze.maz"));
+				try{
+					out.write(mazes.get(name).toByteArray());
+					this.SaveSolutionsToFile(fileName);
+					out.flush();
+					out.close();
+					message= "Maze compressed and saved to " + fileName + "\n";
+				}
+				catch(IOException e){
+					message= "Loading Failed : Couldn't read the file 0x01\n"+e.getMessage()+"\n";
+				}
+			}
+			catch(FileNotFoundException e){
+				message= "Loading Failed : File Not Found 0x01\n"+e.getMessage()+"\n";
+			}
+		}
+		else{
+			message= "Couldn't find maze by name!\n";
+		}
+		setChanged();
+		notifyObservers("display_msg");
+	}
+	
+	public void loadFromFile_ser (String fileName, String name){
+			byte [] b = new byte [3];
+			InputStream in = null;
+			Maze3d maze = null;
+			
+			try {
+				in = new FileInputStream(fileName);
+			} 
+			catch (FileNotFoundException e2) {
+				message= "Loading Failed : File Not Found 0x01\n";
+			}
+			try {
+				in.read(b, 0, 3);
+				int size = (b[0] * b[1] * b[2]) + 9;
+				b = null;
+				b = new byte [size];
+				in.close();
+			} 
+			catch (IOException e2) {
+				message=  "Loading Failed : Couldn't read the file 0x01\n";
+			}
+			try {
+				in = new MyCompressorInputStream(new FileInputStream(fileName));
+			} catch (FileNotFoundException e1) {
+				message= "Loading Failed : File Not Found 0x02\n";
+			}
+			try {
+				in.read(b);
+				maze = new Maze3d(b);
+				mazes.put(name, maze);
+				in.close();
+				message=  "Maze Loaded Succefully!\n";
+			} 
+			catch (IOException e) {
+				message=  "Loading Failed : Couldn't read the file 0x02\n";
+			}
+			setChanged();
+			notifyObservers("display_msg");
+	}
+	
+/////////*****************************************************************************/////////////////////
 	
 	
 }
