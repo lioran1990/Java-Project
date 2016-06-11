@@ -222,14 +222,14 @@ public class MyModel extends Observable implements Model {
 				try {
 					oos.writeObject(name);
 					oos.writeObject(mazes.get(name));
-					message = "Maze saved!";
+					message = "Maze saved! \nBut no solution saved. \n";
 					if (solutions.get(name) != null){
 						try {
 							oos.writeObject(solutions.get(name));
+							message = "Maze and Solution saved!";
 						} catch (IOException e) {
 							message = "Couldn't save solution to file\n" + e.getMessage() + "\n";
-						}
-						message = "Maze and Solution saved!";
+						}	
 					}
 				} catch (IOException e1) {
 					message = "Couldn't save maze to file\n" + e1.getMessage() + "\n";
@@ -268,16 +268,11 @@ public class MyModel extends Observable implements Model {
 					try {
 						tmpSolution = (Solution) ois.readObject();
 						solutions.put(tmpName, new Solution(tmpSolution));
-						message = "Maze and Solution" + tmpName + " Loaded successfuly\n";
-						try {
-							ois.close();
-						} catch (IOException e) {
-							message = "Couldn't close the file " + e.getMessage() + "\n";
-						}
+						message = "Maze and Solution " + tmpName + " Loaded successfuly\n";
 					} catch (ClassNotFoundException e) {
 						message = e.getMessage() + "\n";
 					} catch (IOException e) {
-						message = "Maze "+tmpName+" loaded \nbut Couldn't read Solution "+e.getMessage() + "\n";
+						message = "Maze "+tmpName+" loaded \nBut Couldn't read Solution "+e.getMessage() + "\n";
 					}
 				} catch (ClassNotFoundException e) {
 					message = e.getMessage() + "\n";
@@ -292,6 +287,13 @@ public class MyModel extends Observable implements Model {
 		} catch (IOException e3) {
 			message = "Couldn't read from file "+e3.getMessage() + "\n";
 		}	
+		
+		try {
+			ois.close();
+		} catch (IOException e) {
+			message = "Couldn't close the file " + e.getMessage() + "\n";
+		}
+		
 		setChanged();
 		notifyObservers("display_msg");
 	}
