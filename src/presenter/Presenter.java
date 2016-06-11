@@ -20,6 +20,7 @@ import Commands.GetCommandsCMD;
 import Commands.LoadMazeAndSol;
 import Commands.LoadMazeCMD;
 import Commands.LoadSolutions;
+import Commands.MazeFiles;
 import Commands.MazeSizeCMD;
 import Commands.SaveMazeAndSol;
 import Commands.SaveMazeCMD;
@@ -57,6 +58,7 @@ public class Presenter extends Observable implements Observer{
 		ViewCmd.put("display_solution", new DisplaySolutionCMD(view,model));
 		ViewCmd.put("exit", new ExitCMD(view));
 		ViewCmd.put("?", new GetCommandsCMD(ViewCmd , view));
+		ViewCmd.put("show_files", new MazeFiles(view , model));
 		
 		/*
 		ViewCmd.put("save_maze", new SaveMazeCMD(view,model));

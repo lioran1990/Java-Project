@@ -1,5 +1,6 @@
 package model;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -293,6 +294,21 @@ public class MyModel extends Observable implements Model {
 		}	
 		setChanged();
 		notifyObservers("display_msg");
+	}
+	
+	public void getMazeFiles (){
+		File folder = new File("./saves");
+		File[] listOfFiles = folder.listFiles();
+		StringBuilder sb = new StringBuilder();
+		
+		    for (int i = 0; i < listOfFiles.length; i++) {
+		      if (listOfFiles[i].isFile()) {
+		    	  sb.append(listOfFiles[i].getName()+"\n");
+		      } 
+		    }
+	    message = sb.toString();
+	    setChanged();
+		notifyObservers("display_msg"); 
 	}
 	
 /////////*****************************************************************************/////////////////////

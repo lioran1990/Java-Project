@@ -22,6 +22,8 @@ public interface Model {
 	
 	public void saveToFile_ser (String name, String fileName);
 	public void loadFromFile_ser (String fileName);
+	public void getMazeFiles ();
+	
 	/*
 	public void saveToFile(String string, String string2);
 	public void loadFromFile(String string, String string2);
