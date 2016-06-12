@@ -5,6 +5,13 @@ import java.io.PrintWriter;
 import java.util.Observable;
 import java.util.Observer;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
 
 /**<h1>MyView</h1>
 * The MyView class.
@@ -17,6 +24,7 @@ public class MyView extends Observable implements View, Observer{
 
 
 	CLI cli;
+	Board b;
 	private BufferedReader reader;
 	private PrintWriter writer;
 	
@@ -25,6 +33,8 @@ public class MyView extends Observable implements View, Observer{
 		this.writer = writer;
 		cli = new CLI(reader, writer);
 		cli.addObserver(this);
+		b = new Board();
+	
 	}
 	
 	@Override
@@ -34,7 +44,8 @@ public class MyView extends Observable implements View, Observer{
 			@Override
 			public void run() {
 				try {
-					cli.start();
+					//cli.start();
+					b.start();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
