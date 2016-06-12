@@ -5,13 +5,6 @@ import java.io.PrintWriter;
 import java.util.Observable;
 import java.util.Observer;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-
 
 /**<h1>MyView</h1>
 * The MyView class.
@@ -24,7 +17,7 @@ public class MyView extends Observable implements View, Observer{
 
 
 	CLI cli;
-	Board b;
+	GameBoard b;
 	private BufferedReader reader;
 	private PrintWriter writer;
 	
@@ -33,28 +26,42 @@ public class MyView extends Observable implements View, Observer{
 		this.writer = writer;
 		cli = new CLI(reader, writer);
 		cli.addObserver(this);
-		b = new Board();
-	
 	}
 	
 	@Override
 	public void start() throws Exception {
-		Thread run = new Thread (new Runnable() {
-			
+		
+		/*
+		Thread cliThread = new Thread (new Runnable() {		
 			@Override
 			public void run() {
 				try {
-					//cli.start();
-					b.start();
+					cli.start();
 				} catch (Exception e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-				
+				}				
+			}
+		});
+		*/
+		Thread boardThread = new Thread (new Runnable() {			
+			@Override
+			public void run() {
+
+				try {
+					b= new GameBoard();
+					b.runme();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}				
 			}
 		});
 		
-		run.join();		
-		run.start();
+		//cliThread.join();		
+		//cliThread.start();
+		boardThread.join();		
+		boardThread.start();
 	}
 	
 	public void PrintOut (String str){

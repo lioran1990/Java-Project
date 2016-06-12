@@ -5,7 +5,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 import View.MyView;
-import XML.xmlbuilder;
 import model.MyModel;
 import presenter.Presenter;
 
@@ -29,7 +28,7 @@ public class Run {
 		view.addObserver(presenter);
 		model.addObserver(presenter);  
 		
-		xmlbuilder xml = new xmlbuilder();
+		
 	}
 
 }
