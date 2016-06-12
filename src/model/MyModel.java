@@ -17,6 +17,8 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import MazeAdapters.Maze3dAdapter;
+import MazeSettings.*;
+import MazeSettings.ReadXmlFile;
 import algorithms.io.MyCompressorInputStream;
 import algorithms.io.MyCompressorOutputStream;
 import algorithms.mazeGenerator.Directions;
@@ -210,6 +212,24 @@ public class MyModel extends Observable implements Model {
 		
 	}
 	
+		public void getSettings()
+		{
+			String [] settings = new String [3];
+			ReadXmlFile readxml = new ReadXmlFile();
+			for (int i = 0; i < settings.length; i++) {
+				settings [i]= readxml.read()[i];
+				System.out.println(settings [i]);
+			}
+		}
+		
+		//This function modifying the XML file with the parameters recived from the user
+		public void setSettings(String [] param)
+		{
+			ModifyXmlFile modifyxml= new ModifyXmlFile();
+			modifyxml.ModifyXmlFile(param);
+			
+		}
+	
 	
 ///////////*****************************************************************************/////////////////////
 	
@@ -312,6 +332,8 @@ public class MyModel extends Observable implements Model {
 	    setChanged();
 		notifyObservers("display_msg"); 
 	}
+
+	
 	
 /////////*****************************************************************************/////////////////////
 

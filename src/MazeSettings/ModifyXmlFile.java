@@ -17,7 +17,9 @@ import org.w3c.dom.NodeList;
 
 public class ModifyXmlFile {
 	
-	public void modify(String [] param){
+	
+	
+	public void ModifyXmlFile(String [] param){
 
 		 try {
 		      File inputFile = new File(".\\xml\\testxml.xml"); 	    	

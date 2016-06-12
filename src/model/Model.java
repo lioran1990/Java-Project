@@ -19,10 +19,12 @@ public interface Model {
 	public void getCrossSection(String string, int parseInt, String string2);
 	public void getMaze3d(String string);	
 	public String getPendingMessage ();
-	
+	public void getSettings();
+	public void setSettings(String [] param);
 	public void saveToFile_ser (String name, String fileName);
 	public void loadFromFile_ser (String fileName);
 	public void getMazeFiles ();
+	
 	
 	/*
 	public void saveToFile(String string, String string2);
