@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import java.util.Observable;
 import java.util.Observer;
 
+import GUI.GameView;
+
 
 /**<h1>MyView</h1>
 * The MyView class.
@@ -26,6 +28,8 @@ public class MyView extends Observable implements View, Observer{
 		this.writer = writer;
 		cli = new CLI(reader, writer);
 		cli.addObserver(this);
+		
+		
 	}
 	
 	@Override
@@ -49,8 +53,8 @@ public class MyView extends Observable implements View, Observer{
 			public void run() {
 
 				try {
-					b= new GameBoard();
-					b.runme();
+					//b= new GameBoard();
+					//b.runme();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

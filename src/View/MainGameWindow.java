@@ -1,9 +1,11 @@
 package View;
 
+import java.util.Observable;
+
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-public abstract class MainGameWindow {
+public abstract class MainGameWindow extends Observable{
 
 	protected Display display;
 	protected Shell shell;
