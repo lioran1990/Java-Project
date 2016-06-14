@@ -1,4 +1,4 @@
-package View;
+package GUI;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -24,9 +24,27 @@ public class GameBoard  extends MainGameWindow{
 	MenuItem gameExitItem, gameSaveItem , gameLoadItem , gameNewGameItem; 
 	MenuItem helpGetHelpItem , helpAboutItem;
 	Label label;
+	MazeBoard mb;
 	
 	public GameBoard() {
 		// TODO Auto-generated constructor stub
+	}
+	
+	public void setMazedata (int [][] maze2d){
+		mb = new MazeBoard(shell, SWT.BORDER,maze2d);
+		mb.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		mb.redraw();		
+		shell.redraw();	
+	}
+	
+	public void generateMaze (){
+		setChanged();
+		notifyObservers("generate_3d_maze omri 10 10 10");
+	}
+	
+	public void getCrosssec(){
+		setChanged();
+		notifyObservers("display_cross_section x 1 omri");
 	}
 	
 
@@ -71,15 +89,59 @@ public class GameBoard  extends MainGameWindow{
 
 	    gameExitItem.addSelectionListener(new gameExitItemListener());
 	    gameSaveItem.addSelectionListener(new gameSaveItemListener());
-	    gameLoadItem.addSelectionListener (new gameLoadItemListener());
-	    gameNewGameItem.addSelectionListener(new gameNewGameItemListener());
+	    gameLoadItem.addSelectionListener (new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				getCrosssec();
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	    gameNewGameItem.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				generateMaze();
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	    helpGetHelpItem.addSelectionListener(new helpGetHelpItemListener());
-	    helpAboutItem.addSelectionListener(new helpAboutItemListiner());
+	    
+	    helpAboutItem.addSelectionListener(new SelectionListener() {
+			
+	    	@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				MessageBox dialog = 
+	    		new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK| SWT.CANCEL);
+	    		dialog.setText("About");
+	    		dialog.setMessage("All right reserved. Omri Haviv & Lior Ran 2016© ");
+	    		dialog.open();
+			}
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				MessageBox dialog = 
+	    		new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK| SWT.CANCEL);
+	    		dialog.setText("About");
+	    		dialog.setMessage("All right reserved. Omri Haviv & Lior Ran 2016© ");
+	    		dialog.open();
+			}
+		});
 	    
 	    shell.setMenuBar(menuBar);
 	    
-	    MazeBoard mb = new MazeBoard(shell, SWT.BORDER);
-	    mb.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2));
+	   
 		/*
 		b1 = new Button(shell, SWT.PUSH);
 		b1.setText("φεψ ξαεκ");
@@ -152,26 +214,8 @@ public class GameBoard  extends MainGameWindow{
 	    }
 	  }
 	  
-	  class helpAboutItemListiner implements SelectionListener{
 
-		@Override
-		public void widgetDefaultSelected(SelectionEvent arg0) {
-			MessageBox dialog = 
-    		new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK| SWT.CANCEL);
-    		dialog.setText("About");
-    		dialog.setMessage("All right reserved. Omri Haviv & Lior Ran 2016© ");
-    		dialog.open();
-		}
 
-		@Override
-		public void widgetSelected(SelectionEvent arg0) {
-			MessageBox dialog = 
-    		new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK| SWT.CANCEL);
-    		dialog.setText("About");
-    		dialog.setMessage("All right reserved. Omri Haviv & Lior Ran 2016© ");
-    		dialog.open();
-		}
-		  
-	  }
+
 	
 }

@@ -42,6 +42,7 @@ public class MyModel extends Observable implements Model {
 	private HashMap<String , Solution> solutions = new HashMap<String , Solution>();
 	Maze3d maze;
 	String message;
+	int [][] maze2d = null;
 	
 	public MyModel() {
 		
@@ -82,7 +83,7 @@ public class MyModel extends Observable implements Model {
 	}
 	
 	public void getCrossSection (String axis, int index , String name){
-		int [][] maze2d = null;
+		
 		StringBuilder sb = new StringBuilder();
 		if (mazes.get(name) != null){
 			Maze3d maze = mazes.get(name);
@@ -102,23 +103,34 @@ public class MyModel extends Observable implements Model {
 					break;
 				default :
 					message="Wrong Coordinate, only X/Y/Z accepted\n";
+					setChanged();
+					notifyObservers("display_msg");
 					break;
-			}	
+			}
+			
+			
+			for (int i = 0; i < maze2d.length; i++) {
+				for (int j = 0; j < maze2d[0].length; j++) {
+					sb.append((((Integer)maze2d[i][j]).toString() + " "));
+				}
+				sb.append("\n");
+			}
 			
 		}
 		else{
 			message = "Couldn't find maze by name!\n"; 
+			setChanged();
+			notifyObservers("display_msg");
 		}
 		
-		for (int i = 0; i < maze2d.length; i++) {
-			for (int j = 0; j < maze2d[0].length; j++) {
-				sb.append((((Integer)maze2d[i][j]).toString() + " "));
-			}
-			sb.append("\n");
-		}
+		
 		message = sb.toString();
 		setChanged();
-		notifyObservers("display_msg");
+		notifyObservers("getMazeData");
+	}
+	
+	public int [][] getMaze2dData (){	
+		return maze2d;	
 	}
 	
 	public void Solve (String name , String algo){

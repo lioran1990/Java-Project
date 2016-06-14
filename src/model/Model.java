@@ -24,6 +24,7 @@ public interface Model {
 	public void saveToFile_ser (String name, String fileName);
 	public void loadFromFile_ser (String fileName);
 	public void getMazeFiles ();
+	public int [][] getMaze2dData ();
 	
 	
 	/*

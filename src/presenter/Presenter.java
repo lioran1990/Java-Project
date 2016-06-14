@@ -24,6 +24,7 @@ import Commands.MazeSizeCMD;
 import Commands.SaveMazeAndSol;
 import Commands.SetSettings;
 import Commands.SolveCMD;
+import Commands.getMaze2dData;
 import View.View;
 import model.Model;
 
@@ -71,6 +72,7 @@ public class Presenter extends Observable implements Observer{
 		ViewCmd.put("load", new LoadMazeAndSol(view,model));
 		
 		ModelCmd.put("display_msg", new DisplayMessage(view,model));
+		ModelCmd.put("getMazeData", new getMaze2dData(view,model));
 	}
 
 	@Override

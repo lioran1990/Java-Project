@@ -1,9 +1,11 @@
-package View;
+package GUI;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.util.Observable;
 import java.util.Observer;
+
+import View.View;
 
 
 /**<h1>MyView</h1>
@@ -13,57 +15,39 @@ import java.util.Observer;
 * @version 1.0
 * @since May 21,2016
 */
-public class MyView extends Observable implements View, Observer{
+public class MyGUIView extends Observable implements View, Observer{
 
-
-	CLI cli;
+	GameBoard gb;
 	private BufferedReader reader;
 	private PrintWriter writer;
 	
-	public MyView(BufferedReader reader ,PrintWriter writer) throws Exception {
+	public MyGUIView(BufferedReader reader ,PrintWriter writer) throws Exception {
 		this.reader = reader;
 		this.writer = writer;
-		cli = new CLI(reader, writer);
-		cli.addObserver(this);
+		gb= new GameBoard();
+		gb.addObserver(this);
 	}
 	
 	@Override
 	public void start() throws Exception {
-		
-		Thread cliThread = new Thread (new Runnable() {		
-			@Override
-			public void run() {
-				try {
-					cli.start();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}				
-			}
-		});
-		
-		cliThread.join();		
-		cliThread.start();
+		gb.run();
 	}
 	
 	public void PrintOut (String str){
 		writer.write(str);
 		writer.flush();
 	}
-
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		if (arg0 == cli){
-			this.setChanged();
-			this.notifyObservers(arg1);	
-		}
-		
+	
+	public void setMaze2dData (int [][] maze2d){
+		gb.setMazedata(maze2d);
 	}
 
 	@Override
-	public void setMaze2dData(int[][] maze2d) {
-		// TODO Auto-generated method stub
-		
+	public void update(Observable arg0, Object arg1) {
+		if (arg0 == gb){
+			this.setChanged();
+			this.notifyObservers(arg1);	
+		}
 	}
 
 }

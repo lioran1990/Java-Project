@@ -1,11 +1,11 @@
-package View;
+package GUI;
 
 import java.util.Observable;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-public abstract class MainGameWindow extends Observable{
+public abstract class MainGameWindow extends Observable implements Runnable{
 
 	protected Display display;
 	protected Shell shell;
@@ -17,7 +17,11 @@ public abstract class MainGameWindow extends Observable{
 		shell = new Shell(display);		
 	}
 	
-	public void runme() {
+	protected abstract void initWidgets();
+	
+	
+	@Override
+	public void run() {
 		initWidgets();
 		shell.open();
 		 while(!shell.isDisposed()){
@@ -26,9 +30,7 @@ public abstract class MainGameWindow extends Observable{
 		    }
 		 }
 		 display.dispose();
-	}	
-	
-	protected abstract void initWidgets();
-	
+		
+	}
 	
 }
