@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import View.View;
+import presenter.Presenter;
 
 /** <h1>GetCommandsCMD</h1>
  * The GET command class.
@@ -15,11 +16,9 @@ import View.View;
  */
 public class GetCommandsCMD implements Command {
 
-	/** The commands. */
-	private HashMap<String, Command> commands;
-	
-	/** The v. */
+
 	private View v;
+	private Presenter p;
 	
 	/**
 	 * Instantiates a new gets the commands cmd.
@@ -27,9 +26,9 @@ public class GetCommandsCMD implements Command {
 	 * @param commands the commands
 	 * @param v the v
 	 */
-	public GetCommandsCMD(HashMap<String, Command> commands , View v) {
-		this.commands = commands;
+	public GetCommandsCMD(HashMap<String, Command> commands , Presenter p,View v) {
 		this.v = v;
+		this.p = p;
 	}
 	/**
 	 * This command will show the user the available commands
@@ -37,7 +36,7 @@ public class GetCommandsCMD implements Command {
 	@Override
 	public void doCommand(String[] args) {
 
-		for (Entry<String, Command> e : commands.entrySet()){
+		for (Entry<String, Command> e : p.getCommands().entrySet()){
 			v.PrintOut(e.getKey());
 			v.PrintOut("\n");
 		}

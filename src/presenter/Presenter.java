@@ -43,6 +43,10 @@ public class Presenter extends Observable implements Observer{
 		exs = Executors.newFixedThreadPool(threads);
 	}
 	
+	public HashMap<String, Command> getCommands (){
+		return ViewCmd;
+	}
+	
 	public void setCommands (){
 		ViewCmd = new HashMap<String, Command>();
 		ModelCmd = new HashMap<String, Command>();
@@ -56,7 +60,7 @@ public class Presenter extends Observable implements Observer{
 		ViewCmd.put("solve", new SolveCMD(view,model));
 		ViewCmd.put("display_solution", new DisplaySolutionCMD(view,model));
 		ViewCmd.put("exit", new ExitCMD(view));
-		ViewCmd.put("?", new GetCommandsCMD(ViewCmd , view));
+		ViewCmd.put("?", new GetCommandsCMD(ViewCmd , this,view));
 		ViewCmd.put("show_files", new MazeFiles(view , model));
 		ViewCmd.put("show_settings", new GetSettings(view , model));
 		ViewCmd.put("set_settings", new SetSettings(view , model));

@@ -8,38 +8,16 @@ import org.eclipse.swt.widgets.Display;
 
 public class MazeBoard extends Composite {
 
-	// just as a stub...
-	/*
-	int[][] mazeData={
-				{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-				{1,0,0,0,0,0,0,0,1,1,0,1,0,0,1},
-				{0,0,1,1,1,1,1,0,0,1,0,1,0,1,1},
-				{1,1,1,0,0,0,1,0,1,1,0,1,0,0,1},
-				{1,0,1,0,1,1,1,0,0,0,0,1,1,0,1},
-				{1,1,0,0,0,1,0,0,1,1,1,1,0,0,1},
-				{1,0,0,1,0,0,1,0,0,0,0,1,0,1,1},
-				{1,0,1,1,0,1,1,0,1,1,0,0,0,1,1},
-				{1,0,0,0,0,0,0,0,0,1,0,1,0,0,1},
-				{1,1,1,1,1,1,1,1,1,1,1,1,0,1,1},
-			};
-	*/
 	int[][] mazeData = null;
 	public int characterX=0;
 	public int characterY=2;
 	public int exitX=0;
 	public int exitY=2;
 	
-	
-	
-	public MazeBoard(Composite parent, int style ,int [][] maze2d) {
-		super(parent, style);
-		
+	public void setMazeData (int [][] maze2d){
 		mazeData = new int [maze2d.length][maze2d[0].length];
 		mazeData = maze2d;
-		final Color white=new Color(null, 255, 255, 255);
-		final Color black=new Color(null, 150,150,150);
-		setBackground(white);
-				
+		
 		addPaintListener(new PaintListener() {
 			
 			@Override
@@ -77,9 +55,16 @@ public class MazeBoard extends Composite {
 				   }
 				
 			}
-		});
-		
-		
+		});	
+	}
+	
+	public MazeBoard(Composite parent, int style ) {
+		super(parent, style);	
+		final Color white=new Color(null, 255, 255, 255);
+		final Color black=new Color(null, 150,150,150);
+		setBackground(white);
+		this.redraw();
+	
 		/*
 		 
 	 	addPaintListener(new PaintListener() {

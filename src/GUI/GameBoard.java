@@ -27,12 +27,11 @@ public class GameBoard  extends MainGameWindow{
 	MazeBoard mb;
 	
 	public GameBoard() {
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 	public void setMazedata (int [][] maze2d){
-		mb = new MazeBoard(shell, SWT.BORDER,maze2d);
-		mb.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		mb.setMazeData(maze2d);
 		mb.redraw();		
 		shell.redraw();	
 	}
@@ -54,6 +53,10 @@ public class GameBoard  extends MainGameWindow{
 		shell.setSize(400, 300);
 		shell.setText("My Maze Game!!!");
 	
+		
+		mb = new MazeBoard(shell, SWT.BORDER);
+		mb.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		
 		label = new Label(shell, SWT.CENTER);
 	    label.setBounds(shell.getClientArea());
 	    menuBar = new Menu(shell, SWT.BAR);
@@ -140,6 +143,9 @@ public class GameBoard  extends MainGameWindow{
 		});
 	    
 	    shell.setMenuBar(menuBar);
+	    
+	    
+	    
 	    
 	   
 		/*

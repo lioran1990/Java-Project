@@ -20,7 +20,7 @@ public class Run {
 		PrintWriter writer = new PrintWriter(System.out);
 
 		try {
-			view = new MyView(reader, writer);
+			//view = new MyView(reader, writer);
 			mgv = new MyGUIView(reader, writer);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -31,8 +31,9 @@ public class Run {
 		//view.addObserver(presenter);
 		model.addObserver(presenter);
 		
+		
 		try {
-			//view.start();
+		//	view.start();
 			mgv.start();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
