@@ -14,23 +14,26 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 
 import algorithms.mazeGenerator.Maze3d;
+import algorithms.search.Solution;
 
 public class GameBoard  extends MainGameWindow{
 
 	Button b1;
 	Menu menuBar , gameMenu ,helpMenu;
 	MenuItem gameMenuHeader, helpMenuHeader;
-	MenuItem gameExitItem, gameSaveItem , gameLoadItem , gameNewGameItem; 
+	MenuItem gameExitItem, gameSaveItem , gameLoadItem , gameNewGameItem, gameSolveItem; 
 	MenuItem helpGetHelpItem , helpAboutItem;
-	Label label;
-	MazeBoard mb;
+	Label label,label2;
+	MazeWindow MazeWindow;
+	String mazeName;
+	
 	
 	public GameBoard(String title , int width , int height) {
 		super (title,width,height);
 	}
 	
 	public void setMaze3dData (Maze3d maze){
-		mb.setMazeData(maze);
+		MazeWindow.setMazeData(maze);
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append("");
@@ -38,14 +41,24 @@ public class GameBoard  extends MainGameWindow{
 		String strI = sb.toString();
 		
 		setLabelText(strI);
-		mb.redraw();		
+		MazeWindow.redraw();		
 		shell.redraw();	
 	}
 	
-	public void generateMaze (){
-		setChanged();
-		notifyObservers("generate_3d_maze omri 10 10 10");
+	public void setSolution (Solution sol){
+		MazeWindow.SolveMaze(sol);
 	}
+	
+	public void SolveMaze(String cmd){
+		setChanged();
+		notifyObservers("solve " + mazeName + " " +cmd);
+	}
+	
+	public void generateMaze (String cmd){
+		setChanged();
+		notifyObservers("generate_3d_maze "+cmd);
+	}
+	
 	
 	public void getCrosssec(){
 		setChanged();
@@ -56,18 +69,73 @@ public class GameBoard  extends MainGameWindow{
 		label.setText(str);
 		label.redraw();
 	}
+	
+	public void setLabel2Text (){
+		StringBuilder sb = new StringBuilder();
+		sb.append("");
+		sb.append("Flo:" + MazeWindow.charFlo + ",");
+		sb.append("row:" + MazeWindow.charRow + ",");
+		sb.append("col:" + MazeWindow.charCol);
+		String strI = sb.toString();
+		System.out.println(strI);
+		label2.setText(strI);
+		label2.redraw();
+	}
 
 	@Override
 	protected void initWidgets() {
 		shell.setLayout(new GridLayout(2,false));
 				
-		mb = new MazeBoard(shell, SWT.BORDER);
-		mb.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		MazeWindow = new MazeWindow(shell, SWT.BORDER);
+		MazeWindow.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
+		MazeWindow.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				switch (e.keyCode){
+				case SWT.ARROW_DOWN:
+					MazeWindow.moveDown();
+					System.out.println(MazeWindow.charFlo + "," +MazeWindow.charRow + "," + MazeWindow.charCol);
+					break;
+				case SWT.ARROW_UP:
+					MazeWindow.moveUp();
+					System.out.println(MazeWindow.charFlo + "," +MazeWindow.charRow + "," + MazeWindow.charCol);
+					break;
+				case SWT.ARROW_LEFT:
+					MazeWindow.moveLeft();
+					System.out.println(MazeWindow.charFlo + "," +MazeWindow.charRow + "," + MazeWindow.charCol);
+					break;
+				case SWT.ARROW_RIGHT:
+					MazeWindow.moveRight();
+					System.out.println(MazeWindow.charFlo + "," +MazeWindow.charRow + "," + MazeWindow.charCol);
+					break;
+				case SWT.PAGE_DOWN:
+					MazeWindow.moveFloDown();
+					System.out.println(MazeWindow.charFlo + "," +MazeWindow.charRow + "," + MazeWindow.charCol);
+					break;
+				case SWT.PAGE_UP:
+					MazeWindow.moveFloUp();
+					System.out.println(MazeWindow.charFlo + "," +MazeWindow.charRow + "," + MazeWindow.charCol);
+					break;	
+				}
+			}
+		});
 		
 		label = new Label(shell, SWT.CENTER);
 	    label.setBounds(shell.getClientArea());
 	    label.setText("Floor :");
+	    
+	    label2 = new Label(shell, SWT.LEFT);
+	    label2.setBounds(shell.getClientArea());
+	    label2.setText("Cur Pos");
+	    
 	    
 	    menuBar = new Menu(shell, SWT.BAR);
 	    gameMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
@@ -84,6 +152,9 @@ public class GameBoard  extends MainGameWindow{
 	    gameSaveItem = new MenuItem(gameMenu, SWT.PUSH);
 	    gameSaveItem.setText("Save");
 
+	    gameSolveItem = new MenuItem(gameMenu, SWT.PUSH);
+	    gameSolveItem.setText("Solve");
+	    
 	    gameExitItem = new MenuItem(gameMenu, SWT.PUSH);
 	    gameExitItem.setText("Exit");
 
@@ -99,18 +170,30 @@ public class GameBoard  extends MainGameWindow{
 	    helpGetHelpItem = new MenuItem(helpMenu, SWT.PUSH);
 	    helpGetHelpItem.setText("Help");
 	    
-
-	    
-	 
-	    
-	    
-	    
+  
 	    gameExitItem.addSelectionListener(new gameExitItemListener());
-	    gameSaveItem.addSelectionListener(new SelectionListener() {
+	    //gameSaveItem.addSelectionListener();
+	    gameSolveItem.addSelectionListener(new SelectionListener() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				GenerateWindow gw = new GenerateWindow(shell);
+				SolveWindow sw = new SolveWindow(shell);
+				sw.setListenerSolveBtn(new SelectionListener() {
+					
+					@Override
+					public void widgetSelected(SelectionEvent arg0) {
+						//CHOOSE SOLUTION!!!!!
+						String str = sw.dropDown.getText();
+						SolveMaze(str);
+						sw.solveShell.dispose();
+					}
+					
+					@Override
+					public void widgetDefaultSelected(SelectionEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 				
 			}
 			
@@ -120,6 +203,8 @@ public class GameBoard  extends MainGameWindow{
 				
 			}
 		});
+	    
+	    
 	    gameLoadItem.addSelectionListener (new SelectionListener() {
 			
 			@Override
@@ -135,10 +220,45 @@ public class GameBoard  extends MainGameWindow{
 		});
 	    gameNewGameItem.addSelectionListener(new SelectionListener() {
 			
+	    	
+	    	/// NEEDS TO XOMPLETE ERROR CHECK!!!!
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				generateMaze();
-				
+				GenerateWindow gw = new GenerateWindow(shell);
+				gw.setTriggerOk(new SelectionListener() {
+					
+					@Override
+					public void widgetSelected(SelectionEvent arg0) {
+						MessageBox dialog = 
+			    		new MessageBox(shell, SWT.ICON_ERROR | SWT.OK);
+			    		dialog.setText("Error");
+			    		dialog.setMessage("One or more parameters are invalid");
+						
+						if (gw.nameText.getText().isEmpty()){
+							dialog.open();
+						}
+						else{
+							try{
+								
+								Integer.parseInt(gw.heightText.getText());
+								Integer.parseInt(gw.columnText.getText());
+								Integer.parseInt(gw.rowText.getText());
+								mazeName = gw.nameText.getText() ;
+								generateMaze(gw.nameText.getText() + " " + gw.heightText.getText() + " " + gw.rowText.getText() + " " + gw.columnText.getText());
+								gw.generateshell.dispose();
+							}
+							catch (NumberFormatException e){
+					    		dialog.open();
+							}	
+						}
+								
+					}
+					
+					@Override
+					public void widgetDefaultSelected(SelectionEvent arg0) {
+						
+					}
+				});
 			}
 			
 			@Override
@@ -172,15 +292,7 @@ public class GameBoard  extends MainGameWindow{
 		
 	    shell.setMenuBar(menuBar);
 	    
-	    
-	    
-	    
-	   
-		/*
-		b1 = new Button(shell, SWT.PUSH);
-		b1.setText("цеш обек");
-		b1.setLayoutData(new GridData(SWT.FILL,SWT.TOP,false,true,1,1));
-		*/	
+
 	}
 
 

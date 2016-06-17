@@ -1,1 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><Settings><NumberOfThreads>1111</NumberOfThreads><CreateAlgo>DFS</CreateAlgo><SolveAlgo>BFS</SolveAlgo></Settings>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+	<Settings>
+		<NumberOfThreads>1111</NumberOfThreads>
+		<UserInterface>GUI</UserInterface>
+		<CreateAlgo>DFS</CreateAlgo>
+		<SolveAlgo>BFS</SolveAlgo>
+	</Settings>

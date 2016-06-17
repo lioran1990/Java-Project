@@ -6,6 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import algorithms.mazeGenerator.Maze3d;
+import algorithms.search.Solution;
 
 
 /**<h1>MyView</h1>
@@ -70,6 +71,12 @@ public class MyView extends Observable implements View, Observer{
 
 	@Override
 	public void setMaze3dData(Maze3d maze) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setSolution(Solution arg) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -7,6 +7,7 @@ import java.util.Observer;
 
 import View.View;
 import algorithms.mazeGenerator.Maze3d;
+import algorithms.search.Solution;
 
 
 /**<h1>MyView</h1>
@@ -37,6 +38,10 @@ public class MyGUIView extends Observable implements View, Observer{
 	public void PrintOut (String str){
 		writer.write(str);
 		writer.flush();
+	}
+	
+	public void setSolution(Solution sol){
+		gb.setSolution(sol);
 	}
 	
 	public void setMaze3dData (Maze3d maze){

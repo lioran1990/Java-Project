@@ -1,6 +1,7 @@
 package View;
 
 import algorithms.mazeGenerator.Maze3d;
+import algorithms.search.Solution;
 
 /**<h1>View</h1>
 * The View Interface.
@@ -16,4 +17,6 @@ public interface View {
 	public void PrintOut(String string);
 	public void setMaze2dData (int [][] maze2d);
 	public void setMaze3dData (Maze3d maze);
+
+	public void setSolution(Solution arg);
 }

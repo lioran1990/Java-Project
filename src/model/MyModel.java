@@ -157,7 +157,7 @@ public class MyModel extends Observable implements Model {
 		if (mazes.get(name) != null){
 			Maze3dAdapter mazeAdapter = new Maze3dAdapter(mazes.get(name));
 			FutureTask<Solution> f = new FutureTask<Solution>(new Callable<Solution>() {
-				
+
 				@Override
 				public Solution call() throws Exception {
 					switch (algo){
@@ -178,10 +178,16 @@ public class MyModel extends Observable implements Model {
 				}
 			});
 			exs.execute(f);
-			
+
 			message="Solution created!\n";
-			setChanged();
-			notifyObservers("sendSol");
+			
+			try {
+				setChanged();
+				notifyObservers(f.get());
+			} catch (InterruptedException | ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		else{
 			message= "Couldn't find maze!\n";

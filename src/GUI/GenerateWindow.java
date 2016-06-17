@@ -1,7 +1,11 @@
 package GUI;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -39,7 +43,7 @@ public class GenerateWindow {
 		dimensionLabel.setText("dimension :");
 		heightText = new Text(dialogFieldsGroup, SWT.None);
 		heightText.setLayoutData(new GridData(SWT.NONE, SWT.TOP, false, true, 1, 1));
-
+		
 		Label rowLabel = new Label(dialogFieldsGroup, SWT.NONE);
 		rowLabel.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 1, 1));
 		rowLabel.setText("rows :");
@@ -55,14 +59,13 @@ public class GenerateWindow {
 		generateButton = new Button(dialogFieldsGroup, SWT.PUSH);
 		generateButton.setText("Generate");
 		generateButton.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, true, 1, 1));
+		
 		generateshell.setSize (300, 200);
 		generateshell.open ();
 	}
 
-	public void setTriggerOk(SelectionListener listener)
-	{
+	public void setTriggerOk(SelectionListener listener){
 		generateButton.addSelectionListener(listener);
-		
 	}
 
 }

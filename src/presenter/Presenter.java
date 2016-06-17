@@ -26,6 +26,7 @@ import Commands.SolveCMD;
 import Commands.getMaze2dData;
 import View.View;
 import algorithms.mazeGenerator.Maze3d;
+import algorithms.search.Solution;
 import model.Model;
 
 public class Presenter extends Observable implements Observer{
@@ -85,7 +86,13 @@ public class Presenter extends Observable implements Observer{
 			if (arg.getClass().getName()== "algorithms.mazeGenerator.Maze3d"){
 				view.PrintOut(((Maze3d)arg).toString());
 				view.setMaze3dData((Maze3d)arg);
+				
 			}
+			else if (arg.getClass().getName()== "algorithms.search.Solution"){
+				view.setSolution((Solution)arg);
+			}
+			
+			
 			else{
 				Command cmd = ModelCmd.get((String)arg);			
 				cmd.doCommand(null);
