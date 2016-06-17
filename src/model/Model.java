@@ -3,6 +3,8 @@ package model;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import algorithms.mazeGenerator.Maze3d;
+
 /**<h1>Model</h1>
  * The Model Interface.
  * Model is responsable to all of the data calculating.
@@ -25,6 +27,7 @@ public interface Model {
 	public void loadFromFile_ser (String fileName);
 	public void getMazeFiles ();
 	public int [][] getMaze2dData ();
+	public Maze3d getMaze3dData (String name);
 	
 	
 	/*

@@ -13,7 +13,7 @@ public class Run {
 
 	public static void main(String[] args) {
 		
-		MyModel model = new MyModel();
+		MyModel model = new MyModel(2);
 		MyView view = null;
 		MyGUIView mgv = null;
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

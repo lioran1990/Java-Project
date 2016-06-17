@@ -6,6 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import View.View;
+import algorithms.mazeGenerator.Maze3d;
 
 
 /**<h1>MyView</h1>
@@ -24,7 +25,7 @@ public class MyGUIView extends Observable implements View, Observer{
 	public MyGUIView(BufferedReader reader ,PrintWriter writer) throws Exception {
 		this.reader = reader;
 		this.writer = writer;
-		gb= new GameBoard();
+		gb= new GameBoard("my maze game" , 500, 500);
 		gb.addObserver(this);
 	}
 	
@@ -38,8 +39,12 @@ public class MyGUIView extends Observable implements View, Observer{
 		writer.flush();
 	}
 	
+	public void setMaze3dData (Maze3d maze){
+		gb.setMaze3dData(maze);
+	}
+	
 	public void setMaze2dData (int [][] maze2d){
-		gb.setMazedata(maze2d);
+		//gb.setMazedata(maze2d);
 	}
 
 	@Override

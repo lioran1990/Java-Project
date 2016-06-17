@@ -5,22 +5,25 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.Observable;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import MazeAdapters.Maze3dAdapter;
-import MazeSettings.*;
+import MazeSettings.ModifyXmlFile;
 import MazeSettings.ReadXmlFile;
-import algorithms.io.MyCompressorInputStream;
-import algorithms.io.MyCompressorOutputStream;
 import algorithms.mazeGenerator.Directions;
 import algorithms.mazeGenerator.Maze3d;
 import algorithms.mazeGenerator.MyMaze3dGenerator;
@@ -28,7 +31,6 @@ import algorithms.search.BestFS;
 import algorithms.search.BreadthFS;
 import algorithms.search.DFS;
 import algorithms.search.Solution;
-import domain.State;
 /**<h1>MyModel</h1>
 * The MyModel class.
 * MyModel is responsable to all of the data calculating such as Solving a maze, save\load etc.
@@ -43,20 +45,33 @@ public class MyModel extends Observable implements Model {
 	Maze3d maze;
 	String message;
 	int [][] maze2d = null;
+	ExecutorService exs;
 	
-	public MyModel() {
-		
+	public MyModel(int numThreads) {
+		exs = Executors.newFixedThreadPool(numThreads);
 	}
 	
 	public void generateMaze(String name , int flos, int rows , int cols){
 		MyMaze3dGenerator mg = new MyMaze3dGenerator();
 		maze = mazes.get(name);
-		if (maze == null){
-			maze = mg.generate(flos, rows, cols);		
+		if (maze == null){			
+			FutureTask<Maze3d> f = new FutureTask<Maze3d>(new Callable<Maze3d>() {
+				
+				@Override
+				public Maze3d call() throws Exception {		
+					return mg.generate(flos, rows, cols);
+				}	 
+			});
+			exs.execute(f);
+			try {
+				maze = f.get();				
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}		
 			mazes.put(name, maze);
 			setChanged();
 			message = "Maze: " + name +" Generated succesfully!\n";
-			notifyObservers("display_msg");
+			notifyObservers(maze);
 		}
 		else{
 			message = "This name already exists!\n";
@@ -82,6 +97,11 @@ public class MyModel extends Observable implements Model {
 		}		
 	}
 	
+	@Override
+	public Maze3d getMaze3dData(String name) {
+		return mazes.get(name);
+	}
+
 	public void getCrossSection (String axis, int index , String name){
 		
 		StringBuilder sb = new StringBuilder();
@@ -135,28 +155,40 @@ public class MyModel extends Observable implements Model {
 	
 	public void Solve (String name , String algo){
 		if (mazes.get(name) != null){
-			Maze3dAdapter mazeAdapter = new Maze3dAdapter(mazes.get(name));	
-				switch (algo){
-				case "dfs":
-				case "DFS":
-					solutions.put(name, new DFS().search(mazeAdapter));
-					break;
-				case "bfs":
-				case "BFS":
-					solutions.put(name, new BestFS().search(mazeAdapter));
-					break;			
-				case "breadthfs":
-				case "BREADTHFS":
-					solutions.put(name, new BreadthFS().search(mazeAdapter));
-					break;
+			Maze3dAdapter mazeAdapter = new Maze3dAdapter(mazes.get(name));
+			FutureTask<Solution> f = new FutureTask<Solution>(new Callable<Solution>() {
+				
+				@Override
+				public Solution call() throws Exception {
+					switch (algo){
+					case "dfs":
+					case "DFS":
+						solutions.put(name, new DFS().search(mazeAdapter));
+						break;
+					case "bfs":
+					case "BFS":
+						solutions.put(name, new BestFS().search(mazeAdapter));
+						break;			
+					case "breadthfs":
+					case "BREADTHFS":
+						solutions.put(name, new BreadthFS().search(mazeAdapter));
+						break;
+					}
+					return solutions.get(name);
 				}
-				message="Solution created!\n";
+			});
+			exs.execute(f);
+			
+			message="Solution created!\n";
+			setChanged();
+			notifyObservers("sendSol");
 		}
 		else{
 			message= "Couldn't find maze!\n";
+			setChanged();
+			notifyObservers("display_msg");
 		}
-		setChanged();
-		notifyObservers("display_msg");
+	
 	}
 	
 
@@ -344,6 +376,10 @@ public class MyModel extends Observable implements Model {
 	    setChanged();
 		notifyObservers("display_msg"); 
 	}
+
+
+
+	
 
 	
 	

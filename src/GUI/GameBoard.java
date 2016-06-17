@@ -1,20 +1,19 @@
 package GUI;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
+
+import algorithms.mazeGenerator.Maze3d;
 
 public class GameBoard  extends MainGameWindow{
 
@@ -26,12 +25,19 @@ public class GameBoard  extends MainGameWindow{
 	Label label;
 	MazeBoard mb;
 	
-	public GameBoard() {
-		
+	public GameBoard(String title , int width , int height) {
+		super (title,width,height);
 	}
 	
-	public void setMazedata (int [][] maze2d){
-		mb.setMazeData(maze2d);
+	public void setMaze3dData (Maze3d maze){
+		mb.setMazeData(maze);
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("");
+		sb.append((maze.getStartPosition()).toString());
+		String strI = sb.toString();
+		
+		setLabelText(strI);
 		mb.redraw();		
 		shell.redraw();	
 	}
@@ -46,19 +52,23 @@ public class GameBoard  extends MainGameWindow{
 		notifyObservers("display_cross_section x 1 omri");
 	}
 	
+	public void setLabelText (String str){
+		label.setText(str);
+		label.redraw();
+	}
 
 	@Override
 	protected void initWidgets() {
 		shell.setLayout(new GridLayout(2,false));
-		shell.setSize(400, 300);
-		shell.setText("My Maze Game!!!");
-	
-		
+				
 		mb = new MazeBoard(shell, SWT.BORDER);
 		mb.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
+		
 		label = new Label(shell, SWT.CENTER);
 	    label.setBounds(shell.getClientArea());
+	    label.setText("Floor :");
+	    
 	    menuBar = new Menu(shell, SWT.BAR);
 	    gameMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
 	    gameMenuHeader.setText("Game");
@@ -70,7 +80,7 @@ public class GameBoard  extends MainGameWindow{
 	    
 	    gameLoadItem = new MenuItem(gameMenu, SWT.PUSH);
 	    gameLoadItem.setText("Load");
-  
+
 	    gameSaveItem = new MenuItem(gameMenu, SWT.PUSH);
 	    gameSaveItem.setText("Save");
 
@@ -90,13 +100,31 @@ public class GameBoard  extends MainGameWindow{
 	    helpGetHelpItem.setText("Help");
 	    
 
+	    
+	 
+	    
+	    
+	    
 	    gameExitItem.addSelectionListener(new gameExitItemListener());
-	    gameSaveItem.addSelectionListener(new gameSaveItemListener());
+	    gameSaveItem.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				GenerateWindow gw = new GenerateWindow(shell);
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	    gameLoadItem.addSelectionListener (new SelectionListener() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				getCrosssec();
+				
 			}
 			
 			@Override
@@ -141,7 +169,7 @@ public class GameBoard  extends MainGameWindow{
 	    		dialog.open();
 			}
 		});
-	    
+		
 	    shell.setMenuBar(menuBar);
 	    
 	    
@@ -191,12 +219,12 @@ public class GameBoard  extends MainGameWindow{
 	class gameExitItemListener implements SelectionListener {
 	    public void widgetSelected(SelectionEvent event) {
 	      shell.close();
-	      display.dispose();
+	     // display.dispose();
 	    }
 
 	    public void widgetDefaultSelected(SelectionEvent event) {
 	      shell.close();
-	      display.dispose();
+	    //  display.dispose();
 	    }
 	  }
 

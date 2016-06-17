@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import java.util.Observable;
 import java.util.Observer;
 
+import algorithms.mazeGenerator.Maze3d;
+
 
 /**<h1>MyView</h1>
 * The MyView class.
@@ -62,6 +64,12 @@ public class MyView extends Observable implements View, Observer{
 
 	@Override
 	public void setMaze2dData(int[][] maze2d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setMaze3dData(Maze3d maze) {
 		// TODO Auto-generated method stub
 		
 	}

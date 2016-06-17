@@ -1,5 +1,7 @@
 package Commands;
 
+import java.util.concurrent.Callable;
+
 import View.View;
 import model.Model;
 
@@ -37,13 +39,13 @@ public class Generate3DMazeCMD implements Command{
 	public void doCommand(String [] args) {
 		if (args.length == 5){
 			String name = args[1];
-				if(isInteger(args[2])){
-					int flos = Integer.parseInt(args[2]);
+			if(isInteger(args[2])){
+				int flos = Integer.parseInt(args[2]);
 				if(isInteger((args[3]))) {
 					int rows = Integer.parseInt(args[3]);
-				if(isInteger(args[4])) {
-					int cols = Integer.parseInt(args[4]);
-					m.generateMaze(name, flos, rows, cols);					
+					if(isInteger(args[4])) {
+						int cols = Integer.parseInt(args[4]);
+						m.generateMaze(name, flos, rows, cols);					
 					}
 				}	
 			}	
@@ -71,5 +73,6 @@ public class Generate3DMazeCMD implements Command{
 	    // only got here if we didn't return false
 	    return true;
 	}
+
 
 }

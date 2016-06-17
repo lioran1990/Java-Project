@@ -12,9 +12,11 @@ public abstract class MainGameWindow extends Observable implements Runnable{
 	
 
 	
-	public MainGameWindow() {
+	public MainGameWindow(String title , int width , int height) {
 		display = new Display();
-		shell = new Shell(display);		
+		shell = new Shell(display);	
+		shell.setSize(width, height);
+		shell.setText(title);
 	}
 	
 	protected abstract void initWidgets();

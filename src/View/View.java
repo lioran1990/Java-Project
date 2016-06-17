@@ -1,5 +1,7 @@
 package View;
 
+import algorithms.mazeGenerator.Maze3d;
+
 /**<h1>View</h1>
 * The View Interface.
 * Each class which implements this interface must override start method.
@@ -13,4 +15,5 @@ public interface View {
 
 	public void PrintOut(String string);
 	public void setMaze2dData (int [][] maze2d);
+	public void setMaze3dData (Maze3d maze);
 }

@@ -3,7 +3,6 @@ package presenter;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -26,6 +25,7 @@ import Commands.SetSettings;
 import Commands.SolveCMD;
 import Commands.getMaze2dData;
 import View.View;
+import algorithms.mazeGenerator.Maze3d;
 import model.Model;
 
 public class Presenter extends Observable implements Observer{
@@ -76,14 +76,20 @@ public class Presenter extends Observable implements Observer{
 		ViewCmd.put("load", new LoadMazeAndSol(view,model));
 		
 		ModelCmd.put("display_msg", new DisplayMessage(view,model));
-		ModelCmd.put("getMazeData", new getMaze2dData(view,model));
+		ModelCmd.put("sendMaze", new getMaze2dData(view,model));
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
 		if (o == model){
-			Command cmd = ModelCmd.get((String)arg);
-			cmd.doCommand(null);
+			if (arg.getClass().getName()== "algorithms.mazeGenerator.Maze3d"){
+				view.PrintOut(((Maze3d)arg).toString());
+				view.setMaze3dData((Maze3d)arg);
+			}
+			else{
+				Command cmd = ModelCmd.get((String)arg);			
+				cmd.doCommand(null);
+			}	
 		}
 		else if (o == view){
 			String Cmdstr = (String)arg;
@@ -93,7 +99,11 @@ public class Presenter extends Observable implements Observer{
 				view.PrintOut("Command Not Found!");
 			}
 			else{
+				tempCmd.doCommand(spliter);
+				/*
 				if (spliter[0].equalsIgnoreCase("generate_3d_maze") || spliter[0].equalsIgnoreCase("solve")){
+					
+					
 					exs.submit(new Callable<Void>() {
 
 						@Override
@@ -107,6 +117,7 @@ public class Presenter extends Observable implements Observer{
 				else{
 					tempCmd.doCommand(spliter);	
 				}
+				*/
 			}
 		}
 	}
