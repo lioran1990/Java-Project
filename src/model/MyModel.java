@@ -97,6 +97,10 @@ public class MyModel extends Observable implements Model {
 		}		
 	}
 	
+	public void HintMe (){
+		
+	}
+	
 	@Override
 	public Maze3d getMaze3dData(String name) {
 		return mazes.get(name);

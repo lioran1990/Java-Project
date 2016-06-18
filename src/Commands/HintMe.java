@@ -3,7 +3,7 @@ package Commands;
 import View.View;
 import model.Model;
 
-public class LoadMazeAndSol implements Command {
+public class HintMe implements Command {
 
 	/** The m. */
 	private Model m;
@@ -17,7 +17,7 @@ public class LoadMazeAndSol implements Command {
 	 * @param v the v
 	 * @param m the m
 	 */
-	public LoadMazeAndSol(View v , Model m) {
+	public HintMe(View v , Model m) {
 		this.m = m;
 		this.v = v;
 	}
@@ -25,11 +25,11 @@ public class LoadMazeAndSol implements Command {
 	/**This command saves the MAZE3D object to local hard drive.*/
 	@Override
 	public void doCommand(String [] args) {
-		if (args.length == 3){
-			m.HintMe();
+		if (args.length == 2){
+			m.loadFromFile_ser(args[1]);
 		}
 		else{
-			v.PrintOut("hint [(String) name] [Location]\n");
+			v.PrintOut("load [(String) name] [(String)fileName]\n");
 		}
 
 	}
