@@ -29,6 +29,7 @@ import algorithms.search.BestFS;
 import algorithms.search.BreadthFS;
 import algorithms.search.DFS;
 import algorithms.search.Solution;
+import domain.State;
 /**<h1>MyModel</h1>
 * The MyModel class.
 * MyModel is responsable to all of the data calculating such as Solving a maze, save\load etc.
@@ -95,10 +96,53 @@ public class MyModel extends Observable implements Model {
 		}		
 	}
 	
-	public void HintMe (String name ){
+	public void HintMe (String name , String sflo , String srow , String scol , String algo){
 		Maze3dAdapter mazeAdapter = new Maze3dAdapter(mazes.get(name));
-		algorithms.mazeGenerator.Position p = new algorithms.mazeGenerator.Position(1,1,1);
-		Maze3dStateAdapter stateAdapter = new Maze3dStateAdapter(p);
+		Maze3dStateAdapter tempCurrState = mazeAdapter.getStartState();
+		int iflo = Integer.parseInt(sflo);
+		int irow = Integer.parseInt(srow);
+		int icol = Integer.parseInt(scol);
+		Position p = new Position(iflo, irow, icol);
+		
+		Maze3dStateAdapter currLocStateAdapter = new Maze3dStateAdapter(p);
+		
+		mazeAdapter.setStartState(currLocStateAdapter);
+		
+		
+		FutureTask<State> f = new FutureTask<State>(new Callable<State>() {
+
+			@Override
+			public State call() throws Exception {
+				switch (algo){
+				case "dfs":
+				case "DFS":
+					solutions.put(name, new DFS().search(mazeAdapter));
+					break;
+				case "bfs":
+				case "BFS":
+					solutions.put(name, new BestFS().search(mazeAdapter));
+					break;			
+				case "breadthfs":
+				case "BREADTHFS":
+					solutions.put(name, new BreadthFS().search(mazeAdapter));
+					break;
+				}
+				return solutions.get(name).getStates().get(0);
+			}
+		});
+		exs.execute(f);
+
+		message="Solution created!\n";
+		
+		try {
+			setChanged();
+			notifyObservers(f.get());
+		} catch (InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 	@Override

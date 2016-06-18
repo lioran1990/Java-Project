@@ -28,7 +28,7 @@ public interface Model {
 	public void getMazeFiles ();
 	public int [][] getMaze2dData ();
 	public Maze3d getMaze3dData (String name);
-	public void HintMe (String name);
+	public void HintMe (String name , String sflo , String srow , String scol ,String algo);
 	
 	/*
 	public void saveToFile(String string, String string2);
