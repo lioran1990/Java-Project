@@ -26,7 +26,7 @@ public class LoadMazeAndSol implements Command {
 	@Override
 	public void doCommand(String [] args) {
 		if (args.length == 3){
-			m.HintMe();
+			m.HintMe(args[1]);
 		}
 		else{
 			v.PrintOut("hint [(String) name] [Location]\n");

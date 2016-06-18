@@ -11,22 +11,20 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import MazeAdapters.Maze3dAdapter;
+import MazeAdapters.Maze3dStateAdapter;
 import MazeSettings.ModifyXmlFile;
 import MazeSettings.ReadXmlFile;
 import algorithms.mazeGenerator.Directions;
 import algorithms.mazeGenerator.Maze3d;
 import algorithms.mazeGenerator.MyMaze3dGenerator;
+import algorithms.mazeGenerator.Position;
 import algorithms.search.BestFS;
 import algorithms.search.BreadthFS;
 import algorithms.search.DFS;
@@ -97,8 +95,10 @@ public class MyModel extends Observable implements Model {
 		}		
 	}
 	
-	public void HintMe (){
-		
+	public void HintMe (String name ){
+		Maze3dAdapter mazeAdapter = new Maze3dAdapter(mazes.get(name));
+		algorithms.mazeGenerator.Position p = new algorithms.mazeGenerator.Position(1,1,1);
+		Maze3dStateAdapter stateAdapter = new Maze3dStateAdapter(p);
 	}
 	
 	@Override
