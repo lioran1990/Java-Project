@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import algorithms.mazeGenerator.Maze3d;
+import presenter.Properties;
 
 /**<h1>Model</h1>
  * The Model Interface.
@@ -29,7 +30,7 @@ public interface Model {
 	public int [][] getMaze2dData ();
 	public Maze3d getMaze3dData (String name);
 	public void HintMe (String name , String sflo , String srow , String scol ,String algo);
-	
+	public void setProperties(Properties p);
 	/*
 	public void saveToFile(String string, String string2);
 	public void loadFromFile(String string, String string2);

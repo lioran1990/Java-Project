@@ -16,7 +16,7 @@ public class Run {
 
 	public static void main(String[] args) {
 		
-		MyModel model = new MyModel(2);
+		MyModel model = null;
 		MyView view = null;
 		MyGUIView mgv = null;
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -37,7 +37,7 @@ public class Run {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}	
-		
+		model = new MyModel(properties.getMaxNumOfThreads());
 		
 		switch (properties.getRuntimeEnv()) {
 		case 0:

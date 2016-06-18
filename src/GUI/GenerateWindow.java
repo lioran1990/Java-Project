@@ -29,7 +29,8 @@ public class GenerateWindow {
 		generateshell = new Shell(shell, SWT.TITLE | SWT.SYSTEM_MODAL | SWT.CLOSE | SWT.MAX);
 		generateshell.setLayout(new GridLayout(1, false));
 		generateshell.setSize(500, 200);
-
+		generateshell.setImage(shell.getImage());
+		
 		generateshell.setBackgroundMode(SWT.INHERIT_FORCE);
 		Device device = Display.getCurrent ();	
 		image1 = new Image(device,".\\Images\\SettingsWindow.jpg");
@@ -55,7 +56,7 @@ public class GenerateWindow {
 		floorLabel.setText("Floors size:");
 		floorLabel.setForeground(white);
 		floDropDown = new Combo(generateshell, SWT.DROP_DOWN | SWT.BORDER_SOLID);
-		String[] ITEMS = { "1", "2", "3", "4", "5", "6","7", "8", "9", "10"  };
+		String[] ITEMS = {"3", "4", "5", "6","7", "8", "9", "10"  };
 		floDropDown.setItems(ITEMS);
 		floDropDown.setForeground(white);
 

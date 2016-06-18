@@ -29,6 +29,7 @@ public class SolveWindow {
 		solveShell = new Shell(shell,SWT.TITLE | SWT.SYSTEM_MODAL | SWT.CLOSE | SWT.MAX );
 		solveShell.setLayout(new GridLayout(2, false));
 		solveShell.setSize(300,150);
+		solveShell.setImage(shell.getImage());
 		Color white = display.getSystemColor(SWT.COLOR_WHITE);
 		
 		solveShell.setBackgroundMode(SWT.INHERIT_FORCE);

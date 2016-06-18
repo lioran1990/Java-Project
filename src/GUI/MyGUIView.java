@@ -28,7 +28,7 @@ public class MyGUIView extends Observable implements View, Observer{
 	public MyGUIView(BufferedReader reader ,PrintWriter writer) throws Exception {
 		this.reader = reader;
 		this.writer = writer;
-		gb= new GameBoard("my maze game" , 500, 500);
+		gb= new GameBoard("Maze3D Game" , 500, 500);
 		gb.addObserver(this);
 	}
 	

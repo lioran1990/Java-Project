@@ -49,6 +49,7 @@ public class Presenter extends Observable implements Observer{
 		this.setCommands();
 		exs = Executors.newFixedThreadPool(threads);
 	
+		model.setProperties(properties);
 		view.setProperties(properties);
 	}
 	
@@ -74,7 +75,7 @@ public class Presenter extends Observable implements Observer{
 		ViewCmd.put("show_settings", new GetSettings(view , model));
 		ViewCmd.put("set_settings", new SetSettings(view , model));
 		ViewCmd.put("hintme", new HintMe(view , model));
-		ViewCmd.put("getproperties", new SetProperties(view));
+		ViewCmd.put("setproperties", new SetProperties(view));
 
 		
 		/*

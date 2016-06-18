@@ -4,6 +4,7 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
 import algorithms.mazeGenerator.Maze3d;
+import algorithms.mazeGenerator.Position;
 
 public abstract class MazeDisplayer extends Canvas{
 
@@ -11,7 +12,7 @@ public abstract class MazeDisplayer extends Canvas{
 	public int charRow;
 	public int charCol;
 	public int charFlo;
-	
+	public Position currentPlayerPos;
 	
 	MazeDisplayer(Composite parent , int style) {
 		super(parent,style);

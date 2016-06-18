@@ -19,8 +19,6 @@ import java.util.zip.GZIPOutputStream;
 
 import MazeAdapters.Maze3dAdapter;
 import MazeAdapters.Maze3dStateAdapter;
-import MazeSettings.ModifyXmlFile;
-import MazeSettings.ReadXmlFile;
 import algorithms.mazeGenerator.Directions;
 import algorithms.mazeGenerator.Maze3d;
 import algorithms.mazeGenerator.MyMaze3dGenerator;
@@ -30,6 +28,8 @@ import algorithms.search.BreadthFS;
 import algorithms.search.DFS;
 import algorithms.search.Solution;
 import domain.State;
+import presenter.Properties;
+import presenter.PropertiesHandler;
 /**<h1>MyModel</h1>
 * The MyModel class.
 * MyModel is responsable to all of the data calculating such as Solving a maze, save\load etc.
@@ -45,6 +45,7 @@ public class MyModel extends Observable implements Model {
 	String message;
 	int [][] maze2d = null;
 	ExecutorService exs;
+	Properties properties;
 	
 	public MyModel(int numThreads) {
 		exs = Executors.newFixedThreadPool(numThreads);
@@ -304,29 +305,63 @@ public class MyModel extends Observable implements Model {
 		notifyObservers("display_msg");
 	}
 	
-	public String Exit (){
-		
-		return null;
-		
+	public String Exit (){		
+		return null;		
 	}
 	
-		public void getSettings()
-		{
-			String [] settings = new String [3];
-			ReadXmlFile readxml = new ReadXmlFile();
-			for (int i = 0; i < settings.length; i++) {
-				settings [i]= readxml.read()[i];
-				System.out.println(settings [i]);
-			}
+	public void setProperties(Properties p){
+		this.properties = p ;
+	}
+	
+	public void getSettings(){
+		StringBuilder sb = new StringBuilder();
+		
+		switch (properties.getSolveAlgorithm()) {
+		case 0:
+			sb.append("DFS\n");
+			break;
+		case 1:
+			sb.append("BFS\n");
+			break;
+		case 2:
+			sb.append("breathfs\n");
+			break;
 		}
 		
-		//This function modifying the XML file with the parameters recived from the user
-		public void setSettings(String [] param)
-		{
-			ModifyXmlFile modifyxml= new ModifyXmlFile();
-			modifyxml.ModifyXmlFile(param);
-			
+		switch (properties.getRuntimeEnv()) {
+		case 0:
+			sb.append("GUI\n");
+			break;
+		case 1:
+			sb.append("CLI\n");
+			break;
 		}
+		
+		switch (properties.getMazeGenerator()) {
+		case 0:
+			sb.append("Simple\n");
+			break;
+		case 1:
+			sb.append("Advanced\n");
+			break;
+		}		
+		message = sb.toString(); 
+		setChanged();
+		notifyObservers("display_msg");
+	}
+	
+	//This function modifying the XML file with the parameters recived from the user
+	public void setSettings(String [] args ){
+		properties.setSolveAlgorithm(Integer.parseInt(args[1]));
+		properties.setRuntimeEnv(Integer.parseInt(args[2]));
+		properties.setMazeGenerator(Integer.parseInt(args[3]));		
+		try {
+			PropertiesHandler.write(properties, ".\\xml\\properties.xml");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	
 ///////////*****************************************************************************/////////////////////
@@ -376,12 +411,14 @@ public class MyModel extends Observable implements Model {
 		
 		
 		try {
-			ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream("./saves/"+Name+".maz")));
+			ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream(".\\saves\\"+Name)));
 			try {
 				tmpName = (String) ois.readObject();
 				try {
 					tmpMaze3d = (Maze3d) ois.readObject();
 					mazes.put(tmpName, new Maze3d(tmpMaze3d));
+					setChanged();
+					notifyObservers(tmpMaze3d);
 					message = "Maze " + tmpName + " Loaded successfuly\n";
 					try {
 						tmpSolution = (Solution) ois.readObject();

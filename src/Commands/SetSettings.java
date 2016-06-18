@@ -28,11 +28,10 @@ public class SetSettings implements Command {
 	@Override
 	public void doCommand(String [] args) {
 		if (args.length == 4){
-			
 			m.setSettings(args);
 		}
 		else{
-			v.PrintOut("set_settings [(String)name] [(DFS/BFS/breadthfs) 0/1/2] [(GUI/CLI) 0/1] [(Simple/Advanced) 0/1] \n");
+			v.PrintOut("set_settings [(DFS/BFS/breadthfs) 0/1/2] [(GUI/CLI) 0/1] [(Simple/Advanced) 0/1] \n");
 		}		
 	}
 }

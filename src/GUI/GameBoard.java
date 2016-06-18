@@ -48,8 +48,8 @@ public class GameBoard extends MainGameWindow {
 		sb.append((maze.getStartPosition()).toString());
 		String strI = sb.toString();
 
-		setLabelText(strI);
 		MazeWindow.redraw();
+		MazeWindow.winner = false;
 		shell.redraw();
 	}
 
@@ -85,15 +85,15 @@ public class GameBoard extends MainGameWindow {
 		setChanged();
 		notifyObservers("save " + mazeName);
 	}
-
-	public void setLabelText(String str) {
-		label.setText(str);
-		label.redraw();
+	
+	public void loadMaze(String file){
+		setChanged();
+		notifyObservers("load " + file);
 	}
 
 	public void saveSetting() {
 		setChanged();
-		notifyObservers("getproperties");
+		notifyObservers("setproperties");
 	}
 
 	public Properties getProperties() {
@@ -143,35 +143,37 @@ public class GameBoard extends MainGameWindow {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				switch (e.keyCode) {
-				case SWT.ARROW_DOWN:
-					MazeWindow.moveDown();
-					System.out.println(MazeWindow.charFlo + "," + MazeWindow.charRow + "," + MazeWindow.charCol);
-					break;
-				case SWT.ARROW_UP:
-					MazeWindow.moveUp();
-					System.out.println(MazeWindow.charFlo + "," + MazeWindow.charRow + "," + MazeWindow.charCol);
-					break;
-				case SWT.ARROW_LEFT:
-					MazeWindow.moveLeft();
-					System.out.println(MazeWindow.charFlo + "," + MazeWindow.charRow + "," + MazeWindow.charCol);
-					break;
-				case SWT.ARROW_RIGHT:
-					MazeWindow.moveRight();
-					System.out.println(MazeWindow.charFlo + "," + MazeWindow.charRow + "," + MazeWindow.charCol);
-					break;
-				case SWT.PAGE_DOWN:
-					MazeWindow.moveFloDown();
-					System.out.println(MazeWindow.charFlo + "," + MazeWindow.charRow + "," + MazeWindow.charCol);
-					break;
-				case SWT.PAGE_UP:
-					MazeWindow.moveFloUp();
-					System.out.println(MazeWindow.charFlo + "," + MazeWindow.charRow + "," + MazeWindow.charCol);
-					break;
+				if (MazeWindow.winner == false){
+					switch (e.keyCode) {
+					case SWT.ARROW_DOWN:
+						MazeWindow.moveDown();
+						System.out.println(MazeWindow.charFlo + "," + MazeWindow.charRow + "," + MazeWindow.charCol);
+						break;
+					case SWT.ARROW_UP:
+						MazeWindow.moveUp();
+						System.out.println(MazeWindow.charFlo + "," + MazeWindow.charRow + "," + MazeWindow.charCol);
+						break;
+					case SWT.ARROW_LEFT:
+						MazeWindow.moveLeft();
+						System.out.println(MazeWindow.charFlo + "," + MazeWindow.charRow + "," + MazeWindow.charCol);
+						break;
+					case SWT.ARROW_RIGHT:
+						MazeWindow.moveRight();
+						System.out.println(MazeWindow.charFlo + "," + MazeWindow.charRow + "," + MazeWindow.charCol);
+						break;
+					case SWT.PAGE_DOWN:
+						MazeWindow.moveFloDown();
+						System.out.println(MazeWindow.charFlo + "," + MazeWindow.charRow + "," + MazeWindow.charCol);
+						break;
+					case SWT.PAGE_UP:
+						MazeWindow.moveFloUp();
+						System.out.println(MazeWindow.charFlo + "," + MazeWindow.charRow + "," + MazeWindow.charCol);
+						break;
+					}
 				}
 			}
 		});
-
+				
 		menuBar = new Menu(shell, SWT.BAR);
 		gameMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
 		gameMenuHeader.setText("Game");
@@ -187,6 +189,7 @@ public class GameBoard extends MainGameWindow {
 
 		gameHintItem = new MenuItem(gameMenu, SWT.PUSH);
 		gameHintItem.setText("Hint");
+		gameHintItem.setEnabled(false);
 
 		gameLoadItem = new MenuItem(gameMenu, SWT.PUSH);
 		gameLoadItem.setText("Load");
@@ -351,7 +354,22 @@ public class GameBoard extends MainGameWindow {
 			public void widgetSelected(SelectionEvent arg0) {
 				getMazeFilesList();
 				LoadMazeWindow lmw = new LoadMazeWindow(shell, display,dialogStr);
-				lmw.mazeList.addMouseListener(new MouseListener() {
+				lmw.setloadMazeBtnListener(new SelectionListener() {
+					
+					@Override
+					public void widgetSelected(SelectionEvent arg0) {
+						loadMaze(lmw.mazeList.getText());	
+						lmw.loadMazeShell.dispose();
+					}
+					
+					@Override
+					public void widgetDefaultSelected(SelectionEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+				
+				lmw.setMazeListListener(new MouseListener() {
 					
 					@Override
 					public void mouseUp(MouseEvent arg0) {
@@ -367,8 +385,8 @@ public class GameBoard extends MainGameWindow {
 					
 					@Override
 					public void mouseDoubleClick(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
+						loadMaze(lmw.mazeList.getText());
+						lmw.loadMazeShell.dispose();
 					}
 				});
 			}
@@ -398,14 +416,15 @@ public class GameBoard extends MainGameWindow {
 						} else {
 							try {
 								StringBuilder sb = new StringBuilder();
-								sb.append(gw.floDropDown.getSelectionIndex() + 1 + " ");
-								sb.append(gw.rowDropDown.getSelectionIndex() + 1 + " ");
-								sb.append(gw.colDropDown.getSelectionIndex() + 1 + " ");
+								sb.append(gw.floDropDown.getText()+ " ");
+								sb.append(gw.rowDropDown.getText()+ " ");
+								sb.append(gw.colDropDown.getText()+ " ");
 								mazeName = gw.nameText.getText();
 								generateMaze(gw.nameText.getText() + " " + sb);
 								gw.generateshell.dispose();
 								gameSolveItem.setEnabled(true);
 								gameSaveItem.setEnabled(true);
+								gameHintItem.setEnabled(true);
 							} catch (NumberFormatException e) {
 								dialog.open();
 							}

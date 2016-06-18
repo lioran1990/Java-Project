@@ -4,7 +4,7 @@
   <void property="maxNumOfThreads">
    <int>2</int>
   </void>
-  <void id="Integer0" property="mazeGenerator"/>
+  <void id="Integer0" property="runtimeEnv"/>
   <void property="solveAlgorithm">
    <object idref="Integer0"/>
   </void>

@@ -34,7 +34,7 @@ public class SettingsWindow {
 	public SettingsWindow(Shell shell,Display display, Properties p) {
 		this.display= display;
 		settingsShell = shell;
-		//this.properties= properties;
+		
 		Device device = Display.getCurrent ();		
 		Font font1 = new Font(display, "Tahoma", 12, SWT.BOLD);
 		
@@ -42,6 +42,7 @@ public class SettingsWindow {
 		
 
 		settingsShell = new Shell(shell, SWT.TITLE | SWT.SYSTEM_MODAL | SWT.CLOSE | SWT.MAX );
+		settingsShell.setImage(shell.getImage());
 		settingsShell.setLayout(new GridLayout(1, false));
 		settingsShell.setSize(240, 300);
 		settingsShell.setText("Settings");
