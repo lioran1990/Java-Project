@@ -55,7 +55,7 @@ public class GenerateWindow {
 		floorLabel.setFont(new org.eclipse.swt.graphics.Font(null, "Tahoma", 10, SWT.BOLD ));
 		floorLabel.setText("Floors size:");
 		floorLabel.setForeground(white);
-		floDropDown = new Combo(generateshell, SWT.DROP_DOWN | SWT.BORDER_SOLID);
+		floDropDown = new Combo(generateshell, SWT.DROP_DOWN  | SWT.READ_ONLY);
 		String[] ITEMS = {"3", "4", "5", "6","7", "8", "9", "10"  };
 		floDropDown.setItems(ITEMS);
 		floDropDown.setForeground(white);
@@ -64,7 +64,7 @@ public class GenerateWindow {
 		Label rowLabel = new Label(generateshell, SWT.BORDER_SOLID);
 		rowLabel.setFont(new org.eclipse.swt.graphics.Font(null, "Tahoma", 10, SWT.BOLD ));
 		rowLabel.setText("Rows size:");
-		rowDropDown = new Combo(generateshell, SWT.DROP_DOWN | SWT.BORDER);
+		rowDropDown = new Combo(generateshell, SWT.DROP_DOWN | SWT.READ_ONLY);
 		rowDropDown.setForeground(white);
 		rowDropDown.setItems(ITEMS);
 		rowLabel.setForeground(white);
@@ -74,7 +74,7 @@ public class GenerateWindow {
 		ColumnLabel.setFont(new org.eclipse.swt.graphics.Font(null, "Tahoma", 10, SWT.BOLD ));
 		ColumnLabel.setText("Columns size:");
 		ColumnLabel.setForeground(white);
-		colDropDown = new Combo(generateshell, SWT.DROP_DOWN | SWT.BORDER);
+		colDropDown = new Combo(generateshell, SWT.DROP_DOWN  | SWT.READ_ONLY);
 		colDropDown.setForeground(white);
 		colDropDown.setItems(ITEMS);
 	
