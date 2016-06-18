@@ -21,7 +21,7 @@ public class GameBoard  extends MainGameWindow{
 	Button b1;
 	Menu menuBar , gameMenu ,helpMenu;
 	MenuItem gameMenuHeader, helpMenuHeader;
-	MenuItem gameExitItem, gameSaveItem , gameLoadItem , gameNewGameItem, gameSolveItem; 
+	MenuItem gameExitItem, gameSaveItem , gameLoadItem , gameNewGameItem, gameSolveItem , gameSettingsItem , gameHintItem; 
 	MenuItem helpGetHelpItem , helpAboutItem;
 	Label label,label2;
 	MazeWindow MazeWindow;
@@ -59,6 +59,9 @@ public class GameBoard  extends MainGameWindow{
 		notifyObservers("generate_3d_maze "+cmd);
 	}
 	
+	public void HintMe (){
+		
+	}
 	
 	public void getCrosssec(){
 		setChanged();
@@ -146,14 +149,20 @@ public class GameBoard  extends MainGameWindow{
 	    gameNewGameItem = new MenuItem(gameMenu, SWT.PUSH);
 	    gameNewGameItem.setText("New Game");
 	    
+	    gameSolveItem = new MenuItem(gameMenu, SWT.PUSH);
+	    gameSolveItem.setText("Solve");
+	    
+	    gameHintItem = new MenuItem(gameMenu, SWT.PUSH);
+	    gameHintItem.setText("Hint");
+	    
 	    gameLoadItem = new MenuItem(gameMenu, SWT.PUSH);
 	    gameLoadItem.setText("Load");
 
 	    gameSaveItem = new MenuItem(gameMenu, SWT.PUSH);
 	    gameSaveItem.setText("Save");
 
-	    gameSolveItem = new MenuItem(gameMenu, SWT.PUSH);
-	    gameSolveItem.setText("Solve");
+	    gameSettingsItem = new MenuItem(gameMenu , SWT.PUSH);
+	    gameSettingsItem.setText("Settings");
 	    
 	    gameExitItem = new MenuItem(gameMenu, SWT.PUSH);
 	    gameExitItem.setText("Exit");
@@ -171,6 +180,55 @@ public class GameBoard  extends MainGameWindow{
 	    helpGetHelpItem.setText("Help");
 	    
   
+	    
+	    gameHintItem.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	    
+	    gameSettingsItem.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				SettingsWindow sw = new SettingsWindow(shell);
+				sw.settingsShell.open();
+				sw.setSaveSettingsBtnListener(new SelectionListener() {
+					
+					@Override
+					public void widgetSelected(SelectionEvent arg0) {
+						MessageBox dialog = 
+					    		new MessageBox(shell, SWT.ICON_ERROR | SWT.OK);
+					    		dialog.setText("Error");
+					    		dialog.setMessage("asdasd");
+					    		dialog.open();
+					}
+					
+					@Override
+					public void widgetDefaultSelected(SelectionEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	    
 	    gameExitItem.addSelectionListener(new gameExitItemListener());
 	    //gameSaveItem.addSelectionListener();
 	    gameSolveItem.addSelectionListener(new SelectionListener() {
