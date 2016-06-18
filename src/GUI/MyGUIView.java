@@ -51,6 +51,7 @@ public class MyGUIView extends Observable implements View, Observer{
 	}
 	
 	public void PrintOut (String str){
+		gb.opendialog (str);
 		writer.write(str);
 		writer.flush();
 	}

@@ -331,12 +331,12 @@ public class MyModel extends Observable implements Model {
 	
 ///////////*****************************************************************************/////////////////////
 	
-	public void saveToFile_ser (String name, String fileName){
+	public void saveToFile_ser (String name){
 		ObjectOutputStream oos = null;
 		if (mazes.get(name) != null){
 			
 			try {
-				oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream("./saves/"+fileName+".maz")));
+				oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream("./saves/"+name+".maz")));
 				try {
 					oos.writeObject(name);
 					oos.writeObject(mazes.get(name));
@@ -368,7 +368,7 @@ public class MyModel extends Observable implements Model {
 		}
 	}
 	
-	public void loadFromFile_ser (String fileName){
+	public void loadFromFile_ser (String Name){
 		ObjectInputStream ois = null;
 		String tmpName = null;
 		Maze3d tmpMaze3d = null;
@@ -376,7 +376,7 @@ public class MyModel extends Observable implements Model {
 		
 		
 		try {
-			ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream("./saves/"+fileName+".maz")));
+			ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream("./saves/"+Name+".maz")));
 			try {
 				tmpName = (String) ois.readObject();
 				try {

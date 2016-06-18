@@ -57,7 +57,7 @@ public class SolveWindow {
 		solveButton.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, true, 2, 2));
 		
 		solveShell.open();	
-		//solveShell.pack();
+		solveShell.pack();
 	}
 	
 	public void setListenerSolveBtn(SelectionListener listener) {

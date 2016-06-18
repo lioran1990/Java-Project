@@ -23,8 +23,8 @@ public interface Model {
 	public String getPendingMessage ();
 	public void getSettings();
 	public void setSettings(String [] param);
-	public void saveToFile_ser (String name, String fileName);
-	public void loadFromFile_ser (String fileName);
+	public void saveToFile_ser (String name);
+	public void loadFromFile_ser (String Name);
 	public void getMazeFiles ();
 	public int [][] getMaze2dData ();
 	public Maze3d getMaze3dData (String name);

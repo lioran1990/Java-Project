@@ -24,11 +24,11 @@ public class SaveMazeAndSol implements Command{
 	/**This command saves the MAZE3D object to local hard drive.*/
 	@Override
 	public void doCommand(String [] args) {
-		if (args.length == 3){
-			m.saveToFile_ser(args[1], args[2]);
+		if (args.length == 2){
+			m.saveToFile_ser(args[1]);
 		}
 		else{
-			v.PrintOut("save [(String) name] [(String)fileName]\n");
+			v.PrintOut("save [(String) name] \n");
 		}
 
 	}
