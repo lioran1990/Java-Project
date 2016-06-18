@@ -79,6 +79,17 @@ public class GameBoard  extends MainGameWindow{
 		label.redraw();
 	}
 	
+	public void saveSetting(String cmd){
+		setChanged();
+		notifyObservers("savesettings");
+	}
+	
+	public void LoadSetting(String cmd){
+		setChanged();
+		notifyObservers("loadsettings");
+	}
+	
+	
 	public void setLabel2Text (){
 		StringBuilder sb = new StringBuilder();
 		sb.append("");
@@ -216,17 +227,20 @@ public class GameBoard  extends MainGameWindow{
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				
+				
 				SettingsWindow sw = new SettingsWindow(shell,display);
 				sw.settingsShell.open();
 				sw.setSaveSettingsBtnListener(new SelectionListener() {
 					
 					@Override
 					public void widgetSelected(SelectionEvent arg0) {
+						
 						MessageBox dialog = 
-					    		new MessageBox(shell, SWT.ICON_ERROR | SWT.OK);
-					    		dialog.setText("Error");
-					    		dialog.setMessage("asdasd");
-					    		dialog.open();
+			    		new MessageBox(shell, SWT.ICON_ERROR | SWT.OK);
+			    		dialog.setText("Error");
+			    		dialog.setMessage("asdasd");
+			    		dialog.open();
 					}
 					
 					@Override

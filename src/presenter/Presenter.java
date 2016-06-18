@@ -1,5 +1,6 @@
 package presenter;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
@@ -38,12 +39,29 @@ public class Presenter extends Observable implements Observer{
 	private HashMap<String, Command> ViewCmd;
 	private HashMap<String, Command> ModelCmd;
 	private ExecutorService exs;
+	public Properties properties;
 	
 	public Presenter(Model m, View v, int threads) {
 		this.model = m;
 		this.view = v;
 		this.setCommands();
 		exs = Executors.newFixedThreadPool(threads);
+		
+		
+		try {
+			properties = PropertiesHandler.getInstance();
+		} catch (FileNotFoundException e2) {
+			System.out.println("Could not find properties file, using default set");
+			properties = new Properties();
+			try {
+				PropertiesHandler.write(properties, ".\\xml\\properties.xml");
+			} catch (Exception e) {
+				System.out.println("Could not save default properties file, please check manually");;
+			}
+		} catch (Exception e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}		
 	}
 	
 	public HashMap<String, Command> getCommands (){

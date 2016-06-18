@@ -6,6 +6,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -15,6 +16,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import presenter.Properties;
 
 public class SettingsWindow {
 
@@ -26,46 +29,64 @@ public class SettingsWindow {
 	Text runtimeTxt;
 	Combo dropDown;
 	Image image1;
+	Properties properties;
 	
 	public SettingsWindow(Shell shell,Display display) {
 		this.display= display;
 		settingsShell = shell;
-		//Font font= new Font(SWT.WHITE);
+		//this.properties= properties;
+		Device device = Display.getCurrent ();		
+		Font font1 = new Font(display, "Tahoma", 12, SWT.BOLD);
 		
+		Color white = display.getSystemColor(SWT.COLOR_WHITE);
 		
-		settingsShell = new Shell(shell, SWT.TITLE | SWT.SYSTEM_MODAL | SWT.CLOSE | SWT.MAX);
+
+		settingsShell = new Shell(shell, SWT.TITLE | SWT.SYSTEM_MODAL | SWT.CLOSE | SWT.MAX );
 		settingsShell.setLayout(new GridLayout(1, false));
-		settingsShell.setSize(240,300);
-		//settingsShell.setFont(display.getSystemColor(SWT.COLOR_WHITE));
-		settingsShell.setText("Runtime Environment :");
+		settingsShell.setSize(240, 300);
+		settingsShell.setText("Settings");
 		
-		runtimeRadioGUI = new Button(settingsShell, SWT.RADIO);
-		runtimeRadioCLI = new Button(settingsShell, SWT.RADIO);
-		runtimeRadioGUI.setText("GUI");
-		runtimeRadioCLI.setText("CLI");
-		
-		
-		Label generateLb = new Label(settingsShell, SWT.NONE);
-		generateLb.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, true, 1, 1));
-		Label lblSample1 = new Label(settingsShell, SWT.BORDER_SOLID);
-		lblSample1.setFont(new org.eclipse.swt.graphics.Font(null, "Tahoma", 10, SWT.BOLD ));
-		lblSample1.setText("Maze Generate algorithm :");
-		//lblSample1.setForeground(display.getSystemColor(SWT.COLOR_WHITE));
+		settingsShell.setBackgroundMode(SWT.INHERIT_FORCE);
+		image1 = new Image(device,".\\Images\\SettingsWindow.jpg");
+		settingsShell.setBackgroundImage(image1);
+
+		Label runtimeLbl = new Label(settingsShell, SWT.BORDER_SOLID);
+	
+		runtimeLbl.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, true, 1, 1));
+		runtimeLbl.setFont(new org.eclipse.swt.graphics.Font(null, "Tahoma", 10, SWT.BOLD ));
+		runtimeLbl.setText("Runtime Environment :");
+		runtimeLbl.setForeground(white);
 		
 		dropDown = new Combo(settingsShell, SWT.DROP_DOWN | SWT.BORDER);
+		dropDown.setForeground(white);
+		dropDown.add("GUI");
+		dropDown.add("CLI");
+		dropDown.select(1);
+		
+		Label generatLb = new Label(settingsShell, SWT.BORDER_SOLID);
+		generatLb.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, true, 1, 1));
+		generatLb.setFont(new org.eclipse.swt.graphics.Font(null, "Tahoma", 10, SWT.BOLD ));
+		generatLb.setText("Maze Generate algorithm :");
+		generatLb.setForeground(white);
+		dropDown = new Combo(settingsShell, SWT.DROP_DOWN | SWT.BORDER);
+		dropDown.setForeground(white);
 		dropDown.add("Simeple Algorithm");
 		dropDown.add("Advanced Algorithm");
+		dropDown.select(1);
 		
 		Label solutionLb = new Label(settingsShell, SWT.NONE);
 		solutionLb.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, true, 1, 1));
 		Label lblSample2 = new Label(settingsShell, SWT.BORDER_SOLID);
 		lblSample2.setFont(new org.eclipse.swt.graphics.Font(null, "Tahoma", 10, SWT.BOLD ));
 		lblSample2.setText("Maze Solution algorithm :");
+		lblSample2.setForeground(white);
 		
 		dropDown = new Combo(settingsShell, SWT.DROP_DOWN | SWT.BORDER);
+		dropDown.setForeground(white);
 		dropDown.add("Depth-first search");
 		dropDown.add("Best-first Search");
 		dropDown.add("Breadth-first Search");
+		dropDown.select(1);
 		
 		saveSettingsBtn = new Button(settingsShell, SWT.PUSH);
 		saveSettingsBtn.setText("save settings");
