@@ -9,6 +9,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 
 import algorithms.mazeGenerator.Maze3d;
+import algorithms.mazeGenerator.Position;
 import algorithms.search.Solution;
 
 public class MazeWindow extends MazeDisplayer {
@@ -92,6 +93,10 @@ public class MazeWindow extends MazeDisplayer {
         
         e.gc.fillPolygon(r);
 		
+	}
+	
+	public void showHint (Position p){
+		moveCharacter(p.getFlo(), p.getRow(), p.getCol());
 	}
 	
 	public void SolveMaze (Solution sol){

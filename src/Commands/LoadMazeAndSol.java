@@ -25,11 +25,11 @@ public class LoadMazeAndSol implements Command {
 	/**This command saves the MAZE3D object to local hard drive.*/
 	@Override
 	public void doCommand(String [] args) {
-		if (args.length == 3){
-			m.HintMe(args[1]);
+		if (args.length == 2){
+			m.loadFromFile_ser(args[1]);
 		}
 		else{
-			v.PrintOut("hint [(String) name] [Location]\n");
+			v.PrintOut("load [(String) name] [(String)fileName]\n");
 		}
 
 	}

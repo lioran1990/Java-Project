@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 
 import algorithms.mazeGenerator.Maze3d;
+import algorithms.mazeGenerator.Position;
 import algorithms.search.Solution;
 
 public class GameBoard  extends MainGameWindow{
@@ -59,8 +60,13 @@ public class GameBoard  extends MainGameWindow{
 		notifyObservers("generate_3d_maze "+cmd);
 	}
 	
-	public void HintMe (){
-		
+	public void HintMe (String cmd){
+		setChanged();
+		notifyObservers("hintme " + mazeName + " " +cmd);
+	}
+	
+	public void showHint (Position p){
+		MazeWindow.showHint(p);
 	}
 	
 	public void getCrosssec(){
@@ -185,7 +191,17 @@ public class GameBoard  extends MainGameWindow{
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
+				
+				StringBuilder sb = new StringBuilder();
+				sb.append("");
+				sb.append(MazeWindow.charFlo + " ");
+				sb.append(MazeWindow.charRow + " ");
+				sb.append(MazeWindow.charCol + " ");
+				sb.append("DFS"); //NEED TO COLLECT FROM THE SETTINGS!
+				String strI = sb.toString();
+				System.out.println(strI);
+				
+				HintMe(strI);
 				
 			}
 			

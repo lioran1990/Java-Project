@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.Observable;
 import java.util.Observer;
 
+import MazeAdapters.Maze3dStateAdapter;
 import View.View;
 import algorithms.mazeGenerator.Maze3d;
 import algorithms.search.Solution;
@@ -28,6 +29,10 @@ public class MyGUIView extends Observable implements View, Observer{
 		this.writer = writer;
 		gb= new GameBoard("my maze game" , 500, 500);
 		gb.addObserver(this);
+	}
+	
+	public void HintMe(Maze3dStateAdapter s){
+		gb.showHint(s.getCurrPlayerPos());
 	}
 	
 	@Override

@@ -127,7 +127,7 @@ public class MyModel extends Observable implements Model {
 					solutions.put(name, new BreadthFS().search(mazeAdapter));
 					break;
 				}
-				return solutions.get(name).getStates().get(0);
+				return solutions.get(name).getStates().get(1);
 			}
 		});
 		exs.execute(f);

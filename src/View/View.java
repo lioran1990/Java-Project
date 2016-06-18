@@ -1,5 +1,6 @@
 package View;
 
+import MazeAdapters.Maze3dStateAdapter;
 import algorithms.mazeGenerator.Maze3d;
 import algorithms.search.Solution;
 
@@ -17,6 +18,6 @@ public interface View {
 	public void PrintOut(String string);
 	public void setMaze2dData (int [][] maze2d);
 	public void setMaze3dData (Maze3d maze);
-
+	public void HintMe (Maze3dStateAdapter s);
 	public void setSolution(Solution arg);
 }

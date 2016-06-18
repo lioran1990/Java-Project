@@ -25,11 +25,11 @@ public class HintMe implements Command {
 	/**This command saves the MAZE3D object to local hard drive.*/
 	@Override
 	public void doCommand(String [] args) {
-		if (args.length == 2){
-			m.loadFromFile_ser(args[1]);
+		if (args.length == 6){
+			m.HintMe(args[1],args[2],args[3],args[4],args[5]);
 		}
 		else{
-			v.PrintOut("load [(String) name] [(String)fileName]\n");
+			v.PrintOut("hint [(String) name] [Location]\n");
 		}
 
 	}

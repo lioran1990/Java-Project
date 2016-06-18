@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.Observable;
 import java.util.Observer;
 
+import MazeAdapters.Maze3dStateAdapter;
 import algorithms.mazeGenerator.Maze3d;
 import algorithms.search.Solution;
 
@@ -77,6 +78,12 @@ public class MyView extends Observable implements View, Observer{
 
 	@Override
 	public void setSolution(Solution arg) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void HintMe(Maze3dStateAdapter s) {
 		// TODO Auto-generated method stub
 		
 	}

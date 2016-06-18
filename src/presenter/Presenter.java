@@ -17,6 +17,7 @@ import Commands.FileSizeCMD;
 import Commands.Generate3DMazeCMD;
 import Commands.GetCommandsCMD;
 import Commands.GetSettings;
+import Commands.HintMe;
 import Commands.LoadMazeAndSol;
 import Commands.MazeFiles;
 import Commands.MazeSizeCMD;
@@ -24,6 +25,7 @@ import Commands.SaveMazeAndSol;
 import Commands.SetSettings;
 import Commands.SolveCMD;
 import Commands.getMaze2dData;
+import MazeAdapters.Maze3dStateAdapter;
 import View.View;
 import algorithms.mazeGenerator.Maze3d;
 import algorithms.search.Solution;
@@ -65,6 +67,7 @@ public class Presenter extends Observable implements Observer{
 		ViewCmd.put("show_files", new MazeFiles(view , model));
 		ViewCmd.put("show_settings", new GetSettings(view , model));
 		ViewCmd.put("set_settings", new SetSettings(view , model));
+		ViewCmd.put("hintme", new HintMe(view , model));
 		
 		
 		/*
@@ -91,8 +94,9 @@ public class Presenter extends Observable implements Observer{
 			else if (arg.getClass().getName()== "algorithms.search.Solution"){
 				view.setSolution((Solution)arg);
 			}
-			
-			
+			else if ( arg.getClass().getName()== "MazeAdapters.Maze3dStateAdapter"){
+				view.HintMe((Maze3dStateAdapter)arg);
+			}
 			else{
 				Command cmd = ModelCmd.get((String)arg);			
 				cmd.doCommand(null);
@@ -107,24 +111,6 @@ public class Presenter extends Observable implements Observer{
 			}
 			else{
 				tempCmd.doCommand(spliter);
-				/*
-				if (spliter[0].equalsIgnoreCase("generate_3d_maze") || spliter[0].equalsIgnoreCase("solve")){
-					
-					
-					exs.submit(new Callable<Void>() {
-
-						@Override
-						public Void call() throws Exception {
-							tempCmd.doCommand(spliter);
-							return null;
-						}
-					
-					});	
-				}
-				else{
-					tempCmd.doCommand(spliter);	
-				}
-				*/
 			}
 		}
 	}
