@@ -23,6 +23,7 @@ import Commands.LoadMazeAndSol;
 import Commands.MazeFiles;
 import Commands.MazeSizeCMD;
 import Commands.SaveMazeAndSol;
+import Commands.SetProperties;
 import Commands.SetSettings;
 import Commands.SolveCMD;
 import Commands.getMaze2dData;
@@ -41,27 +42,14 @@ public class Presenter extends Observable implements Observer{
 	private ExecutorService exs;
 	public Properties properties;
 	
-	public Presenter(Model m, View v, int threads) {
+	public Presenter(Model m, View v, int threads , Properties p) {
 		this.model = m;
 		this.view = v;
+		this.properties = p;
 		this.setCommands();
 		exs = Executors.newFixedThreadPool(threads);
-		
-		
-		try {
-			properties = PropertiesHandler.getInstance();
-		} catch (FileNotFoundException e2) {
-			System.out.println("Could not find properties file, using default set");
-			properties = new Properties();
-			try {
-				PropertiesHandler.write(properties, ".\\xml\\properties.xml");
-			} catch (Exception e) {
-				System.out.println("Could not save default properties file, please check manually");;
-			}
-		} catch (Exception e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}		
+	
+		view.setProperties(properties);
 	}
 	
 	public HashMap<String, Command> getCommands (){
@@ -86,7 +74,8 @@ public class Presenter extends Observable implements Observer{
 		ViewCmd.put("show_settings", new GetSettings(view , model));
 		ViewCmd.put("set_settings", new SetSettings(view , model));
 		ViewCmd.put("hintme", new HintMe(view , model));
-		
+		ViewCmd.put("getproperties", new SetProperties(view));
+
 		
 		/*
 		ViewCmd.put("save_maze", new SaveMazeCMD(view,model));

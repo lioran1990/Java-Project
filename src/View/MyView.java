@@ -8,6 +8,7 @@ import java.util.Observer;
 import MazeAdapters.Maze3dStateAdapter;
 import algorithms.mazeGenerator.Maze3d;
 import algorithms.search.Solution;
+import presenter.Properties;
 
 
 /**<h1>MyView</h1>
@@ -86,6 +87,18 @@ public class MyView extends Observable implements View, Observer{
 	public void HintMe(Maze3dStateAdapter s) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void setProperties(Properties p) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Properties getProperties() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

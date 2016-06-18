@@ -1,66 +1,88 @@
 package GUI;
 
+import java.util.Arrays;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 public class GenerateWindow {
-
+	Shell settingsShell;
+	Combo floDropDown, rowDropDown, colDropDown;
+	Image image1;
 	private Button generateButton;
 	Shell generateshell;
 	Text nameText,heightText,rowText,columnText;
-	public GenerateWindow(Shell shell) {
+	public GenerateWindow(Shell shell,Display display) {
+		
+		
 		generateshell = new Shell(shell, SWT.TITLE | SWT.SYSTEM_MODAL | SWT.CLOSE | SWT.MAX);
-		generateshell.setLayout(new GridLayout(2, false));
+		generateshell.setLayout(new GridLayout(1, false));
 		generateshell.setSize(500, 200);
 
-		generateshell.setText("maze Generate Window");
+		generateshell.setBackgroundMode(SWT.INHERIT_FORCE);
+		Device device = Display.getCurrent ();	
+		image1 = new Image(device,".\\Images\\SettingsWindow.jpg");
+		generateshell.setBackgroundImage(image1);
+
+		generateshell.setText("Game Settings");
 		generateshell.setLayout(new GridLayout(2, false));
 
-		Group dialogFieldsGroup = new Group(generateshell, SWT.SHADOW_ETCHED_IN);
-		dialogFieldsGroup.setText("Maze Generate Window" + " Properties");
-		dialogFieldsGroup.setLayout(new GridLayout(2, true));
-		dialogFieldsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-
-		Label nameLabel = new Label(dialogFieldsGroup, SWT.NONE);
-		nameLabel.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 1, 1));
-		nameLabel.setText("maze name :");
-		nameText = new Text(dialogFieldsGroup, SWT.None);
-		nameText.setLayoutData(new GridData(SWT.NONE, SWT.TOP, false, true, 1, 1));
-
-		Label dimensionLabel = new Label(dialogFieldsGroup, SWT.NONE);
-		dimensionLabel.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 1, 1));
-		dimensionLabel.setText("dimension :");
-		heightText = new Text(dialogFieldsGroup, SWT.None);
-		heightText.setLayoutData(new GridData(SWT.NONE, SWT.TOP, false, true, 1, 1));
+		Color white = display.getSystemColor(SWT.COLOR_WHITE);
 		
-		Label rowLabel = new Label(dialogFieldsGroup, SWT.NONE);
-		rowLabel.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 1, 1));
-		rowLabel.setText("rows :");
-		rowText = new Text(dialogFieldsGroup, SWT.None);
-		rowText.setLayoutData(new GridData(SWT.NONE, SWT.TOP, false, true, 1, 1));
+		Label nameLabel = new Label(generateshell, SWT.BORDER_SOLID);
+		nameLabel.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, true, 1, 1));
+		nameLabel.setFont(new org.eclipse.swt.graphics.Font(null, "Tahoma", 10, SWT.BOLD ));
+		nameLabel.setText("Maze Name :");
+		nameLabel.setForeground(white);
+		nameText = new Text(generateshell,SWT.COLOR_WHITE);
+		nameText.setLayoutData(new GridData(SWT.NONE, SWT.BOTTOM, false, true, 1, 1));
+		nameText.setForeground(white);
+		
+		
+		Label floorLabel = new Label(generateshell, SWT.BORDER_SOLID);
+		floorLabel.setFont(new org.eclipse.swt.graphics.Font(null, "Tahoma", 10, SWT.BOLD ));
+		floorLabel.setText("Floors size:");
+		floorLabel.setForeground(white);
+		floDropDown = new Combo(generateshell, SWT.DROP_DOWN | SWT.BORDER_SOLID);
+		String[] ITEMS = { "1", "2", "3", "4", "5", "6","7", "8", "9", "10"  };
+		floDropDown.setItems(ITEMS);
+		floDropDown.setForeground(white);
 
-		Label columnLabel = new Label(dialogFieldsGroup, SWT.NONE);
-		columnLabel.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, true, 1, 1));
-		columnLabel.setText("column :");
-		columnText = new Text(dialogFieldsGroup, SWT.None);
-		columnText.setLayoutData(new GridData(SWT.NONE, SWT.TOP, false, true, 1, 1));
 
-		generateButton = new Button(dialogFieldsGroup, SWT.PUSH);
+		Label rowLabel = new Label(generateshell, SWT.BORDER_SOLID);
+		rowLabel.setFont(new org.eclipse.swt.graphics.Font(null, "Tahoma", 10, SWT.BOLD ));
+		rowLabel.setText("Rows size:");
+		rowDropDown = new Combo(generateshell, SWT.DROP_DOWN | SWT.BORDER);
+		rowDropDown.setForeground(white);
+		rowDropDown.setItems(ITEMS);
+		rowLabel.setForeground(white);
+		
+
+		Label ColumnLabel = new Label(generateshell, SWT.BORDER_SOLID);
+		ColumnLabel.setFont(new org.eclipse.swt.graphics.Font(null, "Tahoma", 10, SWT.BOLD ));
+		ColumnLabel.setText("Columns size:");
+		ColumnLabel.setForeground(white);
+		colDropDown = new Combo(generateshell, SWT.DROP_DOWN | SWT.BORDER);
+		colDropDown.setForeground(white);
+		colDropDown.setItems(ITEMS);
+	
+
+		generateButton = new Button(generateshell, SWT.PUSH);
 		generateButton.setText("Generate");
-		generateButton.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, true, 1, 1));
+		generateButton.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, true, 2, 1));
 		
-		generateshell.setSize (300, 200);
+		generateshell.setSize (250, 200);
 		generateshell.open ();
 	}
 

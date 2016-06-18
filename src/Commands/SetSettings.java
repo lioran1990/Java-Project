@@ -32,7 +32,7 @@ public class SetSettings implements Command {
 			m.setSettings(args);
 		}
 		else{
-			v.PrintOut("set_settings [(String)name]\n");
+			v.PrintOut("set_settings [(String)name] [(DFS/BFS/breadthfs) 0/1/2] [(GUI/CLI) 0/1] [(Simple/Advanced) 0/1] \n");
 		}		
 	}
 }

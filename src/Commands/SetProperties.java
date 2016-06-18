@@ -2,6 +2,7 @@ package Commands;
 
 import View.View;
 import model.Model;
+import presenter.PropertiesHandler;
 
 public class SetProperties implements Command {
 	/** The m. */
@@ -10,18 +11,17 @@ public class SetProperties implements Command {
 	/** The v. */
 	private View v;
 	
-	public void setProperties(View v , Model m) {
-		this.m = m;
+
+	public SetProperties(View v) {
 		this.v = v;
 	}
 	@Override
 	public void doCommand(String[] args) {
-		
-		
-		
-		
-		// TODO Auto-generated method stub
-
+		try {
+			PropertiesHandler.write(v.getProperties(), ".\\xml\\properties.xml");
+		} catch (Exception e) {
+			System.out.println("Could not save default properties file, please check manually");;
+		}
 	}
 
 }

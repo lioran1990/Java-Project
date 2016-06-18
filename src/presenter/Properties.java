@@ -9,22 +9,29 @@ public class Properties implements Serializable {
 	/**
 	 * 
 	 */
+	
+	/*
+	 * DFS = 0 / BFS = 1 / breadthfs = 2
+	 * GUI = 0 / CLI = 1
+	 * Simple  = 0 / Advanced = 1 
+	 * 
+	 */
+	
 	private static final long serialVersionUID = 5446648390847167773L;
-
-	private String mazeGenerator;
-	private String solveAlgorithm;
+	private Integer mazeGenerator;
+	private Integer solveAlgorithm;
 	private Integer maxNumOfThreads;
-	private String runtimeEnv;
+	private Integer runtimeEnv;
 	
 	public Properties() {
-		mazeGenerator = "MyMaze3dGenerator";
-		solveAlgorithm = "DFS";
-		maxNumOfThreads = 2;
-		runtimeEnv = "GUI";
+		mazeGenerator = 1;
+		solveAlgorithm = 2;
+		maxNumOfThreads = 3;
+		runtimeEnv = 0;
        
 	}
 
-	public Properties(String mazeGenerator, String solveAlgorithm,String runtimeEnv, Integer maxNumOfThreads) {
+	public Properties(Integer mazeGenerator, Integer solveAlgorithm,Integer runtimeEnv, Integer maxNumOfThreads) {
 		super();
 		this.mazeGenerator = mazeGenerator;
 		this.solveAlgorithm = solveAlgorithm;
@@ -34,19 +41,19 @@ public class Properties implements Serializable {
 	}
 
 
-	public String getMazeGenerator() {
+	public Integer getMazeGenerator() {
 		return mazeGenerator;
 	}
 
-	public void setMazeGenerator(String mazeGenerator) {
+	public void setMazeGenerator(Integer mazeGenerator) {
 		this.mazeGenerator = mazeGenerator;
 	}
 
-	public String getSolveAlgorithm() {
+	public Integer getSolveAlgorithm() {
 		return solveAlgorithm;
 	}
 
-	public void setSolveAlgorithm(String solveAlgorithm) {
+	public void setSolveAlgorithm(Integer solveAlgorithm) {
 		this.solveAlgorithm = solveAlgorithm;
 	}
 
@@ -58,11 +65,11 @@ public class Properties implements Serializable {
 		this.maxNumOfThreads = maxNumOfThreads;
 	}
 
-	public String getRuntimeEnv() {
+	public Integer getRuntimeEnv() {
 		return runtimeEnv;
 	}
 
-	public void setRuntimeEnv(String runtimeEnv) {
+	public void setRuntimeEnv(Integer runtimeEnv) {
 		this.runtimeEnv = runtimeEnv;
 	}
 

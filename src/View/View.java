@@ -3,6 +3,7 @@ package View;
 import MazeAdapters.Maze3dStateAdapter;
 import algorithms.mazeGenerator.Maze3d;
 import algorithms.search.Solution;
+import presenter.Properties;
 
 /**<h1>View</h1>
 * The View Interface.
@@ -20,4 +21,6 @@ public interface View {
 	public void setMaze3dData (Maze3d maze);
 	public void HintMe (Maze3dStateAdapter s);
 	public void setSolution(Solution arg);
+	public void setProperties(Properties p);
+	public Properties getProperties ();
 }

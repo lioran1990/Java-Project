@@ -27,11 +27,11 @@ public class SettingsWindow {
 	private Button runtimeRadioGUI,runtimeRadioCLI;
 	Shell settingsShell;
 	Text runtimeTxt;
-	Combo dropDown;
+	Combo runtimeDropDown , genDropDown ,algoDropDown ;
 	Image image1;
 	Properties properties;
 	
-	public SettingsWindow(Shell shell,Display display) {
+	public SettingsWindow(Shell shell,Display display, Properties p) {
 		this.display= display;
 		settingsShell = shell;
 		//this.properties= properties;
@@ -57,22 +57,22 @@ public class SettingsWindow {
 		runtimeLbl.setText("Runtime Environment :");
 		runtimeLbl.setForeground(white);
 		
-		dropDown = new Combo(settingsShell, SWT.DROP_DOWN | SWT.BORDER);
-		dropDown.setForeground(white);
-		dropDown.add("GUI");
-		dropDown.add("CLI");
-		dropDown.select(1);
+		runtimeDropDown = new Combo(settingsShell, SWT.DROP_DOWN | SWT.BORDER);
+		runtimeDropDown.setForeground(white);
+		runtimeDropDown.add("GUI");
+		runtimeDropDown.add("CLI");
+		runtimeDropDown.select(p.getRuntimeEnv());
 		
 		Label generatLb = new Label(settingsShell, SWT.BORDER_SOLID);
 		generatLb.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, true, 1, 1));
 		generatLb.setFont(new org.eclipse.swt.graphics.Font(null, "Tahoma", 10, SWT.BOLD ));
 		generatLb.setText("Maze Generate algorithm :");
 		generatLb.setForeground(white);
-		dropDown = new Combo(settingsShell, SWT.DROP_DOWN | SWT.BORDER);
-		dropDown.setForeground(white);
-		dropDown.add("Simeple Algorithm");
-		dropDown.add("Advanced Algorithm");
-		dropDown.select(1);
+		genDropDown = new Combo(settingsShell, SWT.DROP_DOWN | SWT.BORDER);
+		genDropDown.setForeground(white);
+		genDropDown.add("Simeple Algorithm");
+		genDropDown.add("Advanced Algorithm");
+		genDropDown.select(p.getMazeGenerator());
 		
 		Label solutionLb = new Label(settingsShell, SWT.NONE);
 		solutionLb.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, true, 1, 1));
@@ -81,38 +81,22 @@ public class SettingsWindow {
 		lblSample2.setText("Maze Solution algorithm :");
 		lblSample2.setForeground(white);
 		
-		dropDown = new Combo(settingsShell, SWT.DROP_DOWN | SWT.BORDER);
-		dropDown.setForeground(white);
-		dropDown.add("Depth-first search");
-		dropDown.add("Best-first Search");
-		dropDown.add("Breadth-first Search");
-		dropDown.select(1);
+		algoDropDown = new Combo(settingsShell, SWT.DROP_DOWN | SWT.BORDER);
+		algoDropDown.setForeground(white);
+		algoDropDown.add("Depth-first search");
+		algoDropDown.add("Best-first Search");
+		algoDropDown.add("Breadth-first Search");
+		algoDropDown.select(p.getSolveAlgorithm());
 		
 		saveSettingsBtn = new Button(settingsShell, SWT.PUSH);
-		saveSettingsBtn.setText("save settings");
+		saveSettingsBtn.setText("Save settings");
 		saveSettingsBtn.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, true, 4, 4));
 		saveSettingsBtn.setBounds(10, 5, 75, 30);
-		//settingsShell.pack();
 	}
 	
 	public void setSaveSettingsBtnListener (SelectionListener listener){
 		saveSettingsBtn.addSelectionListener(listener);	
 	}
 	
-	
-	//CLI OR GUI SETTING
-	public void setRuntimeEnv (){
-		
-	}
-	
-	//SOLUTION SET
-	public void setSolutionDefault (){
-		
-	}
-	
-	
-	public void setMazeGenerator (){
-		
-	}
 	
 }

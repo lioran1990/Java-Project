@@ -9,6 +9,7 @@ import MazeAdapters.Maze3dStateAdapter;
 import View.View;
 import algorithms.mazeGenerator.Maze3d;
 import algorithms.search.Solution;
+import presenter.Properties;
 
 
 /**<h1>MyView</h1>
@@ -30,6 +31,15 @@ public class MyGUIView extends Observable implements View, Observer{
 		gb= new GameBoard("my maze game" , 500, 500);
 		gb.addObserver(this);
 	}
+	
+	public Properties getProperties (){
+		return gb.getProperties();
+	}
+	
+	public void setProperties(Properties p){
+		gb.setProperties(p);
+	}
+	
 	
 	public void HintMe(Maze3dStateAdapter s){
 		gb.showHint(s.getCurrPlayerPos());

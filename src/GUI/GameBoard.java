@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import algorithms.mazeGenerator.Maze3d;
 import algorithms.mazeGenerator.Position;
 import algorithms.search.Solution;
+import presenter.Properties;
 
 public class GameBoard  extends MainGameWindow{
 
@@ -23,14 +24,19 @@ public class GameBoard  extends MainGameWindow{
 	Menu menuBar , gameMenu ,helpMenu;
 	MenuItem gameMenuHeader, helpMenuHeader;
 	MenuItem gameExitItem, gameSaveItem , gameLoadItem , gameNewGameItem, gameSolveItem , gameSettingsItem , gameHintItem; 
-	MenuItem helpGetHelpItem , helpAboutItem;
+	MenuItem helpAboutItem;
 	Label label,label2;
 	MazeWindow MazeWindow;
 	String mazeName;
+	Properties p;
 	
 	
 	public GameBoard(String title , int width , int height) {
 		super (title,width,height);
+	}
+	
+	public void setProperties(Properties p){
+		this.p = p;
 	}
 	
 	public void setMaze3dData (Maze3d maze){
@@ -79,9 +85,13 @@ public class GameBoard  extends MainGameWindow{
 		label.redraw();
 	}
 	
-	public void saveSetting(String cmd){
+	public void saveSetting(){
 		setChanged();
-		notifyObservers("savesettings");
+		notifyObservers("getproperties");
+	}
+	
+	public Properties getProperties (){
+		return p;
 	}
 	
 	public void LoadSetting(String cmd){
@@ -168,6 +178,7 @@ public class GameBoard  extends MainGameWindow{
 	    
 	    gameSolveItem = new MenuItem(gameMenu, SWT.PUSH);
 	    gameSolveItem.setText("Solve");
+	    gameSolveItem.setEnabled(false);
 	    
 	    gameHintItem = new MenuItem(gameMenu, SWT.PUSH);
 	    gameHintItem.setText("Hint");
@@ -192,9 +203,7 @@ public class GameBoard  extends MainGameWindow{
 	    
 	    helpAboutItem = new MenuItem(helpMenu, SWT.PUSH);
 	    helpAboutItem.setText("About");
-	    
-	    helpGetHelpItem = new MenuItem(helpMenu, SWT.PUSH);
-	    helpGetHelpItem.setText("Help");
+
 	    
   
 	    
@@ -229,18 +238,16 @@ public class GameBoard  extends MainGameWindow{
 			public void widgetSelected(SelectionEvent arg0) {
 				
 				
-				SettingsWindow sw = new SettingsWindow(shell,display);
+				SettingsWindow sw = new SettingsWindow(shell,display,p);
 				sw.settingsShell.open();
 				sw.setSaveSettingsBtnListener(new SelectionListener() {
 					
 					@Override
 					public void widgetSelected(SelectionEvent arg0) {
-						
-						MessageBox dialog = 
-			    		new MessageBox(shell, SWT.ICON_ERROR | SWT.OK);
-			    		dialog.setText("Error");
-			    		dialog.setMessage("asdasd");
-			    		dialog.open();
+						Properties p = new Properties(sw.genDropDown.getSelectionIndex(), sw.algoDropDown.getSelectionIndex(), sw.runtimeDropDown.getSelectionIndex(), 2);
+						setProperties(p);
+						saveSetting();
+						sw.settingsShell.dispose();
 					}
 					
 					@Override
@@ -260,18 +267,28 @@ public class GameBoard  extends MainGameWindow{
 		});
 	    
 	    gameExitItem.addSelectionListener(new gameExitItemListener());
-	    //gameSaveItem.addSelectionListener();
 	    gameSolveItem.addSelectionListener(new SelectionListener() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				SolveWindow sw = new SolveWindow(shell);
+				SolveWindow sw = new SolveWindow(shell,display,p);
 				sw.setListenerSolveBtn(new SelectionListener() {
 					
 					@Override
 					public void widgetSelected(SelectionEvent arg0) {
 						//CHOOSE SOLUTION!!!!!
-						String str = sw.dropDown.getText();
+						String str = "dfs";
+						switch (sw.dropDown.getSelectionIndex()) {
+							case 0:
+								str = "dfs";
+								break;
+							case 1:
+								str = "bfs";
+								break;
+							case 2:
+								str = "breadthfs";
+								break;
+						}		
 						SolveMaze(str);
 						sw.solveShell.dispose();
 					}
@@ -312,7 +329,7 @@ public class GameBoard  extends MainGameWindow{
 	    	/// NEEDS TO XOMPLETE ERROR CHECK!!!!
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				GenerateWindow gw = new GenerateWindow(shell);
+				GenerateWindow gw = new GenerateWindow(shell,display);
 				gw.setTriggerOk(new SelectionListener() {
 					
 					@Override
@@ -327,13 +344,14 @@ public class GameBoard  extends MainGameWindow{
 						}
 						else{
 							try{
-								
-								Integer.parseInt(gw.heightText.getText());
-								Integer.parseInt(gw.columnText.getText());
-								Integer.parseInt(gw.rowText.getText());
+								StringBuilder sb = new StringBuilder();
+								sb.append(gw.floDropDown.getSelectionIndex()+1 + " ");
+								sb.append(gw.rowDropDown.getSelectionIndex()+1 + " ");
+								sb.append(gw.colDropDown.getSelectionIndex()+1 + " ");
 								mazeName = gw.nameText.getText() ;
-								generateMaze(gw.nameText.getText() + " " + gw.heightText.getText() + " " + gw.rowText.getText() + " " + gw.columnText.getText());
+								generateMaze(gw.nameText.getText() + " " + sb);
 								gw.generateshell.dispose();
+								gameSolveItem.setEnabled(true);
 							}
 							catch (NumberFormatException e){
 					    		dialog.open();
@@ -355,23 +373,19 @@ public class GameBoard  extends MainGameWindow{
 				
 			}
 		});
-	    helpGetHelpItem.addSelectionListener(new helpGetHelpItemListener());
+	   
 	    
 	    helpAboutItem.addSelectionListener(new SelectionListener() {
 			
 	    	@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
-				MessageBox dialog = 
-	    		new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK| SWT.CANCEL);
-	    		dialog.setText("About");
-	    		dialog.setMessage("All right reserved. Omri Haviv & Lior Ran 2016© ");
-	    		dialog.open();
+
 			}
 
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				MessageBox dialog = 
-	    		new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK| SWT.CANCEL);
+	    		new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
 	    		dialog.setText("About");
 	    		dialog.setMessage("All right reserved. Omri Haviv & Lior Ran 2016© ");
 	    		dialog.open();
@@ -427,27 +441,6 @@ public class GameBoard  extends MainGameWindow{
 	    //  display.dispose();
 	    }
 	  }
-
-	  class gameSaveItemListener implements SelectionListener {
-	    public void widgetSelected(SelectionEvent event) {
-	      label.setText("Saved");
-	    }
-
-	    public void widgetDefaultSelected(SelectionEvent event) {
-	      label.setText("Saved");
-	    }
-	  }
-
-	  class helpGetHelpItemListener implements SelectionListener {
-	    public void widgetSelected(SelectionEvent event) {
-	      label.setText("No worries!");
-	    }
-
-	    public void widgetDefaultSelected(SelectionEvent event) {
-	      label.setText("No worries!");
-	    }
-	  }
-	  
 
 
 
