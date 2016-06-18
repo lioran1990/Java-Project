@@ -3,6 +3,8 @@ package GUI;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -170,14 +172,6 @@ public class GameBoard extends MainGameWindow {
 			}
 		});
 
-		label = new Label(shell, SWT.CENTER);
-		label.setBounds(shell.getClientArea());
-		label.setText("Floor :");
-
-		label2 = new Label(shell, SWT.LEFT);
-		label2.setBounds(shell.getClientArea());
-		label2.setText("Cur Pos");
-
 		menuBar = new Menu(shell, SWT.BAR);
 		gameMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
 		gameMenuHeader.setText("Game");
@@ -295,7 +289,20 @@ public class GameBoard extends MainGameWindow {
 			}
 		});
 
-		gameExitItem.addSelectionListener(new gameExitItemListener());
+		gameExitItem.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				shell.dispose();
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		gameSolveItem.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -343,8 +350,27 @@ public class GameBoard extends MainGameWindow {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				getMazeFilesList();
-				LoadMazeWindow lmw = new LoadMazeWindow(shell,dialogStr);
-				
+				LoadMazeWindow lmw = new LoadMazeWindow(shell, display,dialogStr);
+				lmw.mazeList.addMouseListener(new MouseListener() {
+					
+					@Override
+					public void mouseUp(MouseEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void mouseDown(MouseEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void mouseDoubleClick(MouseEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 			}
 
 			@Override
@@ -420,50 +446,6 @@ public class GameBoard extends MainGameWindow {
 		shell.setMenuBar(menuBar);
 
 	}
-
-	class gameLoadItemListener implements SelectionListener {
-
-		@Override
-		public void widgetDefaultSelected(SelectionEvent arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void widgetSelected(SelectionEvent arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
-	}
-
-	class gameNewGameItemListener implements SelectionListener {
-
-		@Override
-		public void widgetDefaultSelected(SelectionEvent arg0) {
-
-		}
-
-		@Override
-		public void widgetSelected(SelectionEvent arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
-	}
-
-	class gameExitItemListener implements SelectionListener {
-		public void widgetSelected(SelectionEvent event) {
-			shell.close();
-			// display.dispose();
-		}
-
-		public void widgetDefaultSelected(SelectionEvent event) {
-			shell.close();
-			// display.dispose();
-		}
-	}
-
 
 
 }
