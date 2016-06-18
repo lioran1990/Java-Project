@@ -216,7 +216,7 @@ public class GameBoard  extends MainGameWindow{
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				SettingsWindow sw = new SettingsWindow(shell);
+				SettingsWindow sw = new SettingsWindow(shell,display);
 				sw.settingsShell.open();
 				sw.setSaveSettingsBtnListener(new SelectionListener() {
 					
