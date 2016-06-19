@@ -20,6 +20,15 @@ import algorithms.mazeGenerator.Position;
 import algorithms.search.Solution;
 import presenter.Properties;
 
+/** <h1>GameBoard</h1>
+ * The GameBoard class.
+* This class extends MainGameWindow class.
+* This class display the main game windows during the GUI execution.
+* 
+* @author Lior Ran and Omri Haviv
+* @version 1.0
+* @since June 19,2016
+*/
 public class GameBoard extends MainGameWindow {
 
 	Button b1;
@@ -31,15 +40,18 @@ public class GameBoard extends MainGameWindow {
 	MazeWindow MazeWindow;
 	String mazeName , dialogStr;
 	Properties p;
-
+	
+	/** GameBoard Constructor*/
 	public GameBoard(String title, int width, int height) {
 		super(title, width, height);
 	}
-
+	
+	/** Properties setter**/
 	public void setProperties(Properties p) {
 		this.p = p;
 	}
-
+	
+	/** Maze3dData setter**/
 	public void setMaze3dData(Maze3d maze) {
 		MazeWindow.setMazeData(maze);
 
@@ -52,64 +64,78 @@ public class GameBoard extends MainGameWindow {
 		MazeWindow.winner = false;
 		shell.redraw();
 	}
-
+	
+	/** Solution setter**/
 	public void setSolution(Solution sol) {
 		MazeWindow.SolveMaze(sol);
 	}
 
+	/** SolveMaze command**/
 	public void SolveMaze(String cmd) {
 		setChanged();
 		notifyObservers("solve " + mazeName + " " + cmd);
 	}
-
+	
+	/** generateMaze command**/
 	public void generateMaze(String cmd) {
 		setChanged();
 		notifyObservers("generate_3d_maze " + cmd);
 	}
-
+	
+	/** HintMe command**/
 	public void HintMe(String cmd) {
 		setChanged();
 		notifyObservers("hintme " + mazeName + " " + cmd);
 	}
-
+	
+	/** showHint command**/
 	public void showHint(Position p) {
 		MazeWindow.showHint(p);
 	}
-
+	
+	/** getCrosssec command**/
 	public void getCrosssec() {
+
 		setChanged();
 		notifyObservers("display_cross_section x 1 omri");
 	}
 	
+	/** saveMaze command**/
 	public void saveMaze(){
 		setChanged();
 		notifyObservers("save " + mazeName);
 	}
-	
+
+	/** loadMaze command**/
 	public void loadMaze(String file){
 		setChanged();
 		notifyObservers("load " + file);
 	}
-
+	
+	/** saveSettings command**/
 	public void saveSetting() {
 		setChanged();
 		notifyObservers("setproperties");
 	}
-
+	
+	/** gerProperties command**/
 	public Properties getProperties() {
 		return p;
 	}
-
+	
+	/** LoadSettings command**/
 	public void LoadSetting(String cmd) {
 		setChanged();
 		notifyObservers("loadsettings");
 	}
-
+	
+	/** getMazeFilesList command**/
 	public void getMazeFilesList(){
 		setChanged();
 		notifyObservers("show_files");
 	}
 	
+	/** setLabel2Text command**/
 	public void setLabel2Text() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("");
@@ -122,10 +148,12 @@ public class GameBoard extends MainGameWindow {
 		label2.redraw();
 	}
 	
+	/** opendialog command**/
 	public void opendialog(String str) {
 		this.dialogStr = str;		
 	}
-
+	
+	/** initWidgets commands**/
 	@Override
 	protected void initWidgets() {
 		shell.setLayout(new GridLayout(2, false));
@@ -174,47 +202,58 @@ public class GameBoard extends MainGameWindow {
 			}
 		});
 				
+		
+		/** Game Menu**/
 		menuBar = new Menu(shell, SWT.BAR);
 		gameMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
 		gameMenuHeader.setText("Game");
 		gameMenu = new Menu(shell, SWT.DROP_DOWN);
 		gameMenuHeader.setMenu(gameMenu);
-
+		
+		/** newGame Menu**/
 		gameNewGameItem = new MenuItem(gameMenu, SWT.PUSH);
 		gameNewGameItem.setText("New Game");
-
+		
+		/** Solve Menu**/
 		gameSolveItem = new MenuItem(gameMenu, SWT.PUSH);
 		gameSolveItem.setText("Solve");
 		gameSolveItem.setEnabled(false);
-
+		
+		/** gameHint Menu**/
 		gameHintItem = new MenuItem(gameMenu, SWT.PUSH);
 		gameHintItem.setText("Hint");
 		gameHintItem.setEnabled(false);
-
+		
+		/** Load Menu**/
 		gameLoadItem = new MenuItem(gameMenu, SWT.PUSH);
 		gameLoadItem.setText("Load");
-
+		
+		/** Save Menu**/
 		gameSaveItem = new MenuItem(gameMenu, SWT.PUSH);
 		gameSaveItem.setText("Save");
 		gameSaveItem.setEnabled(false);
-
+		
+		/** gameSetting Menu**/
 		gameSettingsItem = new MenuItem(gameMenu, SWT.PUSH);
 		gameSettingsItem.setText("Settings");
-
+		
+		/** ExitItem Menu**/
 		gameExitItem = new MenuItem(gameMenu, SWT.PUSH);
 		gameExitItem.setText("Exit");
-
+		
+		/** Help Menu**/
 		helpMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
 		helpMenuHeader.setText("Help");
-
+		
+		/** Help Menu**/
 		helpMenu = new Menu(shell, SWT.DROP_DOWN);
 		helpMenuHeader.setMenu(helpMenu);
-
+		
+		/** About Menu**/
 		helpAboutItem = new MenuItem(helpMenu, SWT.PUSH);
 		helpAboutItem.setText("About");
-
 		
-		
+		/** gameSave Listener**/
 		gameSaveItem.addSelectionListener(new SelectionListener() {
 			
 			@Override
@@ -233,6 +272,7 @@ public class GameBoard extends MainGameWindow {
 			}
 		});
 		
+		/** gameHint Listener**/
 		gameHintItem.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -257,7 +297,8 @@ public class GameBoard extends MainGameWindow {
 
 			}
 		});
-
+		
+		/** gameSettings Listener**/
 		gameSettingsItem.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -291,7 +332,8 @@ public class GameBoard extends MainGameWindow {
 
 			}
 		});
-
+		
+		/** gameExit Listener**/
 		gameExitItem.addSelectionListener(new SelectionListener() {
 			
 			@Override
@@ -306,6 +348,8 @@ public class GameBoard extends MainGameWindow {
 				
 			}
 		});
+		
+		/** gameSolve Listener**/
 		gameSolveItem.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -347,7 +391,8 @@ public class GameBoard extends MainGameWindow {
 
 			}
 		});
-
+		
+		/** gameLoad Listener**/
 		gameLoadItem.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -397,6 +442,8 @@ public class GameBoard extends MainGameWindow {
 
 			}
 		});
+		
+		/** NewGame Listener**/
 		gameNewGameItem.addSelectionListener(new SelectionListener() {
 
 			/// NEEDS TO XOMPLETE ERROR CHECK!!!!
@@ -445,7 +492,8 @@ public class GameBoard extends MainGameWindow {
 
 			}
 		});
-
+		
+		/** gameExit Listener**/
 		helpAboutItem.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -461,7 +509,7 @@ public class GameBoard extends MainGameWindow {
 				dialog.open();
 			}
 		});
-
+		
 		shell.setMenuBar(menuBar);
 
 	}

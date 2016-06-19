@@ -22,7 +22,7 @@ public class Generate3DMazeCMD implements Command{
 	private View v;
 	
 	/**
-	 * Instantiates a new generate3 d maze cmd.
+	 * Instantiates a new generate3d maze command object.
 	 *
 	 * @param v the v
 	 * @param m the m

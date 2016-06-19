@@ -13,6 +13,14 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+/** <h1>LoadMazeWidnow</h1>
+ * The LoadMAzeWindow class.
+* This class display the Load window during the GUI execution.
+* The Load window contain a combo drop-down list which lists all the available Maze files on the local hard drive at current time.
+* @author Lior Ran and Omri Haviv
+* @version 1.0
+* @since June 19,2016
+*/
 public class LoadMazeWindow {
 
 	Shell loadMazeShell;
@@ -43,16 +51,13 @@ public class LoadMazeWindow {
 		loadMazeBtn.setText("Commit  Load");
 		loadMazeBtn.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, true, 2, 2));
 		loadMazeBtn.setBounds(10, 5, 75, 30);
-		
 		loadMazeShell.open();
-		
-		
 	}
-	
+	/** Set Maze list listener*/
 	public void setMazeListListener (MouseListener listener){
 		mazeList.addMouseListener(listener);
 	}
-	
+	/** Set load maze listener*/
 	public void setloadMazeBtnListener (SelectionListener listener){
 		loadMazeBtn.addSelectionListener(listener);
 	}

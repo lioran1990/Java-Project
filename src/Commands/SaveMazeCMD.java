@@ -7,7 +7,8 @@ import model.Model;
  * The Save Maze command class.
 * This class implements Commands interface and override doCommand method.
 * This class save the MAZE3D object to the local hard drive. File extension: <.maze>.
-* The MAZE3D passes thorough a compersation phase to save space on disk.
+* The MAZE3D passes thorough a compress phase to save space on disk.
+* This command is used by CLI only!
 * @author Lior Ran and Omri Haviv
 * @version 1.0
 * @since May 21,2016
@@ -21,7 +22,7 @@ public class SaveMazeCMD implements Command {
 	private View v;
 	
 	/**
-	 * Instantiates a new save maze cmd.
+	 * Instantiates a new save maze command object.
 	 *
 	 * @param v the v
 	 * @param m the m

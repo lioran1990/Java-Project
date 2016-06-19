@@ -1,15 +1,20 @@
 package presenter;
 
 import java.io.Serializable;
-
+/**<h1>Properties</h1>
+* The Properties class.
+* Properties class implements Serializable interface
+* This class defines all of the settings which will be save and read from XML
+* All of these settings are controlled by the User,except number of Threads which defines only by the programmer.
+* All of these settings can be Read and Set from both CLI and GUI interfaces.
+* Each time the user change the settings it will be change in the XML file, and will be read before the program will run.
+* According the properties inside the XML, the program will run with the exact settings.
+* @author Lior Ran and Omri Haviv
+* @version 1.0
+* @since May 21,2016
+*/
 public class Properties implements Serializable {
 
-	
-
-	/**
-	 * 
-	 */
-	
 	/*
 	 * DFS = 0 / BFS = 1 / breadthfs = 2
 	 * GUI = 0 / CLI = 1

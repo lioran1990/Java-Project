@@ -21,7 +21,7 @@ public class DisplayCrossSecCMD implements Command {
 	private View v;
 	
 	/**
-	 * Instantiates a new display cross sec cmd.
+	 * Instantiates a new display cross section command object.
 	 *
 	 * @param v the v
 	 * @param m the m

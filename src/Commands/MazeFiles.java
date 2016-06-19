@@ -2,7 +2,17 @@ package Commands;
 
 import View.View;
 import model.Model;
-
+/**<h1>MazeFiles</h1>
+ * The MazeFiles command class.
+ * This class implements Commands interface and override doCommand method.
+ * This class handling the Load Solutions mission.
+ * During the loads process, the file which loaded going through decompress process.
+ * This Command is used by both GUI and CLI
+ * @author Lior Ran and Omri Haviv
+ * @version 1.0
+ * @since June 19,2016
+ *
+ */
 public class MazeFiles implements Command {
 	
 	/** The m. */
@@ -12,7 +22,7 @@ public class MazeFiles implements Command {
 	private View v;
 	
 	/**
-	 * Instantiates a new save maze cmd.
+	 * Instantiates a new MazeFiles command object.
 	 *
 	 * @param v the v
 	 * @param m the m

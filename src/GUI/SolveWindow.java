@@ -1,7 +1,5 @@
 package GUI;
 
-
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
@@ -16,7 +14,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import presenter.Properties;
-
+/**<h1>SolveWindow</h1>
+* The SolveWindow class.
+* This class displays the Solve Window during the GUI execution.
+* @author Lior Ran and Omri Haviv
+* @version 1.0
+* @since May 21,2016
+*/
 public class SolveWindow {
 
 	private Button solveButton;
@@ -60,7 +64,7 @@ public class SolveWindow {
 		solveShell.open();	
 		solveShell.pack();
 	}
-	
+	/** Solve listener define*/
 	public void setListenerSolveBtn(SelectionListener listener) {
 		solveButton.addSelectionListener(listener);
 	}

@@ -8,13 +8,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-
-
-
-/**
- *
- * @author User-Pc
- */
+/**<h1>PropertiesHandler</h1>
+* The PropertiesHandler class.
+* @author Lior Ran and Omri Haviv
+* @version 1.0
+* @since May 21,2016
+*/
 public class PropertiesHandler {
 
     private static  Properties properties;
@@ -29,7 +28,8 @@ public class PropertiesHandler {
     }
 
 
-
+/**Write function that writes the maze properties to an XML file
+ *  @throws Exception*/
     public static void write(Properties p, String filename) throws Exception {
         XMLEncoder encoder
                 = new XMLEncoder(
@@ -40,7 +40,9 @@ public class PropertiesHandler {
         encoder.flush();
         encoder.close();
     }
-
+/**read function that reads the maze properties from an XML file
+ * 
+ * @throws Exception*/
     public static Properties read(String filename) throws Exception {
         XMLDecoder decoder
                 = new XMLDecoder(new BufferedInputStream(

@@ -21,7 +21,7 @@ public class FileSizeCMD implements Command {
 	private View v;
 	
 	/**
-	 * Instantiates a new file size cmd.
+	 * Instantiates a new file size command object.
 	 *
 	 * @param v the v
 	 * @param m the m

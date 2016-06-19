@@ -18,7 +18,13 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import presenter.Properties;
-
+/**<h1>SettingsWindows</h1>
+* The SettingsWindows class.
+* This class displays the Settings Window during the GUI execution.
+* @author Lior Ran and Omri Haviv
+* @version 1.0
+* @since May 21,2016
+*/
 public class SettingsWindow {
 
 	Display display;
@@ -40,7 +46,7 @@ public class SettingsWindow {
 		
 		Color white = display.getSystemColor(SWT.COLOR_WHITE);
 		
-
+		
 		settingsShell = new Shell(shell, SWT.TITLE | SWT.SYSTEM_MODAL | SWT.CLOSE | SWT.MAX );
 		settingsShell.setImage(shell.getImage());
 		settingsShell.setLayout(new GridLayout(1, false));

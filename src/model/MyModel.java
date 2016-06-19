@@ -305,31 +305,31 @@ public class MyModel extends Observable implements Model {
 
 		switch (properties.getSolveAlgorithm()) {
 		case 0:
-			sb.append("DFS\n");
+			sb.append("Solving algorithm: DFS\n");
 			break;
 		case 1:
-			sb.append("BFS\n");
+			sb.append("Solving algorithm: BFS\n");
 			break;
 		case 2:
-			sb.append("breathfs\n");
+			sb.append("Solving algorithm: breathfs\n");
 			break;
 		}
 
 		switch (properties.getRuntimeEnv()) {
 		case 0:
-			sb.append("GUI\n");
+			sb.append("Interface: GUI\n");
 			break;
 		case 1:
-			sb.append("CLI\n");
+			sb.append("Interface: CLI\n");
 			break;
 		}
 
 		switch (properties.getMazeGenerator()) {
 		case 0:
-			sb.append("Simple\n");
+			sb.append("Creation algorithm: Simple\n");
 			break;
 		case 1:
-			sb.append("Advanced\n");
+			sb.append("Creation algorithm: Advanced\n");
 			break;
 		}
 		message = sb.toString();

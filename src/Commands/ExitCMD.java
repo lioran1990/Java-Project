@@ -18,7 +18,7 @@ public class ExitCMD implements Command {
 	private View v;
 	
 	/**
-	 * Instantiates a new exit cmd.
+	 * Instantiates a new exit command object.
 	 *
 	 * @param v the v
 	 */

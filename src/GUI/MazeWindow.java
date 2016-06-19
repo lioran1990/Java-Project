@@ -18,6 +18,13 @@ import algorithms.mazeGenerator.Maze3d;
 import algorithms.mazeGenerator.Position;
 import algorithms.search.Solution;
 
+/** <h1>MazeWindow</h1>
+ * The MazeDisplayer class.
+ * This class extends MazeDisplayer class
+* @author Lior Ran and Omri Haviv
+* @version 1.0
+* @since June 19,2016
+*/
 public class MazeWindow extends MazeDisplayer {
 
 	Timer timer;

@@ -7,6 +7,7 @@ import model.Model;
  * The Load Maze command class.
  * This class implements Commands interface and override doCommand method.
  * This class loads a MAZE3D from file to system memory
+ * This class is used by CLI only.
  * The LOAD process passes thorough a decompressing phase before it upload to system memory.
  * @author Lior Ran and Omri Haviv
  * @version 1.0
@@ -21,7 +22,7 @@ public class LoadMazeCMD implements Command {
 	private View v;
 	
 	/**
-	 * Instantiates a new load maze cmd.
+	 * Instantiates a new load maze command object.
 	 *
 	 * @param v the v
 	 * @param m the m

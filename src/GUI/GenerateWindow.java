@@ -15,7 +15,14 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-
+/** <h1>GenerateWindow</h1>
+ * The Generate Window class.
+* This class display the Generate window during the GUI execution.
+* The generate windows includes name field, and few dropdown lists for Column size, Row size, Floor size.
+* @author Lior Ran and Omri Haviv
+* @version 1.0
+* @since June 19,2016
+*/
 public class GenerateWindow {
 	Shell settingsShell;
 	Combo floDropDown, rowDropDown, colDropDown;
@@ -23,24 +30,31 @@ public class GenerateWindow {
 	private Button generateButton;
 	Shell generateshell;
 	Text nameText,heightText,rowText,columnText;
+	
+	/**
+	 *  @since June 19,2016
+	 * @param shell shell
+	 * @param display display
+	 */
 	public GenerateWindow(Shell shell,Display display) {
 		
-		
+		/** defines the generate windows */
 		generateshell = new Shell(shell, SWT.TITLE | SWT.SYSTEM_MODAL | SWT.CLOSE | SWT.MAX);
 		generateshell.setLayout(new GridLayout(1, false));
 		generateshell.setSize(500, 200);
 		generateshell.setImage(shell.getImage());
 		
+		/** defines the generate background image */
 		generateshell.setBackgroundMode(SWT.INHERIT_FORCE);
 		Device device = Display.getCurrent ();	
 		image1 = new Image(device,".\\Images\\SettingsWindow.jpg");
 		generateshell.setBackgroundImage(image1);
-
+		
 		generateshell.setText("Game Settings");
 		generateshell.setLayout(new GridLayout(2, false));
-
 		Color white = display.getSystemColor(SWT.COLOR_WHITE);
 		
+		/** defines the maze name field */
 		Label nameLabel = new Label(generateshell, SWT.BORDER_SOLID);
 		nameLabel.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, true, 1, 1));
 		nameLabel.setFont(new org.eclipse.swt.graphics.Font(null, "Tahoma", 10, SWT.BOLD ));
@@ -50,7 +64,7 @@ public class GenerateWindow {
 		nameText.setLayoutData(new GridData(SWT.NONE, SWT.BOTTOM, false, true, 1, 1));
 		nameText.setForeground(white);
 		
-		
+		/** defines the floor label */
 		Label floorLabel = new Label(generateshell, SWT.BORDER_SOLID);
 		floorLabel.setFont(new org.eclipse.swt.graphics.Font(null, "Tahoma", 10, SWT.BOLD ));
 		floorLabel.setText("Floors size:");
@@ -60,7 +74,7 @@ public class GenerateWindow {
 		floDropDown.setItems(ITEMS);
 		floDropDown.setForeground(white);
 
-
+		/** defines the row label */
 		Label rowLabel = new Label(generateshell, SWT.BORDER_SOLID);
 		rowLabel.setFont(new org.eclipse.swt.graphics.Font(null, "Tahoma", 10, SWT.BOLD ));
 		rowLabel.setText("Rows size:");
@@ -69,7 +83,7 @@ public class GenerateWindow {
 		rowDropDown.setItems(ITEMS);
 		rowLabel.setForeground(white);
 		
-
+		/** defines the column label */
 		Label ColumnLabel = new Label(generateshell, SWT.BORDER_SOLID);
 		ColumnLabel.setFont(new org.eclipse.swt.graphics.Font(null, "Tahoma", 10, SWT.BOLD ));
 		ColumnLabel.setText("Columns size:");
@@ -78,7 +92,7 @@ public class GenerateWindow {
 		colDropDown.setForeground(white);
 		colDropDown.setItems(ITEMS);
 	
-
+		/** defines the generate botton */
 		generateButton = new Button(generateshell, SWT.PUSH);
 		generateButton.setText("Generate");
 		generateButton.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, true, 2, 1));

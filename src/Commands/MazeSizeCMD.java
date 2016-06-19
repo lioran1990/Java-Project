@@ -6,6 +6,7 @@ import model.Model;
  * The Maze Size command class.
  * This class implements Commands interface and override doCommand method.
  * This class shows the MAZE3d object memory size on machine memory (RAM).
+ * * This Command is used by CLI only!
  * @author Lior Ran and Omri Haviv
  * @version 1.0
  * @since May 21,2016
@@ -19,7 +20,7 @@ public class MazeSizeCMD implements Command {
 	private View v;
 	
 	/**
-	 * Instantiates a new maze size cmd.
+	 * Instantiates a new maze size command.
 	 *
 	 * @param v the v
 	 * @param m the m

@@ -6,6 +6,12 @@ import org.eclipse.swt.widgets.Composite;
 import algorithms.mazeGenerator.Maze3d;
 import algorithms.mazeGenerator.Position;
 
+/** <h1>MazeDisplayer</h1>
+ * The MazeDisplayer class.
+* @author Lior Ran and Omri Haviv
+* @version 1.0
+* @since June 19,2016
+*/
 public abstract class MazeDisplayer extends Canvas{
 
 	Maze3d mazeData = null;

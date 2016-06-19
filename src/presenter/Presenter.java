@@ -26,13 +26,20 @@ import Commands.SaveMazeAndSol;
 import Commands.SetProperties;
 import Commands.SetSettings;
 import Commands.SolveCMD;
-import Commands.getMaze2dData;
 import MazeAdapters.Maze3dStateAdapter;
 import View.View;
 import algorithms.mazeGenerator.Maze3d;
 import algorithms.search.Solution;
 import model.Model;
 
+/**<h1>Presenter</h1>
+* The Presenter class.
+* Presenter class extends Observable class and implements Observer interface
+* This class actually acts as a broker between the View and the Model classes.
+* @author Lior Ran and Omri Haviv
+* @version 1.0
+* @since June 19,2016
+*/
 public class Presenter extends Observable implements Observer{
 
 	private Model model;
@@ -75,20 +82,12 @@ public class Presenter extends Observable implements Observer{
 		ViewCmd.put("show_settings", new GetSettings(view , model));
 		ViewCmd.put("set_settings", new SetSettings(view , model));
 		ViewCmd.put("hintme", new HintMe(view , model));
-		ViewCmd.put("setproperties", new SetProperties(view));
-
-		
-		/*
-		ViewCmd.put("save_maze", new SaveMazeCMD(view,model));
-		ViewCmd.put("save_solutions", new SaveSolutions(view,model));
-		ViewCmd.put("load_solutions", new LoadSolutions(view,model));
-		ViewCmd.put("load_maze", new LoadMazeCMD(view,model));
-		*/
+		ViewCmd.put("setproperties", new SetProperties(view));	
 		ViewCmd.put("save", new SaveMazeAndSol(view,model));
 		ViewCmd.put("load", new LoadMazeAndSol(view,model));
 		
 		ModelCmd.put("display_msg", new DisplayMessage(view,model));
-		//ModelCmd.put("sendMaze", new getMaze2dData(view,model));
+		
 	}
 
 	@Override

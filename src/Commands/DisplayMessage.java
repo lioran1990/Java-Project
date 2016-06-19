@@ -22,7 +22,7 @@ public class DisplayMessage implements Command {
 	private View v;
 	
 	/**
-	 * Instantiates a new display cmd.
+	 * Instantiates a new display command object.
 	 *
 	 * @param v the v
 	 * @param m the m

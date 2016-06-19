@@ -20,7 +20,7 @@ public class DisplaySolutionCMD implements Command {
 	private View v;
 	
 	/**
-	 * Instantiates a new display solution cmd.
+	 * Instantiates a new display solution command object.
 	 *
 	 * @param v the v
 	 * @param m the m

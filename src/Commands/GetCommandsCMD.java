@@ -21,7 +21,7 @@ public class GetCommandsCMD implements Command {
 	private Presenter p;
 	
 	/**
-	 * Instantiates a new gets the commands cmd.
+	 * Instantiates a new getCommands command object.
 	 *
 	 * @param commands the commands
 	 * @param v the v

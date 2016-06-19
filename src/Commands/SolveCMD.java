@@ -9,6 +9,7 @@ import model.Model;
 * This class Solve MAZE3D using the Algorithms provided by User.
 * The available algorithms are: BFS (Best First Search), DFS (Depth First Search), BFS (Breadth First Search).
 * The Solution contains all the path from Start position to Goal position.
+*  This command is used by both CLI and GUI!
 * @author Lior Ran and Omri Haviv
 * @version 1.0
 * @since May 21,2016
@@ -22,7 +23,7 @@ public class SolveCMD implements Command {
 	private View v;
 	
 	/**
-	 * Instantiates a new solve cmd.
+	 * Instantiates a new solve command object.
 	 *
 	 * @param v the v
 	 * @param m the m
