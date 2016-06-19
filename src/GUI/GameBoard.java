@@ -5,6 +5,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -40,6 +41,7 @@ public class GameBoard extends MainGameWindow {
 	MazeWindow MazeWindow;
 	String mazeName , dialogStr;
 	Properties p;
+	MouseWheelListener mouseZoomlListener;
 	
 	/** GameBoard Constructor*/
 	public GameBoard(String title, int width, int height) {
@@ -161,6 +163,17 @@ public class GameBoard extends MainGameWindow {
 		MazeWindow = new MazeWindow(shell, SWT.BORDER);
 		MazeWindow.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
+
+		shell.addMouseWheelListener(new MouseWheelListener() {
+			
+			@Override
+			public void mouseScrolled(MouseEvent e) {
+				if ((e.stateMask & SWT.CTRL) != 0)
+					MazeWindow.setSize(MazeWindow.getSize().x + e.count,
+							MazeWindow.getSize().y + e.count);
+				
+			}
+		});
 		MazeWindow.addKeyListener(new KeyListener() {
 
 			@Override
