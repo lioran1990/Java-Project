@@ -28,7 +28,9 @@ public class getMaze2dData implements Command {
 	/**This command saves the MAZE3D object to local hard drive.*/
 	@Override
 	public void doCommand(String [] args) {	
-			v.setMaze2dData(m.getMaze2dData());
+		//	v.setMaze2dData(m.getMaze2dData());
 
 	}
 }
+
+

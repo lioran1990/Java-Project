@@ -88,7 +88,7 @@ public class Presenter extends Observable implements Observer{
 		ViewCmd.put("load", new LoadMazeAndSol(view,model));
 		
 		ModelCmd.put("display_msg", new DisplayMessage(view,model));
-		ModelCmd.put("sendMaze", new getMaze2dData(view,model));
+		//ModelCmd.put("sendMaze", new getMaze2dData(view,model));
 	}
 
 	@Override

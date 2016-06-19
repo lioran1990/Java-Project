@@ -30,91 +30,91 @@ import algorithms.search.Solution;
 import domain.State;
 import presenter.Properties;
 import presenter.PropertiesHandler;
-/**<h1>MyModel</h1>
-* The MyModel class.
-* MyModel is responsable to all of the data calculating such as Solving a maze, save\load etc.
-* @author Lior Ran and Omri Haviv
-* @version 1.0
-* @since May 21,2016
-*/
+
+/**
+ * <h1>MyModel</h1> The MyModel class. MyModel is responsable to all of the data
+ * calculating such as Solving a maze, save\load etc.
+ * 
+ * @author Lior Ran and Omri Haviv
+ * @version 1.0
+ * @since May 21,2016
+ */
 public class MyModel extends Observable implements Model {
-	
-	private HashMap<String, Maze3d> mazes = new HashMap<String,Maze3d>();
-	private HashMap<String , Solution> solutions = new HashMap<String , Solution>();
+
+	private HashMap<String, Maze3d> mazes = new HashMap<String, Maze3d>();
+	private HashMap<String, Solution> solutions = new HashMap<String, Solution>();
 	Maze3d maze;
 	String message;
-	int [][] maze2d = null;
+	int[][] maze2d = null;
 	ExecutorService exs;
 	Properties properties;
-	
+
 	public MyModel(int numThreads) {
 		exs = Executors.newFixedThreadPool(numThreads);
 	}
-	
-	public void generateMaze(String name , int flos, int rows , int cols){
+
+	public void generateMaze(String name, int flos, int rows, int cols) {
 		MyMaze3dGenerator mg = new MyMaze3dGenerator();
 		maze = mazes.get(name);
-		if (maze == null){			
+		if (maze == null) {
 			FutureTask<Maze3d> f = new FutureTask<Maze3d>(new Callable<Maze3d>() {
-				
+
 				@Override
-				public Maze3d call() throws Exception {		
+				public Maze3d call() throws Exception {
 					return mg.generate(flos, rows, cols);
-				}	 
+				}
 			});
 			exs.execute(f);
 			try {
-				maze = f.get();				
+				maze = f.get();
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
-			}		
+			}
 			mazes.put(name, maze);
 			setChanged();
-			message = "Maze: " + name +" Generated succesfully!\n";
+			message = "Maze: " + name + " Generated succesfully!\n";
 			notifyObservers(maze);
-		}
-		else{
+		} else {
 			message = "This name already exists!\n";
 			setChanged();
 			notifyObservers("display_msg");
 		}
 	}
-	
-	public String getPendingMessage (){
+
+	public String getPendingMessage() {
 		return message;
 	}
-	
-	public void getMaze3d(String name){
-		if (mazes.get(name) != null){
-			message = mazes.get(name).toString() + "\nStart Position: " + mazes.get(name).getStartPosition() + "\nGoal Position: "+ mazes.get(name).getGoalPosition()+"\n";
+
+	public void getMaze3d(String name) {
+		if (mazes.get(name) != null) {
+			message = mazes.get(name).toString() + "\nStart Position: " + mazes.get(name).getStartPosition()
+					+ "\nGoal Position: " + mazes.get(name).getGoalPosition() + "\n";
+			setChanged();
+			notifyObservers("display_msg");
+		} else {
+			message = "Couldn't find maze by name!\n";
 			setChanged();
 			notifyObservers("display_msg");
 		}
-		else{
-			message = "Couldn't find maze by name!\n"; 
-			setChanged();
-			notifyObservers("display_msg");
-		}		
 	}
-	
-	public void HintMe (String name , String sflo , String srow , String scol , String algo){
+
+	public void HintMe(String name, String sflo, String srow, String scol, String algo) {
 		Maze3dAdapter mazeAdapter = new Maze3dAdapter(mazes.get(name));
 		Maze3dStateAdapter tempCurrState = mazeAdapter.getStartState();
 		int iflo = Integer.parseInt(sflo);
 		int irow = Integer.parseInt(srow);
 		int icol = Integer.parseInt(scol);
 		Position p = new Position(iflo, irow, icol);
-		
+
 		Maze3dStateAdapter currLocStateAdapter = new Maze3dStateAdapter(p);
-		
+
 		mazeAdapter.setStartState(currLocStateAdapter);
-		
-		
+
 		FutureTask<State> f = new FutureTask<State>(new Callable<State>() {
 
 			@Override
 			public State call() throws Exception {
-				switch (algo){
+				switch (algo) {
 				case "dfs":
 				case "DFS":
 					solutions.put(name, new DFS().search(mazeAdapter));
@@ -122,7 +122,7 @@ public class MyModel extends Observable implements Model {
 				case "bfs":
 				case "BFS":
 					solutions.put(name, new BestFS().search(mazeAdapter));
-					break;			
+					break;
 				case "breadthfs":
 				case "BREADTHFS":
 					solutions.put(name, new BreadthFS().search(mazeAdapter));
@@ -133,8 +133,8 @@ public class MyModel extends Observable implements Model {
 		});
 		exs.execute(f);
 
-		message="Solution created!\n";
-		
+		message = "Solution created!\n";
+
 		try {
 			setChanged();
 			notifyObservers(f.get());
@@ -142,74 +142,70 @@ public class MyModel extends Observable implements Model {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
 	}
-	
+
 	@Override
 	public Maze3d getMaze3dData(String name) {
 		return mazes.get(name);
 	}
 
-	public void getCrossSection (String axis, int index , String name){
-		
+	public void getCrossSection(String axis, int index, String name) {
+
 		StringBuilder sb = new StringBuilder();
-		if (mazes.get(name) != null){
+		if (mazes.get(name) != null) {
 			Maze3d maze = mazes.get(name);
-			
+
 			switch (axis) {
-				case "x" :
-				case "X" : 	
-					maze2d = maze.getCrossSectionByX(index);
-					break;
-				case "y":
-				case "Y":
-					maze2d = maze.getCrossSectionByY(index);
-					break;
-				case "z":
-				case "Z":
-					maze2d = maze.getCrossSectionByZ(index);
-					break;
-				default :
-					message="Wrong Coordinate, only X/Y/Z accepted\n";
-					setChanged();
-					notifyObservers("display_msg");
-					break;
+			case "x":
+			case "X":
+				maze2d = maze.getCrossSectionByX(index);
+				break;
+			case "y":
+			case "Y":
+				maze2d = maze.getCrossSectionByY(index);
+				break;
+			case "z":
+			case "Z":
+				maze2d = maze.getCrossSectionByZ(index);
+				break;
+			default:
+				message = "Wrong Coordinate, only X/Y/Z accepted\n";
+				setChanged();
+				notifyObservers("display_msg");
+				break;
 			}
-			
-			
+
 			for (int i = 0; i < maze2d.length; i++) {
 				for (int j = 0; j < maze2d[0].length; j++) {
-					sb.append((((Integer)maze2d[i][j]).toString() + " "));
+					sb.append((((Integer) maze2d[i][j]).toString() + " "));
 				}
 				sb.append("\n");
 			}
-			
-		}
-		else{
-			message = "Couldn't find maze by name!\n"; 
+
+		} else {
+			message = "Couldn't find maze by name!\n";
 			setChanged();
 			notifyObservers("display_msg");
 		}
-		
-		
+
 		message = sb.toString();
 		setChanged();
 		notifyObservers("getMazeData");
 	}
-	
-	public int [][] getMaze2dData (){	
-		return maze2d;	
+
+	public int[][] getMaze2dData() {
+		return maze2d;
 	}
-	
-	public void Solve (String name , String algo){
-		if (mazes.get(name) != null){
+
+	public void Solve(String name, String algo) {
+		if (mazes.get(name) != null) {
 			Maze3dAdapter mazeAdapter = new Maze3dAdapter(mazes.get(name));
 			FutureTask<Solution> f = new FutureTask<Solution>(new Callable<Solution>() {
 
 				@Override
 				public Solution call() throws Exception {
-					switch (algo){
+					switch (algo) {
 					case "dfs":
 					case "DFS":
 						solutions.put(name, new DFS().search(mazeAdapter));
@@ -217,7 +213,7 @@ public class MyModel extends Observable implements Model {
 					case "bfs":
 					case "BFS":
 						solutions.put(name, new BestFS().search(mazeAdapter));
-						break;			
+						break;
 					case "breadthfs":
 					case "BREADTHFS":
 						solutions.put(name, new BreadthFS().search(mazeAdapter));
@@ -228,8 +224,8 @@ public class MyModel extends Observable implements Model {
 			});
 			exs.execute(f);
 
-			message="Solution created!\n";
-			
+			message = "Solution created!\n";
+
 			try {
 				setChanged();
 				notifyObservers(f.get());
@@ -237,85 +233,76 @@ public class MyModel extends Observable implements Model {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		else{
-			message= "Couldn't find maze!\n";
+		} else {
+			message = "Couldn't find maze!\n";
 			setChanged();
 			notifyObservers("display_msg");
 		}
-	
-	}
-	
 
-	public void Maze_Mem_Size (String name){
-		if (mazes.get(name) != null){
+	}
+
+	public void Maze_Mem_Size(String name) {
+		if (mazes.get(name) != null) {
 			Maze3d maze = mazes.get(name);
 			int size;
-			
+
 			final int POSITION = 12;
 			final int DIMENTION = 4;
 			final int MAZE_SIZE = maze.getCols() * maze.getFlos() * maze.getRows();
-			
-			size = (8 * POSITION)  + (5 * DIMENTION) + MAZE_SIZE; 
-			
-			if (maze.getDirs() == null){
-				message=Integer.toString(size) + " Bytes";
-			}
-			else{
-				for (Directions d : maze.getDirs()){
+
+			size = (8 * POSITION) + (5 * DIMENTION) + MAZE_SIZE;
+
+			if (maze.getDirs() == null) {
+				message = Integer.toString(size) + " Bytes";
+			} else {
+				for (Directions d : maze.getDirs()) {
 					size += d.name().length();
 				}
-				message= Integer.toString(size) + " Bytes";
+				message = Integer.toString(size) + " Bytes";
 			}
-		}
-		else{
-			message= "Couldn't find maze!\n";
+		} else {
+			message = "Couldn't find maze!\n";
 		}
 		setChanged();
 		notifyObservers("display_msg");
 	}
-	
-	public void Maze_File_Size (String fileName){
+
+	public void Maze_File_Size(String fileName) {
 		java.io.File file = new java.io.File(fileName);
-		if (file.length() == 0){
-			message= "File Not Found!\n";
-		}
-		else{
-			message=Long.toString(file.length()) + " Bytes";
-		}
-		setChanged();
-		notifyObservers("display_msg");
-	}
-	
-	
-	
-	public void Display_Sol (String name){
-		if (mazes.get(name) != null){
-			if (solutions.get(name) != null){
-				message= solutions.get(name).getStates().toString();
-			}
-			else{
-				message= "There is no solution yet. Please run Solve [(String) name] [(dfs/bfs/breadthfs) algorithm] command first! \n";
-			}
-		}
-		else{
-			message= "Couldn't find maze!\n";
+		if (file.length() == 0) {
+			message = "File Not Found!\n";
+		} else {
+			message = Long.toString(file.length()) + " Bytes";
 		}
 		setChanged();
 		notifyObservers("display_msg");
 	}
-	
-	public String Exit (){		
-		return null;		
+
+	public void Display_Sol(String name) {
+		if (mazes.get(name) != null) {
+			if (solutions.get(name) != null) {
+				message = solutions.get(name).getStates().toString();
+			} else {
+				message = "There is no solution yet. Please run Solve [(String) name] [(dfs/bfs/breadthfs) algorithm] command first! \n";
+			}
+		} else {
+			message = "Couldn't find maze!\n";
+		}
+		setChanged();
+		notifyObservers("display_msg");
 	}
-	
-	public void setProperties(Properties p){
-		this.properties = p ;
+
+	public String Exit() {
+		return null;
 	}
-	
-	public void getSettings(){
+
+	public void setProperties(Properties p) {
+		this.properties = p;
+	}
+
+	public void getSettings() {
 		StringBuilder sb = new StringBuilder();
-		
+
 		switch (properties.getSolveAlgorithm()) {
 		case 0:
 			sb.append("DFS\n");
@@ -327,7 +314,7 @@ public class MyModel extends Observable implements Model {
 			sb.append("breathfs\n");
 			break;
 		}
-		
+
 		switch (properties.getRuntimeEnv()) {
 		case 0:
 			sb.append("GUI\n");
@@ -336,7 +323,7 @@ public class MyModel extends Observable implements Model {
 			sb.append("CLI\n");
 			break;
 		}
-		
+
 		switch (properties.getMazeGenerator()) {
 		case 0:
 			sb.append("Simple\n");
@@ -344,17 +331,18 @@ public class MyModel extends Observable implements Model {
 		case 1:
 			sb.append("Advanced\n");
 			break;
-		}		
-		message = sb.toString(); 
+		}
+		message = sb.toString();
 		setChanged();
 		notifyObservers("display_msg");
 	}
-	
-	//This function modifying the XML file with the parameters recived from the user
-	public void setSettings(String [] args ){
+
+	// This function modifying the XML file with the parameters recived from the
+	// user
+	public void setSettings(String[] args) {
 		properties.setSolveAlgorithm(Integer.parseInt(args[1]));
 		properties.setRuntimeEnv(Integer.parseInt(args[2]));
-		properties.setMazeGenerator(Integer.parseInt(args[3]));		
+		properties.setMazeGenerator(Integer.parseInt(args[3]));
 		try {
 			PropertiesHandler.write(properties, ".\\xml\\properties.xml");
 		} catch (Exception e) {
@@ -362,27 +350,26 @@ public class MyModel extends Observable implements Model {
 			e.printStackTrace();
 		}
 	}
-	
-	
-///////////*****************************************************************************/////////////////////
-	
-	public void saveToFile_ser (String name){
+
+	/////////// *****************************************************************************/////////////////////
+
+	public void saveToFile_ser(String name) {
 		ObjectOutputStream oos = null;
-		if (mazes.get(name) != null){
-			
+		if (mazes.get(name) != null) {
+
 			try {
-				oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream("./saves/"+name+".maz")));
+				oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream("./saves/" + name + ".maz")));
 				try {
 					oos.writeObject(name);
 					oos.writeObject(mazes.get(name));
 					message = "Maze saved! \nBut no solution saved. \n";
-					if (solutions.get(name) != null){
+					if (solutions.get(name) != null) {
 						try {
 							oos.writeObject(solutions.get(name));
 							message = "Maze and Solution saved!";
 						} catch (IOException e) {
 							message = "Couldn't save solution to file\n" + e.getMessage() + "\n";
-						}	
+						}
 					}
 				} catch (IOException e1) {
 					message = "Couldn't save maze to file\n" + e1.getMessage() + "\n";
@@ -392,26 +379,25 @@ public class MyModel extends Observable implements Model {
 			} catch (IOException e2) {
 				message = "Couldn't save to file\n" + e2.getMessage() + "\n";
 			}
-			
+
 			try {
 				oos.close();
 			} catch (IOException e1) {
 				message = "Couldn't close the file\n" + e1.getMessage() + "\n";
-			}		
+			}
 			setChanged();
 			notifyObservers("display_msg");
 		}
 	}
-	
-	public void loadFromFile_ser (String Name){
+
+	public void loadFromFile_ser(String Name) {
 		ObjectInputStream ois = null;
 		String tmpName = null;
 		Maze3d tmpMaze3d = null;
 		Solution tmpSolution = null;
-		
-		
+
 		try {
-			ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream(".\\saves\\"+Name)));
+			ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream(".\\saves\\" + Name)));
 			try {
 				tmpName = (String) ois.readObject();
 				try {
@@ -427,186 +413,118 @@ public class MyModel extends Observable implements Model {
 					} catch (ClassNotFoundException e) {
 						message = e.getMessage() + "\n";
 					} catch (IOException e) {
-						message = "Maze "+tmpName+" loaded \nBut Couldn't read Solution "+e.getMessage() + "\n";
+						message = "Maze " + tmpName + " loaded \nBut Couldn't read Solution " + e.getMessage() + "\n";
 					}
 				} catch (ClassNotFoundException e) {
 					message = e.getMessage() + "\n";
 				} catch (IOException e) {
-					message = "Couldn't read Maze from file " +e.getMessage() + "\n";
+					message = "Couldn't read Maze from file " + e.getMessage() + "\n";
 				}
 			} catch (ClassNotFoundException e) {
 				message = e.getMessage() + "\n";
-			}		
+			}
 		} catch (FileNotFoundException e3) {
-			message = "Couldn't find file specified \n" +e3.getMessage() + "\n";
+			message = "Couldn't find file specified \n" + e3.getMessage() + "\n";
 		} catch (IOException e3) {
-			message = "Couldn't read from file "+e3.getMessage() + "\n";
-		}	
-		
+			message = "Couldn't read from file " + e3.getMessage() + "\n";
+		}
+
 		try {
 			ois.close();
 		} catch (IOException e) {
 			message = "Couldn't close the file " + e.getMessage() + "\n";
 		}
-		
+
 		setChanged();
 		notifyObservers("display_msg");
 	}
-	
-	public void getMazeFiles (){
+
+	public void getMazeFiles() {
 		File folder = new File("./saves");
 		File[] listOfFiles = folder.listFiles();
 		StringBuilder sb = new StringBuilder();
-		
-		    for (int i = 0; i < listOfFiles.length; i++) {
-		      if (listOfFiles[i].isFile()) {
-		    	  sb.append(listOfFiles[i].getName()+"\n");
-		      } 
-		    }
-	    message = sb.toString();
-	    setChanged();
-		notifyObservers("display_msg"); 
-	}
 
-
-
-	
-
-	
-	
-/////////*****************************************************************************/////////////////////
-
-	
-	
-	
-	
-	
-	
-	/*	RELEVANT FO ASSIGNMENT 3 ONLY!
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-	public void SaveSolutionsToFile (String fileName) throws IOException{	
-		OutputStream out = new GZIPOutputStream (new FileOutputStream("./saves/"+fileName+"_sol.gzip"));
-		ArrayList<State> arr;
-		
-		for (Entry<String, Solution> e : solutions.entrySet()){
-			out.write(solutions.size());
-			arr = solutions.get(e.getKey()).getStates();
-			out.write(e.getKey().length());
-			out.write(e.getKey().getBytes());
-			out.write(arr.size() * 3);
-			for (State state : arr) {
-				out.write(state.getCurrentState().charAt(1));
-				out.flush();
-				out.write(state.getCurrentState().charAt(3));
-				out.flush();
-				out.write(state.getCurrentState().charAt(5));
-				out.flush();
+		for (int i = 0; i < listOfFiles.length; i++) {
+			if (listOfFiles[i].isFile()) {
+				sb.append(listOfFiles[i].getName() + "\n");
 			}
-			out.flush();
 		}
-		out.close();
-		message = "solution for "+fileName+ "saved to file\n";
+		message = sb.toString();
 		setChanged();
 		notifyObservers("display_msg");
 	}
-	
-	
-	public void LoadSolutionsFromFile () throws FileNotFoundException, IOException{
-		InputStream in = new GZIPInputStream(new FileInputStream("Solutions.gzip"));
-		int sizeOfSolutions = 0;
-		byte [] b = new byte [4];
-		byte [] name;
-		byte [] bytestate;
-		
-		sizeOfSolutions = in.read();
-		for (int i = 0; i < sizeOfSolutions; i++) {
-			// read solution name like omri_dfs
-			name = new byte [b[0]];
-			in.read(name, 0, b[0]);
-			String str = new String(name);
-			// read the whole solution
-			in.read(b,0,1);
-			bytestate = new byte [b[0]];
-			in.read(bytestate, 0, b[0]);
-			str = new String (bytestate);
-		}
 
-		
-		message = "solutions loaded \n";
-		setChanged();
-		notifyObservers("display_msg");
-	}
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	///////// *****************************************************************************/////////////////////
 
-	
-	
-	public void saveToFile (String name, String fileName){
-		if (mazes.get(name) != null){
-			try{
-				OutputStream out = new MyCompressorOutputStream(new FileOutputStream("./saves/"+fileName+"_maze.maz"));
-				try{
-					out.write(mazes.get(name).toByteArray());
-					this.SaveSolutionsToFile(fileName);
-					out.flush();
-					out.close();
-					message= "Maze compressed and saved to " + fileName + "\n";
-				}
-				catch(IOException e){
-					message= "Loading Failed : Couldn't read the file 0x01\n"+e.getMessage()+"\n";
-				}
-			}
-			catch(FileNotFoundException e){
-				message= "Loading Failed : File Not Found 0x01\n"+e.getMessage()+"\n";
-			}
-		}
-		else{
-			message= "Couldn't find maze by name!\n";
-		}
-		setChanged();
-		notifyObservers("display_msg");
-	}
-	
-	public void loadFromFile (String fileName, String name){
-			byte [] b = new byte [3];
-			InputStream in = null;
-			Maze3d maze = null;
-			
-			try {
-				in = new FileInputStream(fileName);
-			} 
-			catch (FileNotFoundException e2) {
-				message= "Loading Failed : File Not Found 0x01\n";
-			}
-			try {
-				in.read(b, 0, 3);
-				int size = (b[0] * b[1] * b[2]) + 9;
-				b = null;
-				b = new byte [size];
-				in.close();
-			} 
-			catch (IOException e2) {
-				message=  "Loading Failed : Couldn't read the file 0x01\n";
-			}
-			try {
-				in = new MyCompressorInputStream(new FileInputStream(fileName));
-			} catch (FileNotFoundException e1) {
-				message= "Loading Failed : File Not Found 0x02\n";
-			}
-			try {
-				in.read(b);
-				maze = new Maze3d(b);
-				mazes.put(name, maze);
-				in.close();
-				message=  "Maze Loaded Succefully!\n";
-			} 
-			catch (IOException e) {
-				message=  "Loading Failed : Couldn't read the file 0x02\n";
-			}
-			setChanged();
-			notifyObservers("display_msg");
-	}
-	//////////////////////////////////////////////////////////////////////////////
+	/*
+	 * RELEVANT FO ASSIGNMENT 3 ONLY!
+	 * /////////////////////////////////////////////////////////////////////////
+	 * ///////////////////////// public void SaveSolutionsToFile (String
+	 * fileName) throws IOException{ OutputStream out = new GZIPOutputStream
+	 * (new FileOutputStream("./saves/"+fileName+"_sol.gzip")); ArrayList<State>
+	 * arr;
+	 * 
+	 * for (Entry<String, Solution> e : solutions.entrySet()){
+	 * out.write(solutions.size()); arr = solutions.get(e.getKey()).getStates();
+	 * out.write(e.getKey().length()); out.write(e.getKey().getBytes());
+	 * out.write(arr.size() * 3); for (State state : arr) {
+	 * out.write(state.getCurrentState().charAt(1)); out.flush();
+	 * out.write(state.getCurrentState().charAt(3)); out.flush();
+	 * out.write(state.getCurrentState().charAt(5)); out.flush(); } out.flush();
+	 * } out.close(); message = "solution for "+fileName+ "saved to file\n";
+	 * setChanged(); notifyObservers("display_msg"); }
+	 * 
+	 * 
+	 * public void LoadSolutionsFromFile () throws FileNotFoundException,
+	 * IOException{ InputStream in = new GZIPInputStream(new
+	 * FileInputStream("Solutions.gzip")); int sizeOfSolutions = 0; byte [] b =
+	 * new byte [4]; byte [] name; byte [] bytestate;
+	 * 
+	 * sizeOfSolutions = in.read(); for (int i = 0; i < sizeOfSolutions; i++) {
+	 * // read solution name like omri_dfs name = new byte [b[0]]; in.read(name,
+	 * 0, b[0]); String str = new String(name); // read the whole solution
+	 * in.read(b,0,1); bytestate = new byte [b[0]]; in.read(bytestate, 0, b[0]);
+	 * str = new String (bytestate); }
+	 * 
+	 * 
+	 * message = "solutions loaded \n"; setChanged();
+	 * notifyObservers("display_msg"); }
+	 * /////////////////////////////////////////////////////////////////////////
+	 * /////////////////////////
+	 * 
+	 * 
+	 * 
+	 * 
+	 * public void saveToFile (String name, String fileName){ if
+	 * (mazes.get(name) != null){ try{ OutputStream out = new
+	 * MyCompressorOutputStream(new
+	 * FileOutputStream("./saves/"+fileName+"_maze.maz")); try{
+	 * out.write(mazes.get(name).toByteArray());
+	 * this.SaveSolutionsToFile(fileName); out.flush(); out.close(); message=
+	 * "Maze compressed and saved to " + fileName + "\n"; } catch(IOException
+	 * e){ message= "Loading Failed : Couldn't read the file 0x01\n"
+	 * +e.getMessage()+"\n"; } } catch(FileNotFoundException e){ message=
+	 * "Loading Failed : File Not Found 0x01\n"+e.getMessage()+"\n"; } } else{
+	 * message= "Couldn't find maze by name!\n"; } setChanged();
+	 * notifyObservers("display_msg"); }
+	 * 
+	 * public void loadFromFile (String fileName, String name){ byte [] b = new
+	 * byte [3]; InputStream in = null; Maze3d maze = null;
+	 * 
+	 * try { in = new FileInputStream(fileName); } catch (FileNotFoundException
+	 * e2) { message= "Loading Failed : File Not Found 0x01\n"; } try {
+	 * in.read(b, 0, 3); int size = (b[0] * b[1] * b[2]) + 9; b = null; b = new
+	 * byte [size]; in.close(); } catch (IOException e2) { message=
+	 * "Loading Failed : Couldn't read the file 0x01\n"; } try { in = new
+	 * MyCompressorInputStream(new FileInputStream(fileName)); } catch
+	 * (FileNotFoundException e1) { message=
+	 * "Loading Failed : File Not Found 0x02\n"; } try { in.read(b); maze = new
+	 * Maze3d(b); mazes.put(name, maze); in.close(); message=
+	 * "Maze Loaded Succefully!\n"; } catch (IOException e) { message=
+	 * "Loading Failed : Couldn't read the file 0x02\n"; } setChanged();
+	 * notifyObservers("display_msg"); }
+	 * /////////////////////////////////////////////////////////////////////////
+	 * /////
 	 */
-	
+
 }
