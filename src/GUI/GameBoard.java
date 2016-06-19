@@ -412,11 +412,14 @@ public class GameBoard extends MainGameWindow {
 			public void widgetSelected(SelectionEvent arg0) {
 				getMazeFilesList();
 				LoadMazeWindow lmw = new LoadMazeWindow(shell, display,dialogStr);
+				gameSolveItem.setEnabled(true);
+				gameSaveItem.setEnabled(true);
+				gameHintItem.setEnabled(true);
 				lmw.setloadMazeBtnListener(new SelectionListener() {
 					
 					@Override
 					public void widgetSelected(SelectionEvent arg0) {
-						loadMaze(lmw.mazeList.getText());	
+						loadMaze(lmw.mazeList.getText());
 						lmw.loadMazeShell.dispose();
 					}
 					

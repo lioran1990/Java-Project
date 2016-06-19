@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="1.8.0_91" class="java.beans.XMLDecoder">
- <object class="presenter.Properties" id="Properties0">
+<java version="1.8.0_51" class="java.beans.XMLDecoder">
+ <object class="presenter.Properties">
   <void property="maxNumOfThreads">
    <int>2</int>
   </void>
-  <void id="Integer0" property="runtimeEnv"/>
+  <void property="mazeGenerator">
+   <int>0</int>
+  </void>
   <void property="solveAlgorithm">
-   <object idref="Integer0"/>
+   <int>0</int>
   </void>
  </object>
 </java>

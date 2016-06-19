@@ -30,7 +30,7 @@ public class MazeWindow extends MazeDisplayer {
 	Timer timer;
 	TimerTask task;
 	boolean timerActive;
-	Image image, win, arrow;
+	Image image, win, arrow , exit;
 	boolean winner = false;
 
 	public void setMazeData(Maze3d maze) {
@@ -42,7 +42,8 @@ public class MazeWindow extends MazeDisplayer {
 		Device device = Display.getCurrent();
 		win = new Image(device, ".\\Images\\winner.jpg");
 		arrow = new Image(device, ".\\Images\\arrow.jpg");
-
+		exit = new Image(device, ".\\Images\\exit.jpg");
+		
 		addPaintListener(new PaintListener() {
 
 			@Override
@@ -78,8 +79,20 @@ public class MazeWindow extends MazeDisplayer {
 								double[] dpoints = { start + j * w0, i * h, start + j * w0 + w0, i * h,
 										start1 + j * w1 + w1, i * h + h, start1 + j * w1, i * h + h };
 								double cheight = h / 2;
-								if (mazeData.getMaze3d()[charFlo][i][j] != 0)
-									paintCube(dpoints, cheight, e);
+								if (mazeData.getMaze3d()[charFlo][i][j] != 0){
+									paintCube(dpoints, cheight, e);	
+								}
+								if ((charFlo == mazeData.getGoalPosition().getFlo())){
+									if (i == mazeData.getGoalPosition().getRow()){
+										if(j == mazeData.getGoalPosition().getCol()){
+											e.gc.drawImage(exit, 0, 0, exit.getBounds().width,
+													exit.getBounds().height, (int) (x + (2 * (w / 2))), y,
+													(int) (w ), (int) (h));
+										}
+									}
+									
+								}
+									
 
 								if (currentPlayerPos.equals(mazeData.getGoalPosition())) {
 									return;
