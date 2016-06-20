@@ -30,7 +30,7 @@ public class MazeWindow extends MazeDisplayer {
 	Timer timer;
 	TimerTask task;
 	boolean timerActive;
-	Image image, win, arrow , exit;
+	Image image, win, arrow , exit , wall;
 	boolean winner = false;
 
 	public void setMazeData(Maze3d maze) {
@@ -43,6 +43,7 @@ public class MazeWindow extends MazeDisplayer {
 		win = new Image(device, ".\\Images\\winner.jpg");
 		arrow = new Image(device, ".\\Images\\arrow.jpg");
 		exit = new Image(device, ".\\Images\\exit.jpg");
+		wall = new Image(device, ".\\Images\\wall.jpg");
 		
 		addPaintListener(new PaintListener() {
 
@@ -86,8 +87,7 @@ public class MazeWindow extends MazeDisplayer {
 									if (i == mazeData.getGoalPosition().getRow()){
 										if(j == mazeData.getGoalPosition().getCol()){
 											e.gc.drawImage(exit, 0, 0, exit.getBounds().width,
-													exit.getBounds().height, (int) (x + (2 * (w / 2))), y,
-													(int) (w ), (int) (h));
+													exit.getBounds().height, (x), y,(int) (w), (int) (h));
 										}
 									}
 									
@@ -162,7 +162,8 @@ public class MazeWindow extends MazeDisplayer {
 			;
 
 		e.gc.drawPolygon(f);
-
+	//	 0, 0, wall.getBounds().width, wall.getBounds().height,
+		
 		int[] r = f.clone();
 		for (int k = 1; k < r.length; r[k] = f[k] - (int) (h), k += 2)
 			;
@@ -172,8 +173,9 @@ public class MazeWindow extends MazeDisplayer {
 		int[] fr = { r[6], r[7], r[4], r[5], f[4], f[5], f[6], f[7] };
 		e.gc.drawPolygon(fr);
 
-		e.gc.fillPolygon(r);
-
+		//e.gc.drawImage(wall, 100,100,50,50,b[],r[5],b[6],50);		
+		//e.gc.fillPolygon(r);
+		
 	}
 
 	public void showHint(Position p) {
