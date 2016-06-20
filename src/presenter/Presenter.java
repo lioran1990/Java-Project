@@ -60,6 +60,17 @@ public class Presenter extends Observable implements Observer{
 		view.setProperties(properties);
 	}
 	
+	public void ResetProperties (){
+		try {
+			properties = PropertiesHandler.read(".\\xml\\properties.xml");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		model.setProperties(properties);
+		view.setProperties(properties);
+	}
+	
 	public HashMap<String, Command> getCommands (){
 		return ViewCmd;
 	}
@@ -82,7 +93,7 @@ public class Presenter extends Observable implements Observer{
 		ViewCmd.put("show_settings", new GetSettings(view , model));
 		ViewCmd.put("set_settings", new SetSettings(view , model));
 		ViewCmd.put("hintme", new HintMe(view , model));
-		ViewCmd.put("setproperties", new SetProperties(view));	
+		ViewCmd.put("setproperties", new SetProperties(view , this));	
 		ViewCmd.put("save", new SaveMazeAndSol(view,model));
 		ViewCmd.put("load", new LoadMazeAndSol(view,model));
 		

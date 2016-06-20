@@ -178,13 +178,19 @@ public class GameBoard extends MainGameWindow {
 
 			@Override
 			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
+				if (MazeWindow.winner == true){
+					gameSolveItem.setEnabled(false);
+					gameSaveItem.setEnabled(false);
+					gameHintItem.setEnabled(false);
+				}
+
 
 			}
 
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (MazeWindow.winner == false){
+					
 					switch (e.keyCode) {
 					case SWT.ARROW_DOWN:
 						MazeWindow.moveDown();
@@ -212,6 +218,7 @@ public class GameBoard extends MainGameWindow {
 						break;
 					}
 				}
+							
 			}
 		});
 				

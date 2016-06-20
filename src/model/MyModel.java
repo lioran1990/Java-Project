@@ -21,8 +21,10 @@ import MazeAdapters.Maze3dAdapter;
 import MazeAdapters.Maze3dStateAdapter;
 import algorithms.mazeGenerator.Directions;
 import algorithms.mazeGenerator.Maze3d;
+import algorithms.mazeGenerator.Maze3dGenerator;
 import algorithms.mazeGenerator.MyMaze3dGenerator;
 import algorithms.mazeGenerator.Position;
+import algorithms.mazeGenerator.SimpleMaze3dGenerator;
 import algorithms.search.BestFS;
 import algorithms.search.BreadthFS;
 import algorithms.search.DFS;
@@ -48,13 +50,25 @@ public class MyModel extends Observable implements Model {
 	int[][] maze2d = null;
 	ExecutorService exs;
 	Properties properties;
-
+	Maze3dGenerator mg;
+	
 	public MyModel(int numThreads) {
 		exs = Executors.newFixedThreadPool(numThreads);
 	}
 
 	public void generateMaze(String name, int flos, int rows, int cols) {
-		MyMaze3dGenerator mg = new MyMaze3dGenerator();
+		mg = null;
+		switch (properties.getMazeGenerator()) {
+		case 0:
+			mg = new SimpleMaze3dGenerator();
+			break;
+		case 1:
+			mg = new MyMaze3dGenerator();
+			break;
+		default:
+			break;
+		}
+		
 		maze = mazes.get(name);
 		if (maze == null) {
 			FutureTask<Maze3d> f = new FutureTask<Maze3d>(new Callable<Maze3d>() {

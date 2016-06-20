@@ -2,6 +2,8 @@ package Commands;
 
 import View.View;
 import model.Model;
+import presenter.Presenter;
+import presenter.Properties;
 import presenter.PropertiesHandler;
 
 /**<h1>SetProperties</h1>
@@ -16,7 +18,7 @@ import presenter.PropertiesHandler;
  */
 public class SetProperties implements Command {
 	/** The m. */
-	private Model m;
+	private Presenter p;
 	
 	/** The v. */
 	private View v;
@@ -27,8 +29,9 @@ public class SetProperties implements Command {
 	 * @param v the v
 	 * @param m the m
 	 */
-	public SetProperties(View v) {
+	public SetProperties(View v , Presenter p) {
 		this.v = v;
+		this.p = p;
 	}
 	
 	/**This command sets the maze3d properties object into XML file on the local hard drive.*/
@@ -37,6 +40,7 @@ public class SetProperties implements Command {
 	public void doCommand(String[] args) {
 		try {
 			PropertiesHandler.write(v.getProperties(), ".\\xml\\properties.xml");
+			p.ResetProperties();
 		} catch (Exception e) {
 			System.out.println("Could not save default properties file, please check manually");;
 		}

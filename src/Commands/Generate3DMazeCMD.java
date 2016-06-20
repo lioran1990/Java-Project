@@ -1,9 +1,12 @@
 package Commands;
 
+import java.io.FileNotFoundException;
 import java.util.concurrent.Callable;
 
 import View.View;
 import model.Model;
+import presenter.Properties;
+import presenter.PropertiesHandler;
 
 /** <h1>Generate3DMazeCMD</h1>
  * The Generate 3D MAZE command class.
