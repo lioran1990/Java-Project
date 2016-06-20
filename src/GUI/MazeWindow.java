@@ -174,7 +174,7 @@ public class MazeWindow extends MazeDisplayer {
 		e.gc.drawPolygon(fr);
 
 		//e.gc.drawImage(wall, 100,100,50,50,b[],r[5],b[6],50);		
-		//e.gc.fillPolygon(r);
+		e.gc.fillPolygon(r);
 		
 	}
 
