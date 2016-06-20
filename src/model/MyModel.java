@@ -463,6 +463,7 @@ public class MyModel extends Observable implements Model {
 				sb.append(listOfFiles[i].getName() + "\n");
 			}
 		}
+		sb.append("----------END OF LIST----------");
 		message = sb.toString();
 		setChanged();
 		notifyObservers("display_msg");
