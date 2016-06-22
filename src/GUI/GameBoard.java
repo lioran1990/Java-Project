@@ -110,6 +110,7 @@ public class GameBoard extends MainGameWindow {
 
 	/** loadMaze command**/
 	public void loadMaze(String file){
+		mazeName = (file.split(".maz"))[0];
 		setChanged();
 		notifyObservers("load " + file);
 	}

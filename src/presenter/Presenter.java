@@ -104,20 +104,26 @@ public class Presenter extends Observable implements Observer{
 	@Override
 	public void update(Observable o, Object arg) {
 		if (o == model){
-			if (arg.getClass().getName()== "algorithms.mazeGenerator.Maze3d"){
+			switch (arg.getClass().getName()) {
+			case "algorithms.mazeGenerator.Maze3d":
 				view.PrintOut(((Maze3d)arg).toString());
 				view.setMaze3dData((Maze3d)arg);
-				
-			}
-			else if (arg.getClass().getName()== "algorithms.search.Solution"){
+				break;
+			case "algorithms.search.Solution":
 				view.setSolution((Solution)arg);
-			}
-			else if ( arg.getClass().getName()== "MazeAdapters.Maze3dStateAdapter"){
+				break;
+				
+			case "MazeAdapters.Maze3dStateAdapter":
 				view.HintMe((Maze3dStateAdapter)arg);
-			}
-			else{
+				break;
+				
+		//	case "java.lang.String":
+			//	break;
+			
+			default:
 				Command cmd = ModelCmd.get((String)arg);			
 				cmd.doCommand(null);
+				break;
 			}	
 		}
 		else if (o == view){
