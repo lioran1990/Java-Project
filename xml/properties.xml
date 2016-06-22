@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="1.8.0_91" class="java.beans.XMLDecoder">
+<java version="1.8.0_51" class="java.beans.XMLDecoder">
  <object class="presenter.Properties" id="Properties0">
   <void property="maxNumOfThreads">
    <int>2</int>
   </void>
   <void id="Integer0" property="mazeGenerator"/>
-  <void property="runtimeEnv">
-   <object idref="Integer0"/>
-  </void>
   <void property="solveAlgorithm">
    <object idref="Integer0"/>
   </void>

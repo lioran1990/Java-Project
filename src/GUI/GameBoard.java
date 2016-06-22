@@ -180,7 +180,6 @@ public class GameBoard extends MainGameWindow {
 			public void keyReleased(KeyEvent arg0) {
 				if (MazeWindow.winner == true){
 					gameSolveItem.setEnabled(false);
-					gameSaveItem.setEnabled(false);
 					gameHintItem.setEnabled(false);
 				}
 
