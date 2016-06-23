@@ -104,5 +104,6 @@ public class GenerateWindow {
 	public void setTriggerOk(SelectionListener listener){
 		generateButton.addSelectionListener(listener);
 	}
+	
 
 }
