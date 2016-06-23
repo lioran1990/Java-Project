@@ -43,6 +43,7 @@ import presenter.PropertiesHandler;
  */
 public class MyModel extends Observable implements Model {
 
+	// mapping between MAZE name and the maze3d object itself
 	private HashMap<String, Maze3d> mazes = new HashMap<String, Maze3d>();
 	private HashMap<String, Solution> solutions = new HashMap<String, Solution>();
 	Maze3d maze;
@@ -52,10 +53,17 @@ public class MyModel extends Observable implements Model {
 	Properties properties;
 	Maze3dGenerator mg;
 	
+	//constructor
 	public MyModel(int numThreads) {
 		exs = Executors.newFixedThreadPool(numThreads);
 	}
 
+	//generate a maze according the properties object (which read XML file)
+	//the switch case is for the decision with which CREATION ALGO we should create the MAZE
+	//IN Few word: This method is for creating mazes. 
+	//STEP 1: Checing if the MAZE exists already
+	//STEP 2: IF Exists- do nothing, and send message to NotifyObservers
+	//STEP 3: IF NOT EXISTS- create, and insert into HASHMAP.
 	public void generateMaze(String name, int flos, int rows, int cols) {
 		mg = null;
 		switch (properties.getMazeGenerator()) {
@@ -68,22 +76,25 @@ public class MyModel extends Observable implements Model {
 		default:
 			break;
 		}
-		
+		//pulling MAZE3D object from hash table. if we did not find a maze accoridng this name- NULL will be inserted.
 		maze = mazes.get(name);
 		if (maze == null) {
 			FutureTask<Maze3d> f = new FutureTask<Maze3d>(new Callable<Maze3d>() {
 
+				//Just DEFINE what the THREAD should do in runtime
 				@Override
 				public Maze3d call() throws Exception {
 					return mg.generate(flos, rows, cols);
 				}
 			});
+			// NOW we execute the THREAD to do what we defined above.
 			exs.execute(f);
 			try {
 				maze = f.get();
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 			}
+			//Inserting the new
 			mazes.put(name, maze);
 			setChanged();
 			message = "Maze: " + name + " Generated succesfully!\n";
@@ -94,11 +105,13 @@ public class MyModel extends Observable implements Model {
 			notifyObservers("display_msg");
 		}
 	}
-
+	
+	//Pulling pending message by the Presenter
 	public String getPendingMessage() {
 		return message;
 	}
-
+	
+	//Getting the MAZE3d (asked by the Presenter)
 	public void getMaze3d(String name) {
 		if (mazes.get(name) != null) {
 			message = mazes.get(name).toString() + "\nStart Position: " + mazes.get(name).getStartPosition()
@@ -111,7 +124,8 @@ public class MyModel extends Observable implements Model {
 			notifyObservers("display_msg");
 		}
 	}
-
+	
+	//Getting a HINT (asked by the Presenter)
 	public void HintMe(String name, String sflo, String srow, String scol, String algo) {
 		Maze3dAdapter mazeAdapter = new Maze3dAdapter(mazes.get(name));
 		Maze3dStateAdapter tempCurrState = mazeAdapter.getStartState();
@@ -121,7 +135,7 @@ public class MyModel extends Observable implements Model {
 		Position p = new Position(iflo, irow, icol);
 
 		Maze3dStateAdapter currLocStateAdapter = new Maze3dStateAdapter(p);
-
+		
 		mazeAdapter.setStartState(currLocStateAdapter);
 
 		FutureTask<State> f = new FutureTask<State>(new Callable<State>() {
