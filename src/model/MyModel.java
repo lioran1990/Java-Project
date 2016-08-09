@@ -16,15 +16,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-
+import Hagana.*;
 import MazeAdapters.Maze3dAdapter;
 import MazeAdapters.Maze3dStateAdapter;
 import algorithms.mazeGenerator.Directions;
 import algorithms.mazeGenerator.Maze3d;
 import algorithms.mazeGenerator.Maze3dGenerator;
-import algorithms.mazeGenerator.MyMaze3dGenerator;
+//import algorithms.mazeGenerator.MyMaze3dGenerator;
 import algorithms.mazeGenerator.Position;
-import algorithms.mazeGenerator.SimpleMaze3dGenerator;
+//import algorithms.mazeGenerator.SimpleMaze3dGenerator;
 import algorithms.search.BestFS;
 import algorithms.search.BreadthFS;
 import algorithms.search.DFS;
@@ -68,10 +68,14 @@ public class MyModel extends Observable implements Model {
 		mg = null;
 		switch (properties.getMazeGenerator()) {
 		case 0:
-			mg = new SimpleMaze3dGenerator();
+			//OLD OPTIONS
+			//mg = new SimpleMaze3dGenerator();
+			mg = new GrowingTreeAlgo(new LastCellChoose());
 			break;
 		case 1:
-			mg = new MyMaze3dGenerator();
+			//OLD OPTIONS
+			//mg = new MyMaze3dGenerator();
+			mg = new GrowingTreeAlgo(new RandomCellChoose() );
 			break;
 		default:
 			break;

@@ -70,7 +70,7 @@ public class GenerateWindow {
 		floorLabel.setText("Floors size:");
 		floorLabel.setForeground(white);
 		floDropDown = new Combo(generateshell, SWT.DROP_DOWN  | SWT.READ_ONLY);
-		String[] ITEMS = {"3", "4", "5", "6","7", "8", "9", "10"  };
+		String[] ITEMS = {"0","1","2","3", "4", "5", "6","7", "8", "9", "10"  };
 		floDropDown.setItems(ITEMS);
 		floDropDown.setForeground(white);
 

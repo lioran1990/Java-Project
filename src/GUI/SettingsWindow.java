@@ -77,8 +77,12 @@ public class SettingsWindow {
 		generatLb.setForeground(white);
 		genDropDown = new Combo(settingsShell, SWT.DROP_DOWN | SWT.BORDER);
 		genDropDown.setForeground(white);
-		genDropDown.add("Simeple Algorithm");
-		genDropDown.add("Advanced Algorithm");
+		
+		//genDropDown.add("Simeple Algorithm");
+		//Add drop down list offering selecting growing tree algorithm
+		//in addition- disabled old algorithms 
+		genDropDown.add("Growning Tree Algorithm");
+		//genDropDown.add("Advanced Algorithm");
 		genDropDown.select(p.getMazeGenerator());
 		
 		Label solutionLb = new Label(settingsShell, SWT.NONE);
